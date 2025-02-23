@@ -35,10 +35,12 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 48,
+    fontWeight: 'bold',
     color: "white",
   },
   subtitleText: {
     fontSize: 24,
+    fontWeight: 'bold',
     color: "white",
   },
   background: {

@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, TouchableWithoutFeedback, ImageBackground } from 'react-native'; 
 
 export default function LaunchScreen({ navigation }) {
-  const handlePress = () => console.log("Launch Screen Interaction"); {/* Placeholder Function: Will be changed to allow navigation beyond the home screen. */}
+  const navHome = () => navigation.navigate("Home");
 
   return ( 
-    <TouchableWithoutFeedback onPress={handlePress}>
+    <TouchableWithoutFeedback onPress={navHome}>
       <View style={styles.fullScreen}>
         <ImageBackground 
           source={require('./assets/launch-bg.png')} 

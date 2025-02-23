@@ -70,13 +70,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
   },
   bottomButton: { // NAVIGATE BUTTON
-    width: '100%',
+    width: '98%',
     height: '20%', // 1/5th of vertical screenspace
     backgroundColor: "maroon",
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
   },
   buttonText: {
     fontSize: 32,

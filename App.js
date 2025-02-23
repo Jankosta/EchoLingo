@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LaunchScreen from './LaunchScreen';
 import HomeScreen from './HomeScreen';
+import LearnScreen from './LearnScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,11 @@ export default function App() {
           name="Home" 
           component={HomeScreen} 
           options={{ gestureEnabled: false }} //This is to ensure you can't swipe to return to the launch screen
+        />
+
+        <Stack.Screen 
+          name="Learn" 
+          component={LearnScreen} 
         />
       </Stack.Navigator>
     </NavigationContainer>

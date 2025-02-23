@@ -1,50 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, SafeAreaView, TouchableWithoutFeedback, ImageBackground } from 'react-native'; 
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LaunchScreen from './LaunchScreen'; 
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const handlePress = () => console.log("Launch Screen Interaction"); {/* Placeholder Function: Will be changed to allow navigation beyond the home screen. */}
-
-  return ( 
-    <TouchableWithoutFeedback onPress={handlePress}>
-      <View style={styles.fullScreen}>
-        <ImageBackground 
-          source={require('./assets/launch-bg.png')} 
-          style={styles.background} 
-          resizeMode="cover">
-          <SafeAreaView style={styles.container}>
-            <Image source={require('./assets/echolingo-logo-white.png')} />
-            <Text style={styles.titleText}>EchoLingo</Text>
-            <Text style={styles.subtitleText}>Language Learning for All!</Text>
-          </SafeAreaView>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Launch" component={LaunchScreen} />
+        {/* When we add more screens they will go here! */}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  fullScreen: {
-    flex: 1, 
-    width: '100%', 
-    height: '100%',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  titleText: {
-    fontSize: 48,
-    color: "white",
-  },
-  subtitleText: {
-    fontSize: 24,
-    color: "white",
-  },
-  background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-});

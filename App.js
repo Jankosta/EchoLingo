@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LaunchScreen from './LaunchScreen';
 import HomeScreen from './HomeScreen';
 import LearnScreen from './LearnScreen';
+import NavigateScreen from './NavigateScreen';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,11 @@ export default function App() {
         <Stack.Screen 
           name="Learn" 
           component={LearnScreen} 
+        />
+
+        <Stack.Screen 
+          name="Navigate" 
+          component={NavigateScreen} 
         />
       </Stack.Navigator>
     </NavigationContainer>

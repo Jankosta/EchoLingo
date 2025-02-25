@@ -1,17 +1,42 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import * as TTS from "expo-speech";
 
 export default function HomeScreen({ navigation }) {
-  const navLearn = () => navigation.navigate("Learn");
-  const navPractice = () => navigation.navigate("Practice");
-  const navCommunity = () => navigation.navigate("Community");
-  const navPreferences = () => navigation.navigate("Preferences");
-  const navNavigate = () => navigation.navigate("Navigate");
+  const navLearn = () => {
+    TTS.stop();
+    navigation.navigate("Learn");
+  }
+  const navPractice = () => {
+    TTS.stop();
+    navigation.navigate("Practice");
+  }
+  const navCommunity = () => {
+    TTS.stop();
+    navigation.navigate("Community");
+  }
+  const navPreferences = () => {
+    TTS.stop();
+    navigation.navigate("Preferences");
+  }
+  const navNavigate = () => {
+    TTS.stop();
+    navigation.navigate("Navigate");
+  }
+
+  const speech = () => {
+    TTS.stop();
+    TTS.speak("Now viewing: Home. Press top left to visit learn. Press top right to visit practice. Press bottom left to visit community. Press bottom right to visit preferences. Press bottom banner to visit navigate. Press top right banner to repeat this message.");
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
         <Text style={styles.titleText}>EchoLingo</Text>
+
+        <TouchableOpacity style={styles.speechButton} onPress={speech}>
+          <Image source={require('./assets/volume.png')} style={styles.icon} />
+        </TouchableOpacity>
       </View>
 
       {/* Main Buttons */}
@@ -38,10 +63,15 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ //Order styles from top of screen to bottom of screen
   container: {
     flex: 1,
     alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 32,
+    color: 'white',
+    fontWeight: 'bold',
   },
   topBanner: {
     width: '100%',
@@ -55,6 +85,10 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: 'bold',
     color: "black",
+  },
+  speechButton: {
+    position: 'absolute',
+    right: '3%',
   },
   buttonGrid: { // CONTAINER FOR THE GRID BUTTONS
     flexDirection: 'row',
@@ -79,10 +113,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-  },
-  buttonText: {
-    fontSize: 32,
-    color: 'white',
-    fontWeight: 'bold',
   },
 });

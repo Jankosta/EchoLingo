@@ -1,7 +1,16 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, TouchableWithoutFeedback, ImageBackground } from 'react-native'; 
+import { useEffect } from "react";
+import * as TTS from "expo-speech";
 
 export default function LaunchScreen({ navigation }) {
-  const navHome = () => navigation.navigate("Home");
+  const navHome = () => {
+    TTS.stop();
+    navigation.navigate("Home");
+  };
+
+  useEffect(() => { //useEffect executes when the screen is first viewed. THIS MAY BE CHANGED IN THE FUTURE DUE TO RELIABILITY
+    TTS.speak("Welcome to EchoLingo. Press anywhere to continue.");
+  }, []);
 
   return ( 
     <TouchableWithoutFeedback onPress={navHome}>

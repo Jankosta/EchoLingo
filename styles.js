@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
       marginBottom: '1%',
     },
     titleText: { // TOP BANNER TEXT
-      fontSize: 48,
+      fontSize: 42,
       fontWeight: 'bold',
       color: "black",
     },

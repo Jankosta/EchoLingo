@@ -6,6 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LaunchScreen from './LaunchScreen';
 import HomeScreen from './HomeScreen';
 import LearnScreen from './LearnScreen';
+import PracticeScreen from './PracticeScreen';
+import CommunityScreen from './CommunityScreen';
+import PreferencesScreen from './PreferencesScreen';
 import NavigateScreen from './NavigateScreen';
 
 const Stack = createStackNavigator();
@@ -28,6 +31,21 @@ export default function App() {
         <Stack.Screen 
           name="Learn" 
           component={LearnScreen} 
+        />
+
+        <Stack.Screen 
+          name="Practice" 
+          component={PracticeScreen} 
+        />
+
+        <Stack.Screen 
+          name="Community" 
+          component={CommunityScreen} 
+        />
+
+        <Stack.Screen 
+          name="Preferences" 
+          component={PreferencesScreen} 
         />
 
         <Stack.Screen 

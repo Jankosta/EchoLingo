@@ -14,44 +14,18 @@ import NavigateScreen from './screens/NavigateScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
-  return (
+  return ( 
+    // headerShown: false removes react native default header
+    // gestureEnabled: false removes the swipe to go back feature
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen 
-        name="Launch" 
-        component={LaunchScreen} 
-        />
-
-        <Stack.Screen 
-          name="Home" 
-          component={HomeScreen} 
-          options={{ gestureEnabled: false }} // This is to ensure you can't swipe to return to the launch screen
-        />
-
-        <Stack.Screen 
-          name="Learn" 
-          component={LearnScreen} 
-        />
-
-        <Stack.Screen 
-          name="Practice" 
-          component={PracticeScreen} 
-        />
-
-        <Stack.Screen 
-          name="Community" 
-          component={CommunityScreen} 
-        />
-
-        <Stack.Screen 
-          name="Preferences" 
-          component={PreferencesScreen} 
-        />
-
-        <Stack.Screen 
-          name="Navigate" 
-          component={NavigateScreen} 
-        />
+      <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
+        <Stack.Screen name="Launch" component={LaunchScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Learn" component={LearnScreen} />
+        <Stack.Screen name="Practice" component={PracticeScreen} />
+        <Stack.Screen name="Community" component={CommunityScreen} />
+        <Stack.Screen name="Preferences" component={PreferencesScreen} />
+        <Stack.Screen name="Navigate" component={NavigateScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

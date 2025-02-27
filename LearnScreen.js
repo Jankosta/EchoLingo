@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import styles from './styles.js';
 
 export default function LearnScreen({ navigation }) {
   const navHome = () => navigation.navigate("Home");
@@ -17,37 +18,3 @@ export default function LearnScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  topBanner: {
-    width: '100%',
-    height: '12.5%', // 1/8 of vertical screenspace
-    backgroundColor: 'pink', 
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: '1%',
-  },
-  titleText: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: "black",
-  },
-  bottomButton: { // RETURN BUTTON
-    width: '98%',
-    height: '20%', // 1/5th of vertical screenspace
-    backgroundColor: "maroon",
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  buttonText: {
-    fontSize: 32,
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});

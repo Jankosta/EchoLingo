@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+// IMPORT ALL SCREENS HERE
 import LaunchScreen from './LaunchScreen';
 import HomeScreen from './HomeScreen';
 import LearnScreen from './LearnScreen';
@@ -20,7 +22,7 @@ export default function App() {
         <Stack.Screen 
           name="Home" 
           component={HomeScreen} 
-          options={{ gestureEnabled: false }} //This is to ensure you can't swipe to return to the launch screen
+          options={{ gestureEnabled: false }} // This is to ensure you can't swipe to return to the launch screen
         />
 
         <Stack.Screen 

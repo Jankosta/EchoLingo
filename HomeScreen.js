@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import * as TTS from "expo-speech";
+import styles from './styles.js';
 
 export default function HomeScreen({ navigation }) {
   const navLearn = () => {
@@ -34,23 +35,23 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.topBanner}>
         <Text style={styles.titleText}>EchoLingo</Text>
 
-        <TouchableOpacity style={styles.speechButton} onPress={speech}>
+        <TouchableOpacity style={styles.topRightBannerButton} onPress={speech}>
           <Image source={require('./assets/volume.png')} style={styles.icon} />
         </TouchableOpacity>
       </View>
 
       {/* Main Buttons */}
       <View style={styles.buttonGrid}>
-        <TouchableOpacity style={styles.gridButton} onPress={navLearn}>
+        <TouchableOpacity style={styles.gridButton4} onPress={navLearn}>
           <Text style={styles.buttonText}>Learn</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton} onPress={navPractice}>
+        <TouchableOpacity style={styles.gridButton4} onPress={navPractice}>
           <Text style={styles.buttonText}>Practice</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton} onPress={navCommunity}>
+        <TouchableOpacity style={styles.gridButton4} onPress={navCommunity}>
           <Text style={styles.buttonText}>Community</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton} onPress={navPreferences}>
+        <TouchableOpacity style={styles.gridButton4} onPress={navPreferences}>
           <Text style={styles.buttonText}>Preferences</Text>
         </TouchableOpacity>
       </View>
@@ -62,56 +63,3 @@ export default function HomeScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({ //Order styles from top of screen to bottom of screen
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 32,
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  topBanner: {
-    width: '100%',
-    height: '12.5%', // 1/8 of vertical screenspace
-    backgroundColor: 'pink', 
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: '1%',
-  },
-  titleText: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: "black",
-  },
-  speechButton: {
-    position: 'absolute',
-    right: '3%',
-  },
-  buttonGrid: { // CONTAINER FOR THE GRID BUTTONS
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    width: '100%',
-    flex: 1,
-  },
-  gridButton: { // THE ACTUAL GRID BUTTONS
-    width: '48%', // Nearly half of horizontal screenspace
-    height: '48%', // Almost half of available vertical screenspace
-    margin: '1%', // Spacing between grid buttons
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  bottomButton: { // NAVIGATE BUTTON
-    width: '98%',
-    height: '20%', // 1/5th of vertical screenspace
-    backgroundColor: "maroon",
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-});

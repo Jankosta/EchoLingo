@@ -30,7 +30,7 @@ export default function LaunchScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ // The launch screen uses seperate styles
   fullScreen: {
     flex: 1, 
     width: '100%', 

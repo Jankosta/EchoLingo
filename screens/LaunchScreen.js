@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, TouchableWithoutFeedback, ImageBackground } from 'react-native'; 
-import { navigate, speak } from './functions.js';
+import { navigate, speak } from '../functions.js';
 
 export default function LaunchScreen({ navigation }) {
   speak("Welcome to EchoLingo. Press anywhere to continue.");
@@ -8,11 +8,11 @@ export default function LaunchScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={() => navigate(navigation, "Home")}>
       <View style={styles.fullScreen}>
         <ImageBackground 
-          source={require('./assets/launch-bg.png')} 
+          source={require('../assets/launch-bg.png')} 
           style={styles.background} 
           resizeMode="cover">
           <SafeAreaView style={styles.container}>
-            <Image source={require('./assets/echolingo-logo-white.png')} />
+            <Image source={require('../assets/echolingo-logo-white.png')} />
             <Text style={styles.titleText}>EchoLingo</Text>
             <Text style={styles.subtitleText}>Language Learning for All!</Text>
           </SafeAreaView>

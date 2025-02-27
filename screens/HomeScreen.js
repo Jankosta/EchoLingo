@@ -1,6 +1,6 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import styles from './styles.js';
-import { navigate, speak } from './functions.js';
+import styles from '../styles.js';
+import { navigate, speak } from '../functions.js';
 
 export default function HomeScreen({ navigation }) {
   message = "Now viewing: Home. Press top left to visit learn. Press top right to visit practice. Press bottom left to visit community. Press bottom right to visit preferences. Press bottom banner to visit navigate. Press top right banner to repeat this message."
@@ -13,7 +13,7 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.titleText}>EchoLingo</Text>
 
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
-          <Image source={require('./assets/volume.png')}/>
+          <Image source={require('../assets/volume.png')}/>
         </TouchableOpacity>
       </View>
 

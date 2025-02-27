@@ -3,13 +3,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 // IMPORT ALL SCREENS HERE
-import LaunchScreen from './LaunchScreen';
-import HomeScreen from './HomeScreen';
-import LearnScreen from './LearnScreen';
-import PracticeScreen from './PracticeScreen';
-import CommunityScreen from './CommunityScreen';
-import PreferencesScreen from './PreferencesScreen';
-import NavigateScreen from './NavigateScreen';
+import LaunchScreen from './screens/LaunchScreen';
+import HomeScreen from './screens/HomeScreen';
+import LearnScreen from './screens/LearnScreen';
+import PracticeScreen from './screens/PracticeScreen';
+import CommunityScreen from './screens/CommunityScreen';
+import PreferencesScreen from './screens/PreferencesScreen';
+import NavigateScreen from './screens/NavigateScreen';
 
 const Stack = createStackNavigator();
 

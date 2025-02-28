@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       width: '100%',
       flex: 1,
+      justifyContent: 'flex-start',
     },
     gridButton4: { // 4x4 GRID BUTTONS
       width: '48%', // Nearly half of horizontal screenspace

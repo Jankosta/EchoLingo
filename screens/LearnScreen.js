@@ -3,7 +3,7 @@ import styles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function LearnScreen({ navigation }) {
-  message = "Now viewing: Learn. Press bottom banner to return home. Press top right banner to repeat this message."
+  message = "Now viewing: Learn. Press top left to view text materials. Press top right to view audio materials. Press bottom left to view notes. Press bottom banner to return home. Press top right banner to repeat this message."
   speak(message)
 
   return (
@@ -18,6 +18,19 @@ export default function LearnScreen({ navigation }) {
 
         <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Home")}>
           <Image source={require('../assets/back.png')}/>
+        </TouchableOpacity>
+      </View>
+
+      {/* Main Buttons */}
+      <View style={styles.buttonGrid}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
+          <Text style={styles.buttonText}>Text Materials</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
+          <Text style={styles.buttonText}>Audio Materials</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
+          <Text style={styles.buttonText}>Notes</Text>
         </TouchableOpacity>
       </View>
 

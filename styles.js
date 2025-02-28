@@ -38,11 +38,21 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       width: '100%',
       flex: 1,
+      justifyContent: 'flex-start',
     },
-    gridButton4: { // 4x4 GRID BUTTONS
+    gridButton4: { // 2x2 GRID BUTTONS
       width: '48%', // Nearly half of horizontal screenspace
       height: '48%', // Almost half of available vertical screenspace
       margin: '1%', // Spacing between grid buttons
+      backgroundColor: 'red',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 10,
+    },
+    gridButton2: { // 1x2 GRID BUTTONS
+      width: '98%', // Nearly full horizontal screenspace
+      height: '48%', // Almost half of available vertical screenspace
+      margin: '1%',
       backgroundColor: 'red',
       justifyContent: 'center',
       alignItems: 'center',

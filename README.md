@@ -35,7 +35,7 @@ Unlike traditional learning apps that rely heavily on **visual content**, EchoLi
 
 | Component    | Technology Used |
 |-------------|----------------|
-| **Frontend** | React Native (Mobile App) |
+| **Frontend** | React Native with Expo (Mobile App) |
 | **Backend** | Node.js with Express |
 | **Database** | PostgreSQL |
 | **Languages** | Python, JavaScript |

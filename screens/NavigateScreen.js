@@ -21,6 +21,14 @@ export default function NavigateScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
+      <View style={styles.buttonGrid}>
+        <View style={{ width: '98%', height: '49%' }} /> {/* Leaves empty space. May be replaced with an image or icon. */}
+
+        <TouchableOpacity style={styles.gridButton2} onPress={() => speak("Placeholder.")}>
+          <Text style={styles.buttonText}>Start Recording</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Return Button */}
       <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>
         <Text style={styles.buttonText}>Return to Home</Text>

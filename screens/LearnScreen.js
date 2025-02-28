@@ -23,13 +23,13 @@ export default function LearnScreen({ navigation }) {
 
       {/* Main Buttons */}
       <View style={styles.buttonGrid}>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "Learn")}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
           <Text style={styles.buttonText}>Text Materials</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "Practice")}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
           <Text style={styles.buttonText}>Audio Materials</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "Community")}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
           <Text style={styles.buttonText}>Notes</Text>
         </TouchableOpacity>
       </View>

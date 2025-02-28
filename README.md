@@ -38,7 +38,7 @@ Unlike traditional learning apps that rely heavily on **visual content**, EchoLi
 | **Frontend** | React Native with Expo (Mobile App) |
 | **Backend** | Node.js with Express |
 | **Database** | PostgreSQL |
-| **Languages** | Python, JavaScript |
+| **Languages** | JavaScript |
 | **API** | Google Translate API |
 | **Image Processing** | OpenCV |
 

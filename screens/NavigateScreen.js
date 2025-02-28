@@ -1,24 +1,27 @@
 /*
 ~~TODO~~
 -Fix issue that causes TTS to become really quiet after first recording.
--Make UI look nicer. (Listening icon, dynamic button, etc.)
 -Handle the situation where the user starts the recording and then clicks off the page.
 -Actually implement the navigation from the transcript.
 */
 
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
 import styles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 import * as TTS from "expo-speech"; // TTS needs to be manually imported here so that TTS.stop() can be used
 import { recordStart, recordStop, getTranscription } from "../voice.js";
 
 export default function NavigateScreen({ navigation }) {
-  const message = "Now viewing: Navigate. Press bottom banner to return home. Press top right banner to repeat this message.";
+  const message = "Now viewing: Navigate. Press bottom button to start and stop voice recording. Press bottom banner to return home. Press top right banner to repeat this message.";
   speak(message);
+
+  const [recording, setRecording] = useState(false); // Recording state hook
 
   const navigateRecord = async () => { // Recording handler
     TTS.stop();
     if (await recordStart()) {
+      setRecording(true);
       console.log("Recording started!");
     } else {
       console.error("navigateRecord error: Recording did not start.");
@@ -26,6 +29,7 @@ export default function NavigateScreen({ navigation }) {
   };
 
   const navigateTranscribe = async () => { // Transcription handler
+    setRecording(false);
     const uri = await recordStop();
     if (!uri) {
       console.error("navigateTranscribe error: Recording URI not located.");
@@ -52,16 +56,22 @@ export default function NavigateScreen({ navigation }) {
       </View>
 
       <View style={styles.buttonGrid}>
-        {/* Leaves empty space. May be replaced with an image or icon. */}
-        <View style={{ width: '98%', height: '49%' }} />
+        {/* Empty space. */}
+        <View style={{ width: '98%', height: '49.5%' }} />
+        
+        {/* Microphone image. */}
+        <Image source={require('../assets/mic.png')} style={{ position: 'absolute', top: '0%', left: '25%', width: '50%', height: '50%' }} />
 
         {/* Recording Button */}
-          <TouchableOpacity style={styles.gridButton4} onPress={navigateRecord}>
-            <Text style={styles.buttonText}>Start</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.gridButton4} onPress={navigateTranscribe}>
-            <Text style={styles.buttonText}>Stop</Text>
-          </TouchableOpacity>
+          {recording ? (
+            <TouchableOpacity style={[styles.gridButton2, { backgroundColor: 'blue' }]} onPress={navigateTranscribe}>
+              <Text style={styles.buttonText}>Stop Recording</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={[styles.gridButton2, { backgroundColor: 'red' }]} onPress={navigateRecord}>
+              <Text style={styles.buttonText}>Start Recording</Text>
+            </TouchableOpacity>
+          )}
       </View>
 
       {/* Return Button */}

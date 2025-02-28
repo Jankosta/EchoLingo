@@ -22,7 +22,8 @@ export default function NavigateScreen({ navigation }) {
       </View>
 
       <View style={styles.buttonGrid}>
-        <View style={{ width: '98%', height: '49%' }} /> {/* Leaves empty space. May be replaced with an image or icon. */}
+        {/* Leaves empty space. May be replaced with an image or icon. */}
+        <View style={{ width: '98%', height: '49%' }} />
 
         <TouchableOpacity style={styles.gridButton2} onPress={() => speak("Placeholder.")}>
           <Text style={styles.buttonText}>Start Recording</Text>

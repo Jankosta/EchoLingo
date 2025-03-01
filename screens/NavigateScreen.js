@@ -7,12 +7,12 @@ import * as TTS from "expo-speech"; // TTS needs to be manually imported here so
 import { recordStart, recordStop, getTranscription } from "../voice.js";
 
 export default function NavigateScreen({ navigation }) {
-  const { fontSize, isGreyscale } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
 
   const message = "Now viewing: Navigate. Press bottom button to start and stop voice recording. Press bottom banner to return home. Press top right banner to repeat this message.";
-  useEffect(() => { speak(message); }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered
+  useEffect(() => { if (isAutoRead) {speak(message);} }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered
 
   const [recording, setRecording] = useState(false); // Recording state hook
 

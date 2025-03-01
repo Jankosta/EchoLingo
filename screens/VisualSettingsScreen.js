@@ -1,16 +1,16 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function VisualSettingsScreen({ navigation }) {
-  const { fontSize, isGreyscale, toggleFontSize, toggleGreyscale } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, toggleFontSize, toggleGreyscale } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
-  message = "Now viewing: Visual Settings. Press bottom banner to return home. Press top right banner to repeat this message.";
-  speak(message);
+  message = "Now viewing: Visual Settings. Press top left to toggle font size. Press top right to toggle greyscale mode. Press bottom banner to return home. Press top right banner to repeat this message.";
+  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>

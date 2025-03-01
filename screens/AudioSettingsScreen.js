@@ -1,16 +1,16 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function AudioSettingsScreen({ navigation }) {
-  const { fontSize, isGreyscale } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, toggleAutoRead } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
-  message = "Now viewing: Audio Settings. Press bottom banner to return home. Press top right banner to repeat this message.";
-  speak(message);
+  message = "Now viewing: Audio Settings. Press top left to toggle automatic audio guide. Press bottom banner to return home. Press top right banner to repeat this message.";
+  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,9 +29,9 @@ export default function AudioSettingsScreen({ navigation }) {
 
       {/* Main Buttons */}
       <View style={styles.buttonGrid}>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
+        <TouchableOpacity style={styles.gridButton4} onPress={toggleAutoRead}>
           <Text style={styles.buttonText}>Automatic Audio Guide{'\n'}</Text>
-          <Text style={styles.buttonText}>On</Text>
+          <Text style={styles.buttonText}>{isAutoRead ? "On" : "Off"}</Text>
         </TouchableOpacity>
       </View>
 

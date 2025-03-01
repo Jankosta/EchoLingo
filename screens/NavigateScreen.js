@@ -1,12 +1,11 @@
 /*
 ~~TODO~~
 -Fix issue that causes TTS to become really quiet after first recording.
--Handle the situation where the user starts the recording and then clicks off the page.
 -Actually implement the navigation from the transcript.
 */
 
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 import * as TTS from "expo-speech"; // TTS needs to be manually imported here so that TTS.stop() can be used
@@ -14,7 +13,7 @@ import { recordStart, recordStop, getTranscription } from "../voice.js";
 
 export default function NavigateScreen({ navigation }) {
   const message = "Now viewing: Navigate. Press bottom button to start and stop voice recording. Press bottom banner to return home. Press top right banner to repeat this message.";
-  speak(message);
+  useEffect(() => { speak(message); }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered
 
   const [recording, setRecording] = useState(false); // Recording state hook
 
@@ -40,17 +39,31 @@ export default function NavigateScreen({ navigation }) {
     console.log(transcriptText);
   };
 
+  const handleNavigation = async () => { // If the user tries to leave the page during recording it will first stop the recording
+    if (recording) {
+      await recordStop();
+      setRecording(false);
+    }
+    navigate(navigation, "Home");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
         <Text style={styles.titleText}>Navigate</Text>
 
-        <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
-          <Image source={require('../assets/volume.png')} />
-        </TouchableOpacity>
+        {recording ? ( // If the user presses the TTS button during recording it will act as if they stopped the recording
+          <TouchableOpacity style={styles.topRightBannerButton} onPress={navigateTranscribe}>
+            <Image source={require('../assets/volume.png')} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
+            <Image source={require('../assets/volume.png')} />
+          </TouchableOpacity>
+        )}
 
-        <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Home")}>
+        <TouchableOpacity style={styles.topLeftBannerButton} onPress={handleNavigation}>
           <Image source={require('../assets/back.png')} />
         </TouchableOpacity>
       </View>
@@ -75,7 +88,7 @@ export default function NavigateScreen({ navigation }) {
       </View>
 
       {/* Return Button */}
-      <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>
+      <TouchableOpacity style={styles.bottomButton} onPress={handleNavigation}>
         <Text style={styles.buttonText}>Return to Home</Text>
       </TouchableOpacity>
     </SafeAreaView>

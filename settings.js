@@ -7,6 +7,7 @@ export const Settings = createContext();
 export const SettingsProvider = ({ children }) => {
   const [fontSize, setFontSize] = useState("Large");
   const [isGreyscale, setGreyscale] = useState(false);
+  const [isAutoRead, setAutoRead] = useState(true);
 
   const toggleFontSize = () => {
     if (fontSize === "Small") {
@@ -22,8 +23,12 @@ export const SettingsProvider = ({ children }) => {
     setGreyscale(!isGreyscale);
   };
 
+  const toggleAutoRead = () => {
+    setAutoRead(!isAutoRead);
+  };
+
   return (
-    <Settings.Provider value={{ fontSize, isGreyscale, toggleFontSize, toggleGreyscale }}>
+    <Settings.Provider value={{ fontSize, isGreyscale, isAutoRead, toggleFontSize, toggleGreyscale, toggleAutoRead }}>
       {children}
     </Settings.Provider>
   );

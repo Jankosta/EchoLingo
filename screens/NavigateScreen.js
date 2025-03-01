@@ -1,8 +1,3 @@
-/*
-~~TODO~~
--Actually implement the navigation from the transcript.
-*/
-
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import styles from '../styles.js';
@@ -35,6 +30,7 @@ export default function NavigateScreen({ navigation }) {
     }
 
     const transcriptText = await getTranscription(uri);
+    searchTranscript(transcriptText);
     console.log(transcriptText);
   };
 
@@ -44,6 +40,35 @@ export default function NavigateScreen({ navigation }) {
       setRecording(false);
     }
     navigate(navigation, "Home");
+  };
+
+  const keywords = { // Navigation keywords
+    "home": "Home",
+    "learn": "Learn",
+    "practice": "Practice",
+    "community": "Community",
+    "preferences": "Preferences",
+    "navigate": "Navigate",
+    "text": "TextMaterials",
+    "audio": "AudioMaterials",
+    "notes": "Notes"
+  };
+
+  const searchTranscript = (transcriptText) => {
+    for (const [key, screen] of Object.entries(keywords)) {
+      if (transcriptText.includes(key)) {
+        navigate(navigation, screen);
+        return true;
+      }
+    }
+
+    if (transcriptText.includes("<Empty>")) {
+      speak("No speech was detected. Please try again.");
+      return false;
+    } else {
+      speak("Your request could not be understood. Please clearly state the name of the screen you would like to navigate to.");
+      return false;
+    }
   };
 
   return (

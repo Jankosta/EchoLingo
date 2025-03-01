@@ -29,9 +29,9 @@ export default function NavigateScreen({ navigation }) {
       return false;
     }
 
-    const transcriptText = await getTranscription(uri);
-    searchTranscript(transcriptText);
+    const transcriptText = (await getTranscription(uri)).toLowerCase();
     console.log(transcriptText);
+    searchTranscript(transcriptText);
   };
 
   const handleNavigation = async () => { // If the user tries to leave the page during recording it will first stop the recording

@@ -3,8 +3,8 @@ import styles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function PracticeScreen({ navigation }) {
-  message = "Now viewing: Practice. Press bottom banner to return home. Press top right banner to repeat this message."
-  speak(message)
+  message = "Now viewing: Practice. Press bottom banner to return home. Press top right banner to repeat this message.";
+  speak(message);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -13,11 +13,11 @@ export default function PracticeScreen({ navigation }) {
         <Text style={styles.titleText}>Practice</Text>
 
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
-          <Image source={require('../assets/volume.png')}/>
+          <Image source={require('../assets/volume.png')} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Home")}>
-          <Image source={require('../assets/back.png')}/>
+          <Image source={require('../assets/back.png')} />
         </TouchableOpacity>
       </View>
 

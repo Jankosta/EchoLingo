@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
       width: '98%', // Nearly full horizontal screenspace
       height: '48%', // Almost half of available vertical screenspace
       margin: '1%',
-      backgroundColor: 'red',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 10,

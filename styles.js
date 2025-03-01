@@ -21,7 +21,7 @@ const createStyles = ( fontSize, isGreyscale ) => {
   let buttonColorToggled = 'blue';
   let bottomButtonColor = 'maroon';
 
-  if (isGreyscale === "True") {
+  if (isGreyscale === true) {
     topBannerColor = 'lightgrey'
     buttonColor = 'darkgrey';
     buttonColorToggled = 'black';

@@ -1,9 +1,13 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useContext } from 'react';
+import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function VisualSettingsScreen({ navigation }) {
-  createStyles( "Large", "True" );
+  const { fontSize, isGreyscale, toggleFontSize, toggleGreyscale } = useContext(Settings);
+
+  createStyles(fontSize, isGreyscale);
   
   message = "Now viewing: Visual Settings. Press bottom banner to return home. Press top right banner to repeat this message.";
   speak(message);
@@ -25,13 +29,13 @@ export default function VisualSettingsScreen({ navigation }) {
 
       {/* Main Buttons */}
       <View style={styles.buttonGrid}>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
+        <TouchableOpacity style={styles.gridButton4} onPress={toggleFontSize}>
           <Text style={styles.buttonText}>Interface Font Size{'\n'}</Text>
-          <Text style={styles.buttonText}>Large</Text>
+          <Text style={styles.buttonText}>{fontSize}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
+        <TouchableOpacity style={styles.gridButton4} onPress={toggleGreyscale}>
           <Text style={styles.buttonText}>Greyscale Mode{'\n'}</Text>
-          <Text style={styles.buttonText}>Off</Text>
+          <Text style={styles.buttonText}>{isGreyscale ? "On" : "Off"}</Text>
         </TouchableOpacity>
       </View>
 

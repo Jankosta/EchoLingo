@@ -1,12 +1,15 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 import * as TTS from "expo-speech"; // TTS needs to be manually imported here so that TTS.stop() can be used
 import { recordStart, recordStop, getTranscription } from "../voice.js";
 
 export default function NavigateScreen({ navigation }) {
-  createStyles( "Large", "True" );
+  const { fontSize, isGreyscale } = useContext(Settings);
+
+  createStyles(fontSize, isGreyscale);
 
   const message = "Now viewing: Navigate. Press bottom button to start and stop voice recording. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { speak(message); }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered

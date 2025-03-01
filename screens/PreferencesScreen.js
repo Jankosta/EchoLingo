@@ -1,9 +1,13 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useContext } from 'react';
+import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function PreferencesScreen({ navigation }) {
-  createStyles( "Large", "True" );
+  const { fontSize, isGreyscale } = useContext(Settings);
+
+  createStyles(fontSize, isGreyscale);
   
   message = "Now viewing: Preferences. Press top left to edit visual settings. Press top right to edit audio settings. Press bottom banner to return home. Press top right banner to repeat this message.";
   speak(message);

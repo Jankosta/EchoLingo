@@ -1,9 +1,13 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useContext } from 'react';
+import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function PracticeScreen({ navigation }) {
-  createStyles( "Large", "True" );
+  const { fontSize, isGreyscale } = useContext(Settings);
+
+  createStyles(fontSize, isGreyscale);
   
   message = "Now viewing: Practice. Press bottom banner to return home. Press top right banner to repeat this message.";
   speak(message);

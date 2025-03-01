@@ -9,6 +9,8 @@ import LearnScreen from './screens/LearnScreen';
 import PracticeScreen from './screens/PracticeScreen';
 import CommunityScreen from './screens/CommunityScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
+import VisualSettingsScreen from './screens/VisualSettingsScreen';
+import AudioSettingsScreen from './screens/AudioSettingsScreen';
 import NavigateScreen from './screens/NavigateScreen';
 
 const Stack = createStackNavigator();
@@ -25,6 +27,8 @@ export default function App() {
         <Stack.Screen name="Practice" component={PracticeScreen} />
         <Stack.Screen name="Community" component={CommunityScreen} />
         <Stack.Screen name="Preferences" component={PreferencesScreen} />
+        <Stack.Screen name="Visual Settings" component={VisualSettingsScreen} />
+        <Stack.Screen name="Audio Settings" component={AudioSettingsScreen} />
         <Stack.Screen name="Navigate" component={NavigateScreen} />
       </Stack.Navigator>
     </NavigationContainer>

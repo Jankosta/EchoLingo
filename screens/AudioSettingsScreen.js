@@ -2,32 +2,30 @@ import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native'
 import styles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
-export default function PreferencesScreen({ navigation }) {
-  message = "Now viewing: Preferences. Press top left to edit visual settings. Press top right to edit audio settings. Press bottom banner to return home. Press top right banner to repeat this message.";
+export default function AudioSettingsScreen({ navigation }) {
+  message = "Now viewing: Audio Settings. Press bottom banner to return home. Press top right banner to repeat this message.";
   speak(message);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
-        <Text style={styles.titleText}>Preferences</Text>
+        <Text style={styles.titleText}>Audio Settings</Text>
 
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
           <Image source={require('../assets/volume.png')} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Home")}>
+        <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Preferences")}>
           <Image source={require('../assets/back.png')} />
         </TouchableOpacity>
       </View>
 
       {/* Main Buttons */}
       <View style={styles.buttonGrid}>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "Visual Settings")}>
-          <Text style={styles.buttonText}>Visual Settings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "Audio Settings")}>
-          <Text style={styles.buttonText}>Audio Settings</Text>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => speak("Placeholder.")}>
+          <Text style={styles.buttonText}>Automatic Audio Guide{'\n'}</Text>
+          <Text style={styles.buttonText}>On</Text>
         </TouchableOpacity>
       </View>
 
@@ -38,4 +36,3 @@ export default function PreferencesScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-

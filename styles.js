@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
       fontSize: 32,
       color: 'white',
       fontWeight: 'bold',
+      textAlign: 'center'
     },
     topBanner: { // TOP BANNER CONTAINER
       width: '100%',
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
       marginBottom: '1%',
     },
     titleText: { // TOP BANNER TEXT
-      fontSize: 42,
+      fontSize: 36,
       fontWeight: 'bold',
       color: "black",
     },

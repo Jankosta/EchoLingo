@@ -44,14 +44,31 @@ export default function NavigateScreen({ navigation }) {
 
   const keywords = { // Navigation keywords
     "home": "Home",
-    "learn": "Learn",
-    "practice": "Practice",
-    "community": "Community",
+    "main": "Home",
+
+    "visual settings": "Visual Settings",
+    "visual options": "Visual Settings",
+    "visual preferences": "Visual Settings",
+    "audio settings": "Audio Settings",
+    "audio options": "Audio Settings",
+    "audio preferences": "Audio Settings",
+    "settings": "Preferences",
+    "options": "Preferences",
     "preferences": "Preferences",
-    "navigate": "Navigate",
+
     "text": "TextMaterials",
     "audio": "AudioMaterials",
-    "notes": "Notes"
+    "notes": "Notes",
+    "learn": "Learn",
+    "learning": "Learn",
+    "learn": "Learn",
+    "materials": "Learn",
+
+    "practice": "Practice",
+
+    "community": "Community",
+
+    "navigate": "Navigate",
   };
 
   const searchTranscript = (transcriptText) => {

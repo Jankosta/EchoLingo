@@ -1,8 +1,10 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
-import styles from '../styles.js';
+import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function CommunityScreen({ navigation }) {
+  createStyles( "Large", "True" );
+  
   message = "Now viewing: Community. Press bottom banner to return home. Press top right banner to repeat this message.";
   speak(message);
 

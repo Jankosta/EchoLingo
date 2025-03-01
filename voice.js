@@ -39,6 +39,11 @@ export const recordStop = async () => {
   const uri = recordingPointer.getURI(); // Store recordings location in device cache as uri
   recordingPointer = null; // Empty recordingPointer
 
+  await Audio.setAudioModeAsync({ allowsRecordingIOS: false, playsInSilentModeIOS: false }); // Reset sound settings
+
+  const { sound } = await Audio.Sound.createAsync(require("./assets/blip.wav")); // Dummy sound to reet audio output
+  await sound.playAsync(); // Play dummy sound
+
   return uri; // Return location of recording
 };
 

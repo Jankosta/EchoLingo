@@ -1,6 +1,5 @@
 /*
 ~~TODO~~
--Fix issue that causes TTS to become really quiet after first recording.
 -Actually implement the navigation from the transcript.
 */
 

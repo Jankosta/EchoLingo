@@ -104,6 +104,43 @@ const createStyles = ( fontSize, isGreyscale ) => {
         alignItems: 'center',
         borderRadius: 10,
       },
-    })};
+      learnScreen_scrollContent: {
+        flexGrow: 1,
+        width: '100%',
+        alignItems: 'center',
+        paddingVertical: 20,
+      },
+      learnScreen_listContainer: {
+        width: '100%',
+        alignItems: 'center',
+      },
+      learnScreen_listItem: { 
+        width: '100%', // Full width
+        height: 70, // Fixed height
+        backgroundColor: buttonColor,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+        borderRadius: 15, 
+        marginBottom: 5,
+      },
+      learnScreen_dropdownItem: {  
+        width: '100%',
+        height: 60,
+        backgroundColor: topBannerColor,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5,
+        borderRadius: 15, 
+        paddingHorizontal: 60,
+      },
+      learnScreen_dropdownText: { 
+        fontSize: buttonTextSize - 12,
+        color: 'black',
+        fontWeight: '500',
+      },
+    });
+  };
+  
 
   export default createStyles;

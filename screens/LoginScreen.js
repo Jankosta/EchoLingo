@@ -63,6 +63,7 @@ export default function LoginScreen({ navigation }) {
       const uri = await recordStop();
       if (uri) {
         let recognizedEmail = (await getTranscription(uri)).trim();
+        // replate "at" with '@', "dot" with '.', and delete spaces between characters
         recognizedEmail = recognizedEmail.replace(/at/g, '@').replace(/dot/g, '.').replace(/\s+/g, '');
         setEmail(recognizedEmail);
       }
@@ -81,6 +82,7 @@ export default function LoginScreen({ navigation }) {
       const uri = await recordStop();
       if (uri) {
         let recognizedPassword = (await getTranscription(uri)).trim();
+        // replace "capital (letter)" with the uppercase version said letter, and delete spaces between characters
         recognizedPassword = recognizedPassword.replace(/capital\s([a-z])/gi, (match, p1) => p1.toUpperCase()).replace(/\s+/g, '');
         setPassword(recognizedPassword);
       }

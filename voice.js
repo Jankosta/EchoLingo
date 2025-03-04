@@ -1,5 +1,6 @@
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
+import { Platform } from "react-native";
 
 const APIKEY = "AIzaSyDPifqyyxrkwdFTmRvvANMwMiitOiGMo7U"; // This may need to be replaced if we run out of credits.
 
@@ -51,8 +52,8 @@ export const getTranscription = async (uri) => {
   try {
     const recordedAudio = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 }); // Google Cloud needs the file as a Base64 string
 
-    const request = { // Payload
-      config: { encoding: "LINEAR16", sampleRateHertz: 44100, languageCode: "en-US" }, 
+    const request = { // Payload - Audio settings are altered if the device is Android-based
+      config: Platform.OS === "android" ? { encoding: "WEBM_OPUS", sampleRateHertz: 16000, languageCode: "en-US" } : { encoding: "LINEAR16", sampleRateHertz: 44100, languageCode: "en-US" }, 
       audio: { content: recordedAudio }
     };
 

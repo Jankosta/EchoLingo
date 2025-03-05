@@ -84,7 +84,7 @@ export default function NavigateScreen({ navigation }) {
       }
     }
 
-    if (transcriptText.includes("<Empty>")) {
+    if (transcriptText.includes("<empty>")) {
       speak("No speech was detected. Please try again.");
       return false;
     } else {

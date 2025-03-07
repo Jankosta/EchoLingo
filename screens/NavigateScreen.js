@@ -11,7 +11,7 @@ export default function NavigateScreen({ navigation }) {
 
   createStyles(fontSize, isGreyscale);
 
-  const message = "Now viewing: Navigate. Press bottom button to start and stop voice recording. Press bottom banner to return home. Press top right banner to repeat this message.";
+  const message = "Now viewing: Navigate. Press bottom button to start and stop voice recording. Say... Help... For assistance. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered
 
   const [recording, setRecording] = useState(false); // Recording state hook
@@ -77,6 +77,11 @@ export default function NavigateScreen({ navigation }) {
   };
 
   const searchTranscript = (transcriptText) => {
+    if (transcriptText.includes("help")) {
+      speak("Clearly state any of the following options to visit them: Home, learn, text materials, audio materials, notes, practice, community, preferences, visual options, audio options, navigate.");
+      return false;
+    }
+
     for (const [key, screen] of Object.entries(keywords)) {
       if (transcriptText.includes(key)) {
         navigate(navigation, screen);

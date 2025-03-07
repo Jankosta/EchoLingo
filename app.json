@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "EchoLingo",
-    "slug": "EchoLingo",
+    "slug": "echolingo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,6 +11,12 @@
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f32926b8-6f96-407f-974c-0ad674700b07"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     },
     "ios": {
       "supportsTablet": true
@@ -23,6 +29,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f32926b8-6f96-407f-974c-0ad674700b07"
+      }
+    },
+    "owner": "jacobpavlick"
   }
 }

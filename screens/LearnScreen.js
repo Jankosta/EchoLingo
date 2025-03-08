@@ -12,26 +12,19 @@ import {
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
-
-// If you still want the 'recording' feel, you can keep expo-av installed.
-// But we won't call Google Cloud. We'll just produce a simulated transcript.
 import { Audio } from 'expo-av';
 
 export default function LearnScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
 
-  // Font-size logic
+  // Mapping font size strings to numeric values
   const fontSizeMapping = {
     Small: 12,
     Medium: 14,
     Large: 16,
     Large2: 18,
   };
-  const numericFontSize =
-    typeof fontSize === 'string'
-      ? fontSizeMapping[fontSize] || 16
-      : fontSize;
-
+  const numericFontSize = typeof fontSize === 'string' ? fontSizeMapping[fontSize] || 16 : fontSize;
   const styles = createStyles(numericFontSize, isGreyscale);
 
   const message = 'Now viewing: Learn.';
@@ -41,32 +34,28 @@ export default function LearnScreen({ navigation }) {
     }
   }, []);
 
-  // Dropdown toggles
   const [dropdowns, setDropdowns] = useState({
     language: false,
     text: false,
     videos: false,
     notes: false,
   });
+
   const toggleDropdown = (key) => {
     setDropdowns((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  // Modal & note states
   const [noteModalVisible, setNoteModalVisible] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');
   const [noteCategory, setNoteCategory] = useState('');
   const [noteTranscript, setNoteTranscript] = useState('');
   const [savedNotes, setSavedNotes] = useState([]);
 
-  // Recording state
   const [isRecording, setIsRecording] = useState(false);
-  let recordingRef = null; // We'll store the active Recording object here if you want the illusion of recording
+  let recordingRef = null; // Variable for the recording object
 
-  // Start "recording"
   async function startRecording() {
     try {
-      // If you want to request mic permissions and actually record audio, keep this:
       const { granted } = await Audio.requestPermissionsAsync();
       if (!granted) {
         alert('Microphone permission not granted!');
@@ -77,11 +66,6 @@ export default function LearnScreen({ navigation }) {
         playsInSilentModeIOS: true,
       });
 
-      // If you want to create a real recording, do:
-      // recordingRef = new Audio.Recording();
-      // await recordingRef.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-      // await recordingRef.startAsync();
-
       setIsRecording(true);
       speak('Recording started. Please speak your note.');
     } catch (err) {
@@ -89,25 +73,16 @@ export default function LearnScreen({ navigation }) {
     }
   }
 
-  // Stop "recording" and produce a simulated transcript
   async function stopRecording() {
     try {
-      // If we had a real recordingRef, we’d stop it here:
-      // await recordingRef.stopAndUnloadAsync();
-      // const uri = recordingRef.getURI();
-      // recordingRef = null;
-
       setIsRecording(false);
       speak('Recording stopped.');
 
-      // Simulated transcript instead of calling Google Cloud
       const simulatedTranscript = 'Simulated note transcript captured from your speech.';
       setNoteTranscript(simulatedTranscript);
-
     } catch (err) {
       console.error('stopRecording error:', err);
     } finally {
-      // Reset audio mode
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
         playsInSilentModeIOS: false,
@@ -115,7 +90,6 @@ export default function LearnScreen({ navigation }) {
     }
   }
 
-  // Toggle record
   const handleRecord = async () => {
     if (!isRecording) {
       await startRecording();
@@ -124,7 +98,6 @@ export default function LearnScreen({ navigation }) {
     }
   };
 
-  // Save note
   const handleSaveNote = () => {
     if (noteTranscript) {
       const newNote = {
@@ -134,7 +107,6 @@ export default function LearnScreen({ navigation }) {
         timestamp: new Date().toISOString(),
       };
       setSavedNotes([...savedNotes, newNote]);
-      // Reset states
       setNoteTitle('');
       setNoteCategory('');
       setNoteTranscript('');
@@ -143,7 +115,6 @@ export default function LearnScreen({ navigation }) {
     }
   };
 
-  // Cancel
   const handleCancel = async () => {
     if (isRecording) {
       await stopRecording();
@@ -156,7 +127,6 @@ export default function LearnScreen({ navigation }) {
     speak('Note creation cancelled.');
   };
 
-  // Modal styles
   const modalStyles = {
     modalContainer: {
       flex: 1,

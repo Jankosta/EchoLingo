@@ -4,19 +4,19 @@ import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
-export default function PracticeScreen({ navigation }) {
+export default function AIChatScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
-  message = "Now viewing: Practice. Press top left to chat with AI. Press bottom banner to return home. Press top right banner to repeat this message.";
+  message = "Now viewing: AI Chat. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
-        <Text style={styles.titleText}>Practice</Text>
+        <Text style={styles.titleText}>AI Chat</Text>
 
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
           <Image source={require('../assets/volume.png')} />
@@ -24,13 +24,6 @@ export default function PracticeScreen({ navigation }) {
 
         <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Home")}>
           <Image source={require('../assets/back.png')} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Main Buttons */}
-      <View style={styles.buttonGrid}>
-        <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "AI Chat")}>
-          <Text style={styles.buttonText}>AI Chat</Text>
         </TouchableOpacity>
       </View>
 

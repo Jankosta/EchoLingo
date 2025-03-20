@@ -9,7 +9,7 @@ export default function PracticeScreen({ navigation }) {
 
   createStyles(fontSize, isGreyscale);
   
-  message = "Now viewing: Practice. Press bottom banner to return home. Press top right banner to repeat this message.";
+  message = "Now viewing: Practice. Press top left to chat with AI. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   return (
@@ -24,6 +24,13 @@ export default function PracticeScreen({ navigation }) {
 
         <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Home")}>
           <Image source={require('../assets/back.png')} />
+        </TouchableOpacity>
+      </View>
+
+      {/* Main Buttons */}
+      <View style={styles.buttonGrid}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "AI Chat")}>
+          <Text style={styles.buttonText}>AI Chat</Text>
         </TouchableOpacity>
       </View>
 

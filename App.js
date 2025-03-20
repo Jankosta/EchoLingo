@@ -9,6 +9,7 @@ import LoginScreen from './screens/LoginScreen.js';
 import HomeScreen from './screens/HomeScreen';
 import LearnScreen from './screens/LearnScreen';
 import PracticeScreen from './screens/PracticeScreen';
+import AIChatScreen from './screens/AIChatScreen';
 import CommunityScreen from './screens/CommunityScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
 import VisualSettingsScreen from './screens/VisualSettingsScreen';
@@ -29,6 +30,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Learn" component={LearnScreen} />
           <Stack.Screen name="Practice" component={PracticeScreen} />
+          <Stack.Screen name="AI Chat" component={AIChatScreen} />
           <Stack.Screen name="Community" component={CommunityScreen} />
           <Stack.Screen name="Preferences" component={PreferencesScreen} />
           <Stack.Screen name="Visual Settings" component={VisualSettingsScreen} />

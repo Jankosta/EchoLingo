@@ -139,6 +139,45 @@ const createStyles = ( fontSize, isGreyscale ) => {
         color: 'black',
         fontWeight: '500',
       },
+      chatOutputBox: { // AI RESPONSE BOX
+        width: '98%',
+        height: '30%', 
+        margin: '1%',
+        backgroundColor: 'lightgrey',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+      },
+      chatOutputText: { // AI RESPONSE TEXT
+        fontSize: buttonTextSize,
+      },
+      chatInputBox: { // USER INPUT BOX
+        width: '98%',
+        height: '30%', 
+        margin: '1%',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderRadius: 10,
+        
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderWidth: 1,
+        borderColor: 'grey',
+      },
+      chatTextInput: { // USER INPUT FIELD
+        flex: 1,
+        paddingHorizontal: 10,
+        paddingVertical: 90,
+        fontSize: buttonTextSize,
+      },
+      chatSendButton: { // SEND BUTTON FOR AI CHAT (Currently unused, but functional. May be added, may be removed.)
+        backgroundColor: buttonColor,
+        paddingVertical: 100,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+      },
     });
   };
   

@@ -10,10 +10,14 @@ export default function AIChatScreen({ navigation }) {
   createStyles(fontSize, isGreyscale);
   
   const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('AI response will appear here. And it can wrap if it becomes too long as well. Cool!');
+  const [outputText, setOutputText] = useState('AI response will appear here.');
 
   message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+
+  useEffect(() => { // When a change to outputText is detected, read the new outputText aloud
+    if (outputText != "AI response will appear here.") { speak(outputText); }
+  }, [outputText]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

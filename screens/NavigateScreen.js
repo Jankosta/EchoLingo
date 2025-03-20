@@ -70,6 +70,8 @@ export default function NavigateScreen({ navigation }) {
     "materials": "Learn",
 
     "practice": "Practice",
+    "ai": "AI Chat",
+    "chat": "AI Chat",
 
     "community": "Community",
 
@@ -78,7 +80,7 @@ export default function NavigateScreen({ navigation }) {
 
   const searchTranscript = (transcriptText) => {
     if (transcriptText.includes("help")) {
-      speak("Clearly state any of the following options to visit them: Home, learn, text materials, audio materials, notes, practice, community, preferences, visual options, audio options, navigate.");
+      speak("Clearly state any of the following options to visit them: Home, learn, text materials, audio materials, notes, practice, AI chat, community, preferences, visual options, audio options, navigate.");
       return false;
     }
 

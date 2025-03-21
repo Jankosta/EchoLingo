@@ -46,7 +46,6 @@ Unlike traditional learning apps that rely heavily on **visual content**, EchoLi
 
 ## 👥 The Team
 
-- Nelli Salinas
 - Aarya Shrestha
 - Aiden Anthony
 - Jacob Pavlick

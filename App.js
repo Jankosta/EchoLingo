@@ -10,6 +10,8 @@ import HomeScreen from './screens/HomeScreen';
 import LearnScreen from './screens/LearnScreen';
 import PracticeScreen from './screens/PracticeScreen';
 import AIChatScreen from './screens/AIChatScreen';
+import QuizScreen from './screens/QuizScreen';
+import ExamScreen from './screens/ExamScreen';
 import CommunityScreen from './screens/CommunityScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
 import VisualSettingsScreen from './screens/VisualSettingsScreen';
@@ -31,6 +33,8 @@ export default function App() {
           <Stack.Screen name="Learn" component={LearnScreen} />
           <Stack.Screen name="Practice" component={PracticeScreen} />
           <Stack.Screen name="AI Chat" component={AIChatScreen} />
+          <Stack.Screen name="Quiz" component={QuizScreen} />
+          <Stack.Screen name="Exam" component={ExamScreen} />
           <Stack.Screen name="Community" component={CommunityScreen} />
           <Stack.Screen name="Preferences" component={PreferencesScreen} />
           <Stack.Screen name="Visual Settings" component={VisualSettingsScreen} />

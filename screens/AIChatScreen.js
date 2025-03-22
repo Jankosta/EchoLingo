@@ -14,7 +14,7 @@ export default function AIChatScreen({ navigation }) {
   createStyles(fontSize, isGreyscale);
   
   const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('AI response will appear here.');
+  const [outputText, setOutputText] = useState('');
 
   message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
@@ -31,8 +31,11 @@ export default function AIChatScreen({ navigation }) {
         'https://api.openai.com/v1/chat/completions',
         {
           model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: inputText }],
-          max_tokens: 100,
+          messages: [
+            { role: 'system', content: "You are a helpful AI tutor assisting blind and vision-impaired English speakers in learning Spanish. Respond in a way that explains concepts clearly, provides examples, and encourages learning. Stay on topic and if it strays too far away politely guide the conversation back." },
+            { role: 'user', content: inputText }
+          ],
+          max_tokens: 75,
         },
         {
           headers: {

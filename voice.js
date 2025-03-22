@@ -1,8 +1,7 @@
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
 import { Platform } from "react-native";
-
-const APIKEY = "AIzaSyDPifqyyxrkwdFTmRvvANMwMiitOiGMo7U"; // This may need to be replaced if we run out of credits.
+import { CLOUD_API_KEY } from '@env';
 
 const audioOptions = { // Google Cloud Voice-to-Text requires .WAV files.
   ios: {
@@ -58,7 +57,7 @@ export const getTranscription = async (uri) => {
     };
 
     const response = await fetch( // Send request to Google Cloud API
-      `https://speech.googleapis.com/v1/speech:recognize?key=${APIKEY}`,
+      `https://speech.googleapis.com/v1/speech:recognize?key=${CLOUD_API_KEY}`,
       {
         method: "POST",
         body: JSON.stringify(request) // Google Cloud wants request object as a JSON

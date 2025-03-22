@@ -3,6 +3,9 @@ import { useEffect, useContext, useState } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
+import axios from 'axios';
+
+const OPENAI_API_KEY = '';
 
 export default function AIChatScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
@@ -18,6 +21,40 @@ export default function AIChatScreen({ navigation }) {
   useEffect(() => { // When a change to outputText is detected, read the new outputText aloud
     if (outputText != "AI response will appear here.") { speak(outputText); }
   }, [outputText]);
+
+  const sendMessage = async () => {
+    if (inputText.trim() === '') return;
+
+    try {
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: [{ role: 'user', content: inputText }],
+          max_tokens: 100,
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${OPENAI_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const aiOutput = response.data.choices[0].message.content.trim();
+      
+      console.log("Ouput message:", aiOutput);
+
+      setOutputText(aiOutput);
+
+    } catch (error) {
+      console.error("sendMessage error: ", error);
+
+      setOutputText("Sorry, your message was unable to be processed at this time. If the issue persists please contact the EchoLingo team.");
+    }
+
+    setInputText('');
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -51,7 +88,7 @@ export default function AIChatScreen({ navigation }) {
             multiline={true}
             returnKeyType="done" // Changes return on keyboard to done
             blurOnSubmit={true}
-            onSubmitEditing={() => { console.log("Input message:", inputText); setOutputText(`What you typed: ${inputText}`); setInputText('');}}
+            onSubmitEditing={() => { console.log("Input message:", inputText); sendMessage(); setInputText('');}}
           />
         </View>
 

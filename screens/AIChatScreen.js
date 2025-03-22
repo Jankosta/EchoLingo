@@ -4,8 +4,9 @@ import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 import axios from 'axios';
+import { OPENAI_API_KEY } from '@env';
 
-const OPENAI_API_KEY = '';
+console.log("API Key:", OPENAI_API_KEY);
 
 export default function AIChatScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);

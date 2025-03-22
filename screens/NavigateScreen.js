@@ -72,6 +72,10 @@ export default function NavigateScreen({ navigation }) {
     "practice": "Practice",
     "ai": "AI Chat",
     "chat": "AI Chat",
+    "quiz": "Quiz",
+    "quizzes": "Quiz",
+    "exam": "Exam",
+    "exams": "Exam",
 
     "community": "Community",
 

@@ -14,12 +14,10 @@ import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 import { Audio } from 'expo-av';
 
-
-
-
 export default function LearnScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
 
+  // Mapping font size strings to numeric values
   const fontSizeMapping = {
     Small: 12,
     Medium: 14,
@@ -31,10 +29,13 @@ export default function LearnScreen({ navigation }) {
 
   const message = 'Now viewing: Learn.';
   useEffect(() => {
-    if (isAutoRead) speak(message);
+    if (isAutoRead) {
+      speak(message);
+    }
   }, []);
 
   const [dropdowns, setDropdowns] = useState({
+    language: false,
     text: false,
     videos: false,
     notes: false,
@@ -51,6 +52,7 @@ export default function LearnScreen({ navigation }) {
   const [savedNotes, setSavedNotes] = useState([]);
 
   const [isRecording, setIsRecording] = useState(false);
+  let recordingRef = null; // Variable for the recording object
 
   async function startRecording() {
     try {
@@ -228,16 +230,16 @@ export default function LearnScreen({ navigation }) {
             <Text style={styles.buttonText}>Read & Learn</Text>
           </TouchableOpacity>
 
-         {/* Videos */}
-<TouchableOpacity
-  style={styles.learnScreen_listItem}
-  onPress={() => {
-    speak('Explore learning videos');
-    navigate(navigation, 'VideoMaterials');
-  }}
->
-  <Text style={styles.buttonText}>Watch & Learn</Text>
-</TouchableOpacity>
+          {/* Videos */}
+          <TouchableOpacity
+            style={styles.learnScreen_listItem}
+            onPress={() => {
+              speak('Explore learning videos');
+              navigate(navigation, 'VideoMaterials');
+            }}
+          >
+            <Text style={styles.buttonText}>Watch & Learn</Text>
+          </TouchableOpacity>
 
 
           {/* My Notes */}
@@ -259,6 +261,8 @@ export default function LearnScreen({ navigation }) {
               >
                 <Text style={styles.learnScreen_dropdownText}>+ Create a Note</Text>
               </TouchableOpacity>
+              
+              {/* Display saved notes */}
               {savedNotes.length > 0 ? (
                 savedNotes.map((note, index) => (
                   <View key={index} style={modalStyles.noteItem}>
@@ -284,6 +288,7 @@ export default function LearnScreen({ navigation }) {
         </View>
       </ScrollView>
 
+      {/* Return Button */}
       <TouchableOpacity
         style={styles.bottomButton}
         onPress={() => navigate(navigation, 'Home')}
@@ -291,8 +296,67 @@ export default function LearnScreen({ navigation }) {
         <Text style={styles.buttonText}>Return to Home</Text>
       </TouchableOpacity>
 
-      {/* Note Modal remains unchanged */}
-      {/* ... */}
+      {/* Note Creation Modal */}
+      <Modal
+        visible={noteModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setNoteModalVisible(false)}
+      >
+        <View style={modalStyles.modalContainer}>
+          <View style={modalStyles.modalContent}>
+            <Text style={modalStyles.modalTitle}>Create a Note</Text>
+            <TextInput
+              style={modalStyles.input}
+              placeholder="Note Title"
+              value={noteTitle}
+              onChangeText={setNoteTitle}
+              accessibilityLabel="Note title input"
+            />
+            <TextInput
+              style={modalStyles.input}
+              placeholder="Note Category"
+              value={noteCategory}
+              onChangeText={setNoteCategory}
+              accessibilityLabel="Note category input"
+            />
+            <TextInput
+              style={[modalStyles.input, { height: 100 }]}
+              placeholder="Your note will appear here..."
+              value={noteTranscript}
+              multiline={true}
+              editable={false}
+              accessibilityLabel="Note transcript"
+            />
+            <TouchableOpacity
+              style={modalStyles.recordButton}
+              onPress={handleRecord}
+              accessibilityLabel={isRecording ? 'Stop recording' : 'Start recording'}
+            >
+              <Text style={styles.buttonText}>
+                {isRecording ? 'Stop Recording' : 'Start Recording'}
+              </Text>
+            </TouchableOpacity>
+            <View style={modalStyles.modalButtonContainer}>
+              <TouchableOpacity
+                style={modalStyles.saveButton}
+                onPress={handleSaveNote}
+                disabled={isRecording || !noteTranscript}
+                accessibilityLabel="Save note"
+              >
+                <Text style={styles.buttonText}>Save Note</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={modalStyles.cancelButton}
+                onPress={handleCancel}
+                accessibilityLabel="Cancel note creation"
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

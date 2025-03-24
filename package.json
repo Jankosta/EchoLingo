@@ -10,12 +10,14 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.0.4",
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/stack": "^7.1.1",
     "axios": "^1.8.4",
     "eas-cli": "^15.0.14",
     "expo": "~52.0.37",
     "expo-av": "~15.0.2",
+    "expo-document-picker": "~13.0.3",
     "expo-file-system": "~18.0.11",
     "expo-speech": "~13.0.1",
     "expo-status-bar": "~2.0.1",

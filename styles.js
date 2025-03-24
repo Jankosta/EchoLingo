@@ -178,6 +178,16 @@ const createStyles = ( fontSize, isGreyscale ) => {
         paddingHorizontal: 20,
         borderRadius: 10,
       },
+      ExploreHeading: {
+        flex: 1,
+        justifyContent: 'center',  // centers vertically
+        alignItems: 'center',      // centers horizontally
+        backgroundColor: '#fff',
+      },
+      title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+      },
     });
   };
   

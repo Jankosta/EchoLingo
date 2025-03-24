@@ -202,7 +202,6 @@ export default function LearnScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Title Banner */}
       <View style={styles.topBanner}>
         <TouchableOpacity
           style={styles.topLeftBannerButton}
@@ -221,60 +220,27 @@ export default function LearnScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* Scrollable Content */}
       <ScrollView contentContainerStyle={styles.learnScreen_scrollContent}>
         <View style={styles.learnScreen_listContainer}>
-          {/* Language */}
-          <TouchableOpacity
-            style={styles.learnScreen_listItem}
-            onPress={() => toggleDropdown('language')}
-          >
-            <Text style={styles.buttonText}>Language</Text>
-          </TouchableOpacity>
-          {dropdowns.language && (
-            <TouchableOpacity
-              style={styles.learnScreen_dropdownItem}
-              onPress={() => speak('Add a language')}
-            >
-              <Text style={styles.learnScreen_dropdownText}>+ Add a Language</Text>
-            </TouchableOpacity>
-          )}
-
           {/* Text Materials */}
           <TouchableOpacity
             style={styles.learnScreen_listItem}
-            onPress={() => toggleDropdown('text')}
+            onPress={() => navigate(navigation, 'Text Materials')}
           >
-            <Text style={styles.buttonText}>Text Materials</Text>
+            <Text style={styles.buttonText}>Read & Learn</Text>
           </TouchableOpacity>
-          {dropdowns.text && (
-            <TouchableOpacity
-              style={styles.learnScreen_dropdownItem}
-              onPress={() => speak('Explore learning text materials')}
-            >
-              <Text style={styles.learnScreen_dropdownText}>
-                + Explore Learning Text Materials
-              </Text>
-            </TouchableOpacity>
-          )}
 
           {/* Videos */}
           <TouchableOpacity
             style={styles.learnScreen_listItem}
-            onPress={() => toggleDropdown('videos')}
+            onPress={() => {
+              speak('Explore learning videos');
+              navigate(navigation, 'VideoMaterials');
+            }}
           >
-            <Text style={styles.buttonText}>Videos</Text>
+            <Text style={styles.buttonText}>Watch & Learn</Text>
           </TouchableOpacity>
-          {dropdowns.videos && (
-            <TouchableOpacity
-              style={styles.learnScreen_dropdownItem}
-              onPress={() => speak('Explore learning videos')}
-            >
-              <Text style={styles.learnScreen_dropdownText}>
-                + Explore Learning Videos
-              </Text>
-            </TouchableOpacity>
-          )}
+
 
           {/* My Notes */}
           <TouchableOpacity
@@ -295,6 +261,7 @@ export default function LearnScreen({ navigation }) {
               >
                 <Text style={styles.learnScreen_dropdownText}>+ Create a Note</Text>
               </TouchableOpacity>
+              
               {/* Display saved notes */}
               {savedNotes.length > 0 ? (
                 savedNotes.map((note, index) => (

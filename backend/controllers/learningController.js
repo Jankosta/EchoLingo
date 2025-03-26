@@ -91,6 +91,7 @@ const getMaterials = async (req, res) => {
 
     if (type) whereClause.type = type;
     if (category) whereClause.category = category;
+    if (language) whereClause.language = language; 
 
     // Fetch student-uploaded materials from DB
     const studentMaterials = await LearningMaterial.findAll({ where: whereClause });

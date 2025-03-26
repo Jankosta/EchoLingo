@@ -5,16 +5,18 @@ export const navigate = (navigation, location) => {
   navigation.navigate(location); // Navigate to screen at location
 };
 
-export const speak = (message, language = "english") => {
+// UPDATED FUNCTION TO DYNAMICALLY USE THE SELECTED LANGUAGE
+export const speak = (message, selectedLanguage = "English") => {
   TTS.stop();
-
-  const supportedLanguages = {
-    english: "en-US",  // English
-    spanish: "es-ES",  // Spanish
-    french: "fr-FR",  // French
+  
+  const languageMap = {
+    "English": "en-US",
+    "Spanish": "es-ES",
+    "French": "fr-FR",
+    "German": "de-DE",
+    "Mandarin": "zh-CN"
   };
 
-  const options = { language: supportedLanguages[language.toLowerCase()] || supportedLanguages.english }; 
-
-  TTS.speak(message, options);
+  const langCode = languageMap[selectedLanguage] || "en-US"; // Default to English if not found
+  TTS.speak(message, { language: langCode });
 };

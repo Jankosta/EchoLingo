@@ -9,13 +9,14 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
-import { Settings } from '../settings.js';
+import { Settings } from '../settings';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 import { Audio } from 'expo-av';
 
 export default function LearnScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, selectedLanguage } = useContext(Settings);
+  const [materials, setMaterials] = useState([]); 
 
   // Mapping font size strings to numeric values
   const fontSizeMapping = {
@@ -33,6 +34,17 @@ export default function LearnScreen({ navigation }) {
       speak(message);
     }
   }, []);
+
+  // Fetch learning materials when selectedLanguage changes
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/materials?type=text&language=${selectedLanguage}`)
+      .then((response) => response.json())
+      .then((data) => setMaterials(data))
+      .catch((error) => console.error("Error fetching materials:", error));
+
+      speak("Welcome to EchoLingo!", selectedLanguage);
+
+  }, [selectedLanguage]);  
 
   const [dropdowns, setDropdowns] = useState({
     language: false,
@@ -229,6 +241,20 @@ export default function LearnScreen({ navigation }) {
           >
             <Text style={styles.buttonText}>Read & Learn</Text>
           </TouchableOpacity>
+
+          {/* Display fetched learning materials */}
+          {materials.length > 0 ? (
+            materials.map((material, index) => (
+              <View key={index} style={styles.learnScreen_listItem}>
+                <Text style={styles.buttonText}>{material.title}</Text>
+                <Text style={{ fontSize: numericFontSize - 2 }}>{material.type}</Text>
+              </View>
+            ))
+          ) : (
+            <Text style={styles.learnScreen_dropdownText}>
+              No learning materials available for {selectedLanguage}.
+            </Text>
+          )}
 
           {/* Videos */}
           <TouchableOpacity

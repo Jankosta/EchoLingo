@@ -139,14 +139,14 @@ const createStyles = ( fontSize, isGreyscale ) => {
         color: 'black',
         fontWeight: '500',
       },
-      chatOutputBox: { // AI RESPONSE BOX
+      chatOutputBox: {
         width: '98%',
-        height: '30%', 
+        height: '30%',
         margin: '1%',
         backgroundColor: 'lightgrey',
-        justifyContent: 'center',
-        alignItems: 'center',
         borderRadius: 10,
+        padding: 10, 
+        flex: 1,
       },
       chatOutputText: { // AI RESPONSE TEXT
         fontSize: (buttonTextSize - 5),

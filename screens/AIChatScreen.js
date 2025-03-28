@@ -1,4 +1,4 @@
-import { Text, View, Image, SafeAreaView, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, Image, SafeAreaView, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { useEffect, useContext, useState } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
@@ -30,10 +30,10 @@ export default function AIChatScreen({ navigation }) {
         {
           model: 'gpt-3.5-turbo',
           messages: [
-            { role: 'system', content: "You are a helpful AI tutor assisting blind and vision-impaired English speakers in learning Spanish. Respond in a way that explains concepts clearly, provides examples, and encourages learning. Stay on topic and if it strays too far away politely guide the conversation back." },
+            { role: 'system', content: "You are a helpful AI tutor assisting blind and vision-impaired English speakers in learning Spanish. Your goal is to provide both English and Spanish sentences, but avoid simple repetitions. Start with an English sentence, and only use Spanish if the user asks or you feel it is. Always enclose language switches within tags, such as <english> or <spanish>. For mixed responses, tag each sentence appropriately. Example:\n\n<english> Hello! How are you today? <spanish> ¡Hola! ¿Cómo estás hoy?" },
             { role: 'user', content: inputText }
           ],
-          max_tokens: 75,
+          max_tokens: 100,
         },
         {
           headers: {
@@ -58,6 +58,10 @@ export default function AIChatScreen({ navigation }) {
     setInputText('');
   };
 
+  const removeTags = (message) => {
+    return message.replace(/<[^>]+>/g, '').trim();
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -76,7 +80,9 @@ export default function AIChatScreen({ navigation }) {
 
         {/* Output Box */}
         <View style={styles.chatOutputBox}>
-          <Text style={styles.chatOutputText}>{outputText}</Text>
+          <ScrollView showsVerticalScrollIndicator={true}>
+            <Text style={styles.chatOutputText}>{removeTags(outputText)}</Text>
+          </ScrollView>
         </View>
 
         {/* Input Box */}
@@ -90,7 +96,7 @@ export default function AIChatScreen({ navigation }) {
             multiline={true}
             returnKeyType="done" // Changes return on keyboard to done
             blurOnSubmit={true}
-            onSubmitEditing={() => { console.log("Input message:", inputText); sendMessage(); setInputText('');}}
+            onSubmitEditing={() => { sendMessage(); setInputText('');}}
           />
         </View>
 

@@ -14,7 +14,7 @@ export const speak = (message) => {
     french: "fr-FR",  // French
   };
 
-  const splits = message.match(/<(\w+)> ([^<]+)/g); // Create array of lang tags with their text
+  const splits = message.match(/<(\w+)>([^<]+)/g);  // Create array of lang tags with their text
 
   if (!splits) { // If no tags, speak in English
     TTS.speak(message, { language: supportedLanguages.english });
@@ -23,7 +23,7 @@ export const speak = (message) => {
 
   const speakSplits = async () => {
     for (const split of splits) {
-      const [, lang, text] = split.match(/<(\w+)> (.+)/) || [];
+      const [, lang, text] = split.match(/<(\w+)>(.+)/) || [];
       const readLang = supportedLanguages[lang.toLowerCase()] || supportedLanguages.english;
 
       await new Promise((resolve) => {

@@ -5,7 +5,7 @@ export const navigate = (navigation, location) => {
   navigation.navigate(location); // Navigate to screen at location
 };
 
-export const speak = (message, language = "english") => {
+export const speak = (message) => {
   TTS.stop();
 
   const supportedLanguages = {
@@ -14,7 +14,26 @@ export const speak = (message, language = "english") => {
     french: "fr-FR",  // French
   };
 
-  const options = { language: supportedLanguages[language.toLowerCase()] || supportedLanguages.english }; 
+  const splits = message.match(/<(\w+)> ([^<]+)/g); // Create array of lang tags with their text
 
-  TTS.speak(message, options);
+  if (!splits) { // If no tags, speak in English
+    TTS.speak(message, { language: supportedLanguages.english });
+    return;
+  }
+
+  const speakSplits = async () => {
+    for (const split of splits) {
+      const [, lang, text] = split.match(/<(\w+)> (.+)/) || [];
+      const readLang = supportedLanguages[lang.toLowerCase()] || supportedLanguages.english;
+
+      await new Promise((resolve) => {
+        TTS.speak(text, {
+          language: readLang,
+          onDone: resolve, // Wait for each before finishing.
+        });
+      });
+    }
+  };
+
+  speakSplits();
 };

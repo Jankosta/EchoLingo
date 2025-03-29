@@ -17,7 +17,8 @@ import PreferencesScreen from './screens/PreferencesScreen';
 import VisualSettingsScreen from './screens/VisualSettingsScreen';
 import AudioSettingsScreen from './screens/AudioSettingsScreen';
 import NavigateScreen from './screens/NavigateScreen';
-
+import TextMaterialsScreen from './screens/TextMaterialsScreen';
+import VideoMaterialsScreen from './screens/VideoMaterialsScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Learn" component={LearnScreen} />
+          <Stack.Screen name="Text Materials" component={TextMaterialsScreen} />
           <Stack.Screen name="Practice" component={PracticeScreen} />
           <Stack.Screen name="AI Chat" component={AIChatScreen} />
           <Stack.Screen name="Quiz" component={QuizScreen} />
@@ -40,6 +42,7 @@ export default function App() {
           <Stack.Screen name="Visual Settings" component={VisualSettingsScreen} />
           <Stack.Screen name="Audio Settings" component={AudioSettingsScreen} />
           <Stack.Screen name="Navigate" component={NavigateScreen} />
+          <Stack.Screen name="VideoMaterials" component={VideoMaterialsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SettingsProvider>

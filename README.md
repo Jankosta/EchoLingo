@@ -39,17 +39,18 @@ Unlike traditional learning apps that rely heavily on **visual content**, EchoLi
 | **Backend** | Node.js with Express |
 | **Database** | Firebase |
 | **Languages** | JavaScript |
-| **API** | Google Translate API |
-| **Image Processing** | OpenCV |
+| **Voice-to-Text API** | Google Cloud Speech-to-Text API |
+| **AI API** | OpenAI API |
+| **Translation API** | Google Translate API |
 
 ---
 
 ## 👥 The Team
 
-- Aarya Shrestha
-- Aiden Anthony
+- Aiden Anthony (Team Lead)
+- Barkot Beyene (Scrum Master)
 - Jacob Pavlick
-- Barkot Beyene
+- Aarya Shrestha
 - Bisesh Rana
 - Kelly Pierre
 

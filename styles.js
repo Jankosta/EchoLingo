@@ -149,7 +149,7 @@ const createStyles = ( fontSize, isGreyscale ) => {
         borderRadius: 10,
       },
       chatOutputText: { // AI RESPONSE TEXT
-        fontSize: buttonTextSize,
+        fontSize: (buttonTextSize - 5),
       },
       chatInputBox: { // USER INPUT BOX
         width: '98%',
@@ -170,13 +170,23 @@ const createStyles = ( fontSize, isGreyscale ) => {
         flex: 1,
         paddingHorizontal: 10,
         paddingVertical: 90,
-        fontSize: buttonTextSize,
+        fontSize: (buttonTextSize - 5),
       },
       chatSendButton: { // SEND BUTTON FOR AI CHAT (Currently unused, but functional. May be added, may be removed.)
         backgroundColor: buttonColor,
         paddingVertical: 100,
         paddingHorizontal: 20,
         borderRadius: 10,
+      },
+      ExploreHeading: {
+        flex: 1,
+        justifyContent: 'center',  // centers vertically
+        alignItems: 'center',      // centers horizontally
+        backgroundColor: '#fff',
+      },
+      title: {
+        fontSize: 24,
+        fontWeight: 'bold',
       },
     });
   };

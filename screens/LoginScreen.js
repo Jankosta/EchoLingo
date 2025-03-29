@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../backend/config/firebaseConfig';
+import createStyles from '../styles.js';
 import { recordStart, recordStop, getTranscription } from '../voice';
 import { navigate, speak } from '../functions.js';
 
 // LoginScreen component
 export default function LoginScreen({ navigation }) {
+  createStyles("Large", false); // Create styles with default font size and greyscale
+  
   message = "Now viewing: Login. Press mid-upper left to enter email. Press mid-upper right to speak email. Press mid-lower left to enter password. Press mid-lower right to speak password. Press bottom left to login or sign up. Press bottom right to switch between login and sign up. Press top right banner to repeat this message.";
   useEffect(() => {speak(message);}, []);
   
@@ -22,6 +25,7 @@ export default function LoginScreen({ navigation }) {
   const handleLogin = () => {
     if (!validatePassword(password)) {
       setError('Invalid password.');
+      speak('Password must be at least 6 characters long and contain a number.');
       return;
     }
 
@@ -31,14 +35,22 @@ export default function LoginScreen({ navigation }) {
         navigation.replace('Home');
       })
       .catch((error) => {
-        setError(error.message);
+        if (error.message.includes('invalid-credential')) {
+          setError('Invalid email or password.');
+          speak('Invalid email or password. Please try again.');
+        }
+        else {
+          setError(error.message);
+          speak(error.message);
+        }
       });
   };
 
   // Function to handle sign-up
   const handleSignUp = () => {
     if (!validatePassword(password)) {
-      setError('Password must be at least 6 characters long and contain a number.');
+      setError('Invalid password.');
+      speak('Password must be at least 6 characters long and contain a number.');
       return;
     }
 
@@ -48,7 +60,18 @@ export default function LoginScreen({ navigation }) {
         navigation.replace('Home');
       })
       .catch((error) => {
-        setError(error.message);
+        if (error.message.includes('invalid-email')) {
+          setError('Invalid email address.');
+          speak('Invalid email address. Please try again.');
+        } 
+        else if (error.message.includes('email-already-in-use')) {
+          setError('Email already in use.');
+          speak('Email already in use. Please try again.');
+        }
+        else {
+          setError(error.message);
+          speak(error.message);
+        }
       });
   };
 
@@ -97,90 +120,83 @@ export default function LoginScreen({ navigation }) {
 
   // Display everything on the screen
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
-        <Image source={require('../assets/volume.png')} />
-      </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.topBanner}>
+        <Text style={styles.titleText}>Login</Text>
+        <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
+          <Image source={require('../assets/volume.png')} />
+        </TouchableOpacity>
+      </View>
       <TextInput
-        style={[styles.input, styles.emailInput]}
+        style={[loginStyles.input, loginStyles.emailInput]}
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TouchableOpacity style={[styles.button, styles.speakEmailButton]} onPress={handleEmailSpeech}>
-        <Text style={styles.buttonText}>{isRecordingEmail ? "Stop Recording" : "Start Recording"}</Text>
+      <TouchableOpacity style={[loginStyles.button, loginStyles.speakEmailButton]} onPress={handleEmailSpeech}>
+        <Text style={loginStyles.buttonText}>{isRecordingEmail ? "Stop Recording" : "Start Recording"}</Text>
       </TouchableOpacity>
       <TextInput
-        style={[styles.input, styles.passwordInput]}
+        style={[loginStyles.input, loginStyles.passwordInput]}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={[styles.button, styles.speakPasswordButton]} onPress={handlePasswordSpeech}>
-        <Text style={styles.buttonText}>{isRecordingPassword ? "Stop Recording" : "Start Recording"}</Text>
+      <TouchableOpacity style={[loginStyles.button, loginStyles.speakPasswordButton]} onPress={handlePasswordSpeech}>
+        <Text style={loginStyles.buttonText}>{isRecordingPassword ? "Stop Recording" : "Start Recording"}</Text>
       </TouchableOpacity>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <TouchableOpacity style={[styles.button, styles.loginButton]} onPress={isSignUp ? handleSignUp : handleLogin}>
-        <Text style={styles.buttonText}>{isSignUp ? "Sign Up" : "Login"}</Text>
+      {error ? <Text style={loginStyles.error}>{error}</Text> : null}
+      <TouchableOpacity style={[loginStyles.button, loginStyles.loginButton]} onPress={isSignUp ? handleSignUp : handleLogin}>
+        <Text style={loginStyles.buttonText}>{isSignUp ? "Sign Up" : "Login"}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, styles.switchButton]}
+        style={[loginStyles.button, loginStyles.switchButton]}
         onPress={() => setIsSignUp(!isSignUp)}
       >
-        <Text style={styles.buttonText}>{isSignUp ? "Switch to Login" : "Switch to Sign Up"}</Text>
+        <Text style={loginStyles.buttonText}>{isSignUp ? "Switch to Login" : "Switch to Sign Up"}</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }
 
 // Styles for the component
-const styles = StyleSheet.create({
-  container: { // style for container
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-  },
-  topRightBannerButton: { // style for top right banner button
-    position: 'absolute',
-    top: 75,
-    right: 25,
-  },
+const loginStyles = StyleSheet.create({
   input: { // style for input fields
     height: '25%',
     width: '45%',
     borderColor: 'gray',
     borderWidth: 1,
+    borderRadius: 10,
     paddingHorizontal: 8,
   },
   emailInput: { // style for email input
     position: 'absolute',
-    top: 200,
+    top: '15%',
     left: 10,
   },
   speakEmailButton: { // style for speak email button
     position: 'absolute',
-    top: 200,
+    top: '15%',
     right: 10,
   },
   passwordInput: { // style for password input
     position: 'absolute',
-    bottom: 200,
+    bottom: '31.5%',
     left: 10,
   },
   speakPasswordButton: { // style for speak password button
     position: 'absolute',
-    bottom: 200,
+    bottom: '31.5%',
     right: 10,
   },
   button: { // style for speach and login/sign up buttons
     backgroundColor: 'red',
     height: '25%',
     width: '45%',
-    padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -192,18 +208,18 @@ const styles = StyleSheet.create({
   },
   error: { // error messages
     color: 'red',
-    marginBottom: 12,
+    bottom: '28.5%',
+    width: '100%',
+    left: 10,
   },
   loginButton: { // style for login button
     position: 'absolute',
-    height: 150,
-    bottom: 20,
+    bottom: '3%',
     left: 10,
   },
   switchButton: { // style for switch button
     position: 'absolute',
-    height: 150,
-    bottom: 20,
+    bottom: '3%',
     right: 10,
   },
 });

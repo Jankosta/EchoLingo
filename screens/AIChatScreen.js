@@ -1,10 +1,12 @@
-import { Text, View, Image, SafeAreaView, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, Image, SafeAreaView, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { useEffect, useContext, useState } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 import axios from 'axios';
 import { OPENAI_API_KEY } from '@env';
+import * as TTS from "expo-speech"; // TTS needs to be manually imported here so that TTS.stop() can be used
+import { recordStart, recordStop, getTranscription } from "../voice.js";
 
 export default function AIChatScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
@@ -13,16 +15,55 @@ export default function AIChatScreen({ navigation }) {
   
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
+  const [messageHistory, setMessageHistory] = useState([]);
 
   message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
+  const [recording, setRecording] = useState(false); // Recording state hook
+  const [language, setLanguage] = useState("english");
+  
+  const handleRecord = async () => { // Recording handler
+    TTS.stop();
+    if (await recordStart()) {
+      setRecording(true);
+      console.log("Recording started!");
+    } else {
+      console.error("handleRecord error: Recording did not start.");
+    }
+  };
+
+  const handleTranscribe = async () => { // Transcription handler
+    setRecording(false);
+    const uri = await recordStop();
+    if (!uri) {
+      console.error("handleTranscribe error: Recording URI not located.");
+      return false;
+    }
+
+    const transcriptText = (await getTranscription(uri, language)).toLowerCase();
+    
+    setInputText(transcriptText); 
+    console.log(transcriptText);
+  };
+
+  const handleNavigation = async () => { // If the user tries to leave the page during recording it will first stop the recording
+    if (recording) {
+      await recordStop();
+      setRecording(false);
+    }
+    navigate(navigation, "Home");
+  };
+
   useEffect(() => { // When a change to outputText is detected, read the new outputText aloud
-    if (outputText != "AI response will appear here.") { speak(outputText); }
+    if (outputText != "") { speak(outputText); }
   }, [outputText]);
 
   const sendMessage = async () => {
     if (inputText.trim() === '') return;
+
+    const newHistory = [...messageHistory, { role: "user", content: inputText }]; // Add new message to history
+    if (newHistory.length > 5) newHistory.shift(); // Remove oldest message
 
     try {
       const response = await axios.post(
@@ -30,10 +71,10 @@ export default function AIChatScreen({ navigation }) {
         {
           model: 'gpt-3.5-turbo',
           messages: [
-            { role: 'system', content: "You are a helpful AI tutor assisting blind and vision-impaired English speakers in learning Spanish. Respond in a way that explains concepts clearly, provides examples, and encourages learning. Stay on topic and if it strays too far away politely guide the conversation back." },
-            { role: 'user', content: inputText }
+            { role: 'system', content: "You are a helpful AI tutor assisting blind and vision-impaired English speakers in learning Spanish. Your goal is to provide both English and Spanish sentences, but avoid simple repetitions. Start with an English sentence, and only use Spanish if the user asks or you feel it is. Always enclose language switches within tags, such as <english> or <spanish>. For mixed responses, tag each sentence appropriately. Example:\n\n<english> Hello! How are you today? <spanish> ¡Hola! ¿Cómo estás hoy?" },
+            ...newHistory
           ],
-          max_tokens: 75,
+          max_tokens: 100,
         },
         {
           headers: {
@@ -49,6 +90,10 @@ export default function AIChatScreen({ navigation }) {
 
       setOutputText(aiOutput);
 
+      const updatedHistory = [...newHistory, { role: "assistant", content: aiOutput }]; // Add new message to history
+      if (updatedHistory.length > 5) updatedHistory.shift(); // Remove oldest message
+      setMessageHistory(updatedHistory);
+
     } catch (error) {
       console.error("sendMessage error: ", error);
 
@@ -58,6 +103,10 @@ export default function AIChatScreen({ navigation }) {
     setInputText('');
   };
 
+  const removeTags = (message) => {
+    return message.replace(/<[^>]+>/g, '').trim();
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -65,18 +114,26 @@ export default function AIChatScreen({ navigation }) {
         <View style={styles.topBanner}>
           <Text style={styles.titleText}>AI Chat</Text>
 
-          <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
-            <Image source={require('../assets/volume.png')} />
-          </TouchableOpacity>
+          {recording ? ( // If the user presses the TTS button during recording it will act as if they stopped the recording
+            <TouchableOpacity style={styles.topRightBannerButton} onPress={handleTranscribe}>
+              <Image source={require('../assets/volume.png')} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
+              <Image source={require('../assets/volume.png')} />
+            </TouchableOpacity>
+          )}
 
-          <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Home")}>
+          <TouchableOpacity style={styles.topLeftBannerButton} onPress={handleNavigation}>
             <Image source={require('../assets/back.png')} />
           </TouchableOpacity>
         </View>
 
         {/* Output Box */}
         <View style={styles.chatOutputBox}>
-          <Text style={styles.chatOutputText}>{outputText}</Text>
+          <ScrollView showsVerticalScrollIndicator={true}>
+            <Text style={styles.chatOutputText}>{removeTags(outputText)}</Text>
+          </ScrollView>
         </View>
 
         {/* Input Box */}
@@ -90,12 +147,46 @@ export default function AIChatScreen({ navigation }) {
             multiline={true}
             returnKeyType="done" // Changes return on keyboard to done
             blurOnSubmit={true}
-            onSubmitEditing={() => { console.log("Input message:", inputText); sendMessage(); setInputText('');}}
+            onSubmitEditing={() => { sendMessage(); setInputText('');}}
           />
+
+          <View style={styles.chatVoiceButtonContainer}>
+
+            {recording ? (
+              <TouchableOpacity style={styles.chatVoiceButtonToggled} onPress={handleTranscribe}>
+                <Text style={styles.buttonText}>Stop</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.chatVoiceButton}
+                onPress={() => {
+                  handleRecord();  // Start recording
+                  setLanguage("english");  // Set language
+                }}
+              >
+                <Text style={styles.buttonText}>Eng.</Text>
+              </TouchableOpacity>
+            )}
+            
+            {recording ? (
+              <TouchableOpacity>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.chatVoiceButton}
+                onPress={() => {
+                  handleRecord();  // Start recording
+                  setLanguage("spanish");  // Set language
+                }}
+              >
+                <Text style={styles.buttonText}>Span.</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         {/* Return Button */}
-        <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>
+        <TouchableOpacity style={styles.bottomButton} onPress={handleNavigation}>
           <Text style={styles.buttonText}>Return to Home</Text>
         </TouchableOpacity>
       </SafeAreaView>

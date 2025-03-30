@@ -139,14 +139,14 @@ const createStyles = ( fontSize, isGreyscale ) => {
         color: 'black',
         fontWeight: '500',
       },
-      chatOutputBox: { // AI RESPONSE BOX
+      chatOutputBox: {
         width: '98%',
-        height: '30%', 
+        height: '30%',
         margin: '1%',
         backgroundColor: 'lightgrey',
-        justifyContent: 'center',
-        alignItems: 'center',
         borderRadius: 10,
+        padding: 10, 
+        flex: 1,
       },
       chatOutputText: { // AI RESPONSE TEXT
         fontSize: (buttonTextSize - 5),
@@ -172,11 +172,30 @@ const createStyles = ( fontSize, isGreyscale ) => {
         paddingVertical: 90,
         fontSize: (buttonTextSize - 5),
       },
-      chatSendButton: { // SEND BUTTON FOR AI CHAT (Currently unused, but functional. May be added, may be removed.)
+      chatVoiceButtonContainer: { // CONTAINER FOR VOICE INPUT BUTTONS
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        marginLeft: 5,
+      },
+      chatVoiceButton: { // VOICE INPUT BUTTONS
         backgroundColor: buttonColor,
-        paddingVertical: 100,
-        paddingHorizontal: 20,
+        width: 125,
+        paddingVertical: 40, 
         borderRadius: 10,
+        marginBottom: 5, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+      },
+      chatVoiceButtonToggled: { // VOICE INPUT STOP BUTTON
+        backgroundColor: buttonColorToggled,
+        width: 125,
+        paddingVertical: 100, 
+        borderRadius: 10,
+        marginBottom: 5, 
+        alignItems: 'center', 
+        justifyContent: 'center',
       },
       ExploreHeading: {
         flex: 1,

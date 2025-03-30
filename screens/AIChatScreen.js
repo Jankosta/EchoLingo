@@ -13,16 +13,20 @@ export default function AIChatScreen({ navigation }) {
   
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
+  const [messageHistory, setMessageHistory] = useState([]);
 
   message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   useEffect(() => { // When a change to outputText is detected, read the new outputText aloud
-    if (outputText != "AI response will appear here.") { speak(outputText); }
+    if (outputText != "") { speak(outputText); }
   }, [outputText]);
 
   const sendMessage = async () => {
     if (inputText.trim() === '') return;
+
+    const newHistory = [...messageHistory, { role: "user", content: inputText }]; // Add new message to history
+    if (newHistory.length > 5) newHistory.shift(); // Remove oldest message
 
     try {
       const response = await axios.post(
@@ -31,7 +35,7 @@ export default function AIChatScreen({ navigation }) {
           model: 'gpt-3.5-turbo',
           messages: [
             { role: 'system', content: "You are a helpful AI tutor assisting blind and vision-impaired English speakers in learning Spanish. Your goal is to provide both English and Spanish sentences, but avoid simple repetitions. Start with an English sentence, and only use Spanish if the user asks or you feel it is. Always enclose language switches within tags, such as <english> or <spanish>. For mixed responses, tag each sentence appropriately. Example:\n\n<english> Hello! How are you today? <spanish> ¡Hola! ¿Cómo estás hoy?" },
-            { role: 'user', content: inputText }
+            ...newHistory
           ],
           max_tokens: 100,
         },
@@ -48,6 +52,10 @@ export default function AIChatScreen({ navigation }) {
       console.log("Ouput message:", aiOutput);
 
       setOutputText(aiOutput);
+
+      const updatedHistory = [...newHistory, { role: "assistant", content: aiOutput }]; // Add new message to history
+      if (updatedHistory.length > 5) updatedHistory.shift(); // Remove oldest message
+      setMessageHistory(updatedHistory);
 
     } catch (error) {
       console.error("sendMessage error: ", error);

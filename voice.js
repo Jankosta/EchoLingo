@@ -47,12 +47,20 @@ export const recordStop = async () => {
   return uri; // Return location of recording
 };
 
-export const getTranscription = async (uri) => {
+export const getTranscription = async (uri, language = "english") => {
   try {
+    const supportedLanguages = {
+      english: "en-US",  // English
+      spanish: "es-ES",  // Spanish
+      french: "fr-FR",  // French
+    };
+
+    const languageCode = supportedLanguages[language.toLowerCase()] || "en-US";
+
     const recordedAudio = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 }); // Google Cloud needs the file as a Base64 string
 
     const request = { // Payload - Audio settings are altered if the device is Android-based
-      config: Platform.OS === "android" ? { encoding: "WEBM_OPUS", sampleRateHertz: 16000, languageCode: "en-US" } : { encoding: "LINEAR16", sampleRateHertz: 44100, languageCode: "en-US" }, 
+      config: Platform.OS === "android" ? { encoding: "WEBM_OPUS", sampleRateHertz: 16000, languageCode: languageCode } : { encoding: "LINEAR16", sampleRateHertz: 44100, languageCode: languageCode }, 
       audio: { content: recordedAudio }
     };
 

@@ -106,6 +106,15 @@ export default function AIChatScreen({ navigation }) {
             blurOnSubmit={true}
             onSubmitEditing={() => { sendMessage(); setInputText('');}}
           />
+
+          <View style={styles.chatVoiceButtonContainer}>
+            <TouchableOpacity style={styles.chatVoiceButton} onPress={() => console.log("English Voice")}>
+              <Text style={styles.buttonText}>Eng.</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.chatVoiceButton} onPress={() => console.log("Spanish Voice")}>
+              <Text style={styles.buttonText}>Span.</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Return Button */}

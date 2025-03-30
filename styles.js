@@ -172,11 +172,21 @@ const createStyles = ( fontSize, isGreyscale ) => {
         paddingVertical: 90,
         fontSize: (buttonTextSize - 5),
       },
-      chatSendButton: { // SEND BUTTON FOR AI CHAT (Currently unused, but functional. May be added, may be removed.)
+      chatVoiceButtonContainer: { // CONTAINER FOR VOICE INPUT BUTTONS
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        marginLeft: 5,
+      },
+      chatVoiceButton: { // VOICE INPUT BUTTONS
         backgroundColor: buttonColor,
-        paddingVertical: 100,
-        paddingHorizontal: 20,
+        width: 125,
+        paddingVertical: 40, 
         borderRadius: 10,
+        marginBottom: 5, 
+        alignItems: 'center', 
+        justifyContent: 'center',
       },
     });
   };

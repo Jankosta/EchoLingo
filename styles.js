@@ -188,6 +188,15 @@ const createStyles = ( fontSize, isGreyscale ) => {
         alignItems: 'center', 
         justifyContent: 'center',
       },
+      chatVoiceButtonToggled: { // VOICE INPUT STOP BUTTON
+        backgroundColor: buttonColorToggled,
+        width: 125,
+        paddingVertical: 100, 
+        borderRadius: 10,
+        marginBottom: 5, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+      },
     });
   };
   

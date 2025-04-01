@@ -40,8 +40,9 @@ jobs:
         id: update
         run: |
           OUTPUT=$(eas update --auto --non-interactive --json)
-          URL=$(echo "$OUTPUT" | jq -r '.[0].group')
-          echo "LATEST_UPDATE_URL=https://expo.dev/updates/$URL" >> $GITHUB_ENV
+          URL=$(echo "$OUTPUT" | jq -r '.[0].manifestPermalink')
+          echo "Extracted update URL: $URL"  # Debugging
+          echo "LATEST_UPDATE_URL=$URL" >> $GITHUB_ENV
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}

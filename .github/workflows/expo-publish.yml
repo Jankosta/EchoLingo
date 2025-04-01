@@ -40,8 +40,6 @@ jobs:
         id: update
         run: |
           OUTPUT=$(eas update --auto --non-interactive --json)
-          echo "EAS OUTPUT: $OUTPUT"  # Debugging: Print JSON output
-          echo "$OUTPUT" | jq '.'  # Pretty-print JSON for debugging
       
           MESSAGE=$(echo "$OUTPUT" | jq -r '.[0].message' | tr -d '\n' | jq -sRr @uri)
           VERSION=$(echo "$OUTPUT" | jq -r '.[0].runtimeVersion')
@@ -52,7 +50,6 @@ jobs:
       
           PREVIEW_URL="https://expo.dev/preview/update?message=$MESSAGE&updateRuntimeVersion=$VERSION&createdAt=$CREATED_AT&slug=$SLUG&projectId=$PROJECT_ID&group=$GROUP"
       
-          echo "Extracted Preview URL: $PREVIEW_URL"  # Debugging
           echo "LATEST_UPDATE_URL=$PREVIEW_URL" >> $GITHUB_ENV
 
 

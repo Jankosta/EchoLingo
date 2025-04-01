@@ -36,10 +36,11 @@ jobs:
           CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
 
-      - name: 🚀 Create Update
+      - name: Create Update
         id: update
         run: |
           OUTPUT=$(eas update --auto --non-interactive --json)
+          echo "EAS OUTPUT: $OUTPUT"  # Debugging: Print JSON output
           URL=$(echo $OUTPUT | jq -r '.[0].updateGroup')
           echo "LATEST_UPDATE_URL=https://expo.dev/updates/$URL" >> $GITHUB_ENV
         env:
@@ -47,7 +48,7 @@ jobs:
           CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
 
-      - name: 📄 Update README with latest URL
+      - name: Update README with latest URL
         run: |
           sed -i "/^- Latest Update: /c\- Latest Update: [$LATEST_UPDATE_URL]($LATEST_UPDATE_URL)" README.md
           git config --global user.name "github-actions"

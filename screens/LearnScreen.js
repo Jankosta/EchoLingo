@@ -267,6 +267,21 @@ export default function LearnScreen({ navigation }) {
             <Text style={styles.buttonText}>Watch & Learn</Text>
           </TouchableOpacity>
 
+          {/* Grammar */}
+          <TouchableOpacity
+            style={styles.learnScreen_listItem}
+            onPress={() => navigate(navigation, 'Grammar')}
+          >
+            <Text style={styles.buttonText}>Grammar</Text>
+          </TouchableOpacity>
+
+          {/* Vocab & Pronunciation */}
+          <TouchableOpacity
+            style={styles.learnScreen_listItem}
+            onPress={() => navigate(navigation, 'VocabPronunciation')}
+          >
+            <Text style={styles.buttonText}>Vocabulary & Pronunciation</Text>
+          </TouchableOpacity>
 
           {/* My Notes */}
           <TouchableOpacity

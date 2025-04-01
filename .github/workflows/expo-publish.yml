@@ -49,7 +49,7 @@ jobs:
 
       - name: 📄 Update README with latest URL
         run: |
-          sed -i "/^## Latest Update:/c\## Latest Update: [$LATEST_UPDATE_URL]($LATEST_UPDATE_URL)" README.md
+          sed -i "/^- Latest Update: /c\- Latest Update: [$LATEST_UPDATE_URL]($LATEST_UPDATE_URL)" README.md
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add README.md

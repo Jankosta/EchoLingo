@@ -43,9 +43,9 @@ jobs:
           echo "EAS OUTPUT: $OUTPUT"  # Debugging: Print JSON output
           echo "$OUTPUT" | jq '.'  # Pretty-print JSON for debugging
       
-          MESSAGE=$(echo "$OUTPUT" | jq -r '.[0].message' | jq -sRr @uri)  # URL encode message
+          MESSAGE=$(echo "$OUTPUT" | jq -r '.[0].message' | tr -d '\n' | jq -sRr @uri)
           VERSION=$(echo "$OUTPUT" | jq -r '.[0].runtimeVersion')
-          CREATED_AT=$(echo "$OUTPUT" | jq -r '.[0].createdAt' | jq -sRr @uri)  # URL encode timestamp
+          CREATED_AT=$(echo "$OUTPUT" | jq -r '.[0].createdAt' | tr -d '\n' | jq -sRr @uri)
           GROUP=$(echo "$OUTPUT" | jq -r '.[0].group')
           PROJECT_ID="f32926b8-6f96-407f-974c-0ad674700b07"  # Replace with your actual project ID
           SLUG="exp"  # Replace with your actual slug

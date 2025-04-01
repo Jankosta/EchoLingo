@@ -1,15 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const { admin } = require("./config/firebaseAdmin"); // Import Firebase Admin
-
 const learningRoutes = require("./routes/learningRoutes");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API Routes
+// Register learning materials API routes
 app.use("/api", learningRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(5000, () => console.log("🚀 Server running on port 5000"));

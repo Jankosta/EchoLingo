@@ -11,7 +11,7 @@ import LearnScreen from './screens/LearnScreen';
 import PracticeScreen from './screens/PracticeScreen';
 import AIChatScreen from './screens/AIChatScreen';
 import QuizScreen from './screens/QuizScreen';
-import ExamScreen from './screens/ExamScreen';
+import ExamScreen from './screens/ExamScreen'
 import CommunityScreen from './screens/CommunityScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
 import VisualSettingsScreen from './screens/VisualSettingsScreen';

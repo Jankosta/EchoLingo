@@ -1,11 +1,12 @@
 import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useEffect, useContext } from 'react';
-import { Settings } from '../settings.js';
+import { Settings } from '../settings';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
+import { Picker } from '@react-native-picker/picker';
 
 export default function PreferencesScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, selectedLanguage, changeLanguage } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
@@ -37,6 +38,20 @@ export default function PreferencesScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
+      {/* Language Selection Section */}
+      <Text style={styles.subtitleText}>Select Language:</Text> {/* Label for language selection */}
+      <Picker
+        selectedValue={selectedLanguage} 
+        onValueChange={(itemValue) => changeLanguage(itemValue)} // Update language selection
+        style={styles.picker}
+      >
+        <Picker.Item label="English" value="English" />
+        <Picker.Item label="Spanish" value="Spanish" />
+        <Picker.Item label="French" value="French" />
+        <Picker.Item label="German" value="German" />
+        <Picker.Item label="Mandarin" value="Mandarin" />
+      </Picker>
+
       {/* Return Button */}
       <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>
         <Text style={styles.buttonText}>Return to Home</Text>
@@ -44,4 +59,3 @@ export default function PreferencesScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-

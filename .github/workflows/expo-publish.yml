@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: 
+    inputs:
+      message:
+        description: 'A message to include in the build'
+        required: false
 
 jobs:
   publish:

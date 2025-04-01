@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: 
+  workflow_dispatch:
     inputs:
       message:
-        description: 'A message to include in the build'
+        description: 'Build Message'
         required: false
 
 jobs:
@@ -37,8 +37,31 @@ jobs:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
 
       - name: Create Update
-        run: eas update --auto --non-interactive
+        id: update
+        run: |
+          OUTPUT=$(eas update --auto --non-interactive --json)
+      
+          MESSAGE=$(echo "$OUTPUT" | jq -r '.[0].message' | tr -d '\n' | jq -sRr @uri)
+          VERSION=$(echo "$OUTPUT" | jq -r '.[0].runtimeVersion')
+          CREATED_AT=$(echo "$OUTPUT" | jq -r '.[0].createdAt' | tr -d '\n' | jq -sRr @uri)
+          GROUP=$(echo "$OUTPUT" | jq -r '.[0].group')
+          PROJECT_ID="f32926b8-6f96-407f-974c-0ad674700b07"
+          SLUG="exp"
+      
+          PREVIEW_URL="https://expo.dev/preview/update?message=$MESSAGE&updateRuntimeVersion=$VERSION&createdAt=$CREATED_AT&slug=$SLUG&projectId=$PROJECT_ID&group=$GROUP"
+      
+          echo "LATEST_UPDATE_URL=$PREVIEW_URL" >> $GITHUB_ENV
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+           CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
+           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+
+
+      - name: Update README with latest URL
+        run: |
+          sed -i "/^- Latest Update: /c\- Latest Update: [$LATEST_UPDATE_URL]($LATEST_UPDATE_URL)" README.md
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "Update README with latest update link" || echo "No changes to commit"
+          git push origin main

@@ -51,6 +51,10 @@ jobs:
           PREVIEW_URL="https://expo.dev/preview/update?message=$MESSAGE&updateRuntimeVersion=$VERSION&createdAt=$CREATED_AT&slug=$SLUG&projectId=$PROJECT_ID&group=$GROUP"
       
           echo "LATEST_UPDATE_URL=$PREVIEW_URL" >> $GITHUB_ENV
+        env:
+           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+           CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
+           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
 
 
       - name: Update README with latest URL

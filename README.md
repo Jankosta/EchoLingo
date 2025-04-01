@@ -60,4 +60,4 @@ Unlike traditional learning apps that rely heavily on **visual content**, EchoLi
 
 To access the latest test version of the project please:
 - Install Expo Go on an Android or IOS device.
-- Latest Update: [https://u.expo.dev/update/36f378b6-28a8-4bc0-b5b2-ceabb487d288](https://u.expo.dev/update/36f378b6-28a8-4bc0-b5b2-ceabb487d288)
+- Latest Update: [https://expo.dev/preview/update?message=Update%20expo-publish.yml%0A&updateRuntimeVersion=1.0.0&createdAt=2025-04-01T04%3A47%3A52.250Z%0A&slug=exp&projectId=f32926b8-6f96-407f-974c-0ad674700b07&group=3eb15e64-d9ca-459a-9669-4bce5ee91183](https://expo.dev/preview/update?message=Update%20expo-publish.yml%0A&updateRuntimeVersion=1.0.0&createdAt=2025-04-01T04%3A47%3A52.250Z%0A&slug=exp&projectId=f32926b8-6f96-407f-974c-0ad674700b07&group=3eb15e64-d9ca-459a-9669-4bce5ee91183)

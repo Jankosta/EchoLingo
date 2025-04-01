@@ -40,13 +40,20 @@ jobs:
         id: update
         run: |
           OUTPUT=$(eas update --auto --non-interactive --json)
-          URL=$(echo "$OUTPUT" | jq -r '.[0].manifestPermalink')
-          echo "Extracted update URL: $URL"  # Debugging
-          echo "LATEST_UPDATE_URL=$URL" >> $GITHUB_ENV
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          echo "EAS OUTPUT: $OUTPUT"  # Debugging: Print JSON output
+          echo "$OUTPUT" | jq '.'  # Pretty-print JSON for debugging
+      
+          MESSAGE=$(echo "$OUTPUT" | jq -r '.[0].message' | jq -sRr @uri)  # URL encode message
+          VERSION=$(echo "$OUTPUT" | jq -r '.[0].runtimeVersion')
+          CREATED_AT=$(echo "$OUTPUT" | jq -r '.[0].createdAt' | jq -sRr @uri)  # URL encode timestamp
+          GROUP=$(echo "$OUTPUT" | jq -r '.[0].group')
+          PROJECT_ID="f32926b8-6f96-407f-974c-0ad674700b07"  # Replace with your actual project ID
+          SLUG="exp"  # Replace with your actual slug
+      
+          PREVIEW_URL="https://expo.dev/preview/update?message=$MESSAGE&updateRuntimeVersion=$VERSION&createdAt=$CREATED_AT&slug=$SLUG&projectId=$PROJECT_ID&group=$GROUP"
+      
+          echo "Extracted Preview URL: $PREVIEW_URL"  # Debugging
+          echo "LATEST_UPDATE_URL=$PREVIEW_URL" >> $GITHUB_ENV
 
 
       - name: Update README with latest URL

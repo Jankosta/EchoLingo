@@ -11,30 +11,27 @@ on:
         required: false
 
 jobs:
-  publish:
+  update:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
+      - name: 🏗 Setup repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18.x
           cache: yarn
 
-      - name: Install Dependencies
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
         run: yarn install
 
-      - name: Install Expo CLI
-        run: npm install -g expo-cli
-
-      - name: Authenticate with Expo
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: expo login --token $EXPO_TOKEN
-
-      - name: Publish to Expo
-        run: expo publish
+      - name: 🚀 Create update
+        run: eas update --auto --non-interactive
 

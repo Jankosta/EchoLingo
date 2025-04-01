@@ -36,26 +36,17 @@ jobs:
           CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
 
-      - name: 🚀 Create Update
+      - name: Create Update
         id: update
         run: |
           OUTPUT=$(eas update --auto --non-interactive --json)
-          echo "EAS OUTPUT: $OUTPUT"  # Debug: Print full JSON response
-          echo "$OUTPUT" | jq '.'  # Pretty-print JSON for debugging
-      
-          URL=$(echo "$OUTPUT" | jq -r '.[0].updateGroup')
-          echo "Extracted updateGroup: $URL"  # Debug: Print extracted URL
-      
-          if [ "$URL" == "null" ] || [ -z "$URL" ]; then
-            echo "Error: updateGroup is null or empty!"
-            exit 1  # Stop workflow if the updateGroup is missing
-          fi
-      
+          URL=$(echo "$OUTPUT" | jq -r '.[0].group')
           echo "LATEST_UPDATE_URL=https://expo.dev/updates/$URL" >> $GITHUB_ENV
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+
 
       - name: Update README with latest URL
         run: |

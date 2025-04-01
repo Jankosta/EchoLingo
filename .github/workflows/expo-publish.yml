@@ -31,6 +31,14 @@ jobs:
 
       - name: 📦 Install dependencies (npm)
         run: npm install
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
 
       - name: 🚀 Create update
         run: eas update --auto --non-interactive
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}

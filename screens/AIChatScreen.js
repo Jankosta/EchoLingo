@@ -35,7 +35,13 @@ export default function AIChatScreen({ navigation }) {
       .map(msg => `${msg.role.toUpperCase()}: ${msg.content}`) // Format each message entry
       .join("\n\n"); // Newline between each message
 
-    const uri = FileSystem.documentDirectory + 'EchoLingo_AI_Chat_Log.txt'; // File path
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString()
+      .replace(/:/g, '-') // Replace colon with hyphen
+      .replace('T', '_') // Replace T with underscore
+      .slice(0, 16); // End at minute
+
+    const uri = FileSystem.documentDirectory + `EchoLingo_AI_Chat_Log_${formattedDate}.txt`; // File path
   
     try {
       await FileSystem.writeAsStringAsync(uri, formattedLog, { encoding: FileSystem.EncodingType.UTF8 }); // Create the txt file

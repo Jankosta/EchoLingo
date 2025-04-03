@@ -197,6 +197,15 @@ const createStyles = ( fontSize, isGreyscale ) => {
         alignItems: 'center', 
         justifyContent: 'center',
       },
+      chatExportButton: { // CHAT EXPORT BUTTON
+        backgroundColor: buttonColor,
+        width: 125,
+        paddingVertical: 100, 
+        borderRadius: 10,
+        marginBottom: 5, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+      },
       ExploreHeading: {
         flex: 1,
         justifyContent: 'center',  // centers vertically

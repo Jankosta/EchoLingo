@@ -6,6 +6,8 @@ import { navigate, speak } from '../functions.js';
 import axios from 'axios';
 import { OPENAI_API_KEY } from '@env';
 import * as TTS from "expo-speech"; // TTS needs to be manually imported here so that TTS.stop() can be used
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 import { recordStart, recordStop, getTranscription } from "../voice.js";
 
 export default function AIChatScreen({ navigation }) {
@@ -16,12 +18,46 @@ export default function AIChatScreen({ navigation }) {
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
   const [messageHistory, setMessageHistory] = useState([]);
+  const [messageLog, setMessageLog] = useState([]);
 
-  message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Press bottom banner to return home. Press top right banner to repeat this message.";
+  message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Use the buttons to the right of text entry for voice input. To save a log of your chat, please press the middle of the top banner.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   const [recording, setRecording] = useState(false); // Recording state hook
   const [language, setLanguage] = useState("english");
+
+  const exportMessageLog = async (messageLog) => {
+    if (messageLog.length === 0) { // Don't create empty log
+      speak("There is no message history to save. Please press the bottom text field to type your message.");
+      return;
+    }
+  
+    const formattedLog = messageLog
+      .map(msg => `${msg.role.toUpperCase()}: ${msg.content}`) // Format each message entry
+      .join("\n\n"); // Newline between each message
+
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString()
+      .replace(/:/g, '-') // Replace colon with hyphen
+      .replace('T', '_') // Replace T with underscore
+      .slice(0, 16); // End at minute
+
+    const uri = FileSystem.documentDirectory + `EchoLingo_AI_Chat_Log_${formattedDate}.txt`; // File path
+  
+    try {
+      await FileSystem.writeAsStringAsync(uri, formattedLog, { encoding: FileSystem.EncodingType.UTF8 }); // Create the txt file
+  
+      if (await Sharing.isAvailableAsync()) { // Check for sharing permission
+        await Sharing.shareAsync(uri); // Open phone's share screen
+      } else {
+        console.error("Error exporting chat history: Sharing is not available on this device."); // No access
+        speak("Error exporting chat log. Please check your phone's file sharing permissions for EchoLingo.");
+      }
+    } catch (error) {
+      console.error("Error exporting chat history:", error); // Other error
+      speak("Error exporting chat log.");
+    }
+  };
   
   const handleRecord = async () => { // Recording handler
     TTS.stop();
@@ -65,6 +101,8 @@ export default function AIChatScreen({ navigation }) {
     const newHistory = [...messageHistory, { role: "user", content: inputText }]; // Add new message to history
     if (newHistory.length > 5) newHistory.shift(); // Remove oldest message
 
+    const newLog = [...messageLog, { role: "user", content: inputText }];
+
     try {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
@@ -94,6 +132,9 @@ export default function AIChatScreen({ navigation }) {
       if (updatedHistory.length > 5) updatedHistory.shift(); // Remove oldest message
       setMessageHistory(updatedHistory);
 
+      const updatedLog = [...newLog, { role: "assistant", content: removeTags(aiOutput) }];
+      setMessageLog(updatedLog);
+
     } catch (error) {
       console.error("sendMessage error: ", error);
 
@@ -112,7 +153,9 @@ export default function AIChatScreen({ navigation }) {
       <SafeAreaView style={styles.container}>
         {/* Title Banner */}
         <View style={styles.topBanner}>
-          <Text style={styles.titleText}>AI Chat</Text>
+          <TouchableOpacity onPress={() => exportMessageLog(messageLog)}>
+            <Text style={styles.titleText}>AI Chat</Text>
+          </TouchableOpacity>
 
           {recording ? ( // If the user presses the TTS button during recording it will act as if they stopped the recording
             <TouchableOpacity style={styles.topRightBannerButton} onPress={handleTranscribe}>
@@ -186,7 +229,7 @@ export default function AIChatScreen({ navigation }) {
         </View>
 
         {/* Return Button */}
-        <TouchableOpacity style={styles.bottomButton} onPress={handleNavigation}>
+        <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>
           <Text style={styles.buttonText}>Return to Home</Text>
         </TouchableOpacity>
       </SafeAreaView>

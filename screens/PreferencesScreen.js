@@ -10,7 +10,7 @@ export default function PreferencesScreen({ navigation }) {
 
   createStyles(fontSize, isGreyscale);
   
-  message = "Now viewing: Preferences. Press top left to edit visual settings. Press top right to edit audio settings. Press bottom banner to return home. Press top right banner to repeat this message.";
+  message = "Now viewing: Preferences. Press top left to edit visual settings. Press top right to edit audio settings. Press drop down and select the language you want to learn. Press bottom banner to return home. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   return (
@@ -39,18 +39,22 @@ export default function PreferencesScreen({ navigation }) {
       </View>
 
       {/* Language Selection Section */}
-      <Text style={styles.subtitleText}>Select Language:</Text> {/* Label for language selection */}
-      <Picker
-        selectedValue={selectedLanguage} 
-        onValueChange={(itemValue) => changeLanguage(itemValue)} // Update language selection
-        style={styles.picker}
-      >
-        <Picker.Item label="English" value="English" />
-        <Picker.Item label="Spanish" value="Spanish" />
-        <Picker.Item label="French" value="French" />
-        <Picker.Item label="German" value="German" />
-        <Picker.Item label="Mandarin" value="Mandarin" />
-      </Picker>
+      <View style={{ alignItems: 'center', marginVertical: 24 }}>
+        <Text style={[styles.buttonText, { fontSize: 18, marginBottom: 8, color: 'black' }]}>Learning Language:</Text>
+        <View style={{ width: 250, borderWidth: 1, borderColor: '#ccc', borderRadius: 10, backgroundColor: '#fff' }}>
+          <Picker
+            selectedValue={selectedLanguage}
+            onValueChange={(itemValue) => changeLanguage(itemValue)}
+            style={{ height: 50, width: '100%' }}
+            dropdownIconColor="#000"
+          >
+            <Picker.Item label="Spanish" value="Spanish" />
+            <Picker.Item label="French" value="French" />
+            <Picker.Item label="German" value="German" />
+            <Picker.Item label="Mandarin" value="Mandarin" />
+          </Picker>
+        </View>
+      </View>
 
       {/* Return Button */}
       <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>

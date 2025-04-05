@@ -1,13 +1,13 @@
-// GrammarScreen.js
 import React, { useContext, useEffect, useState } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Settings } from '../settings';
 import createStyles from '../styles';
 import { navigate, speak } from '../functions';
-import { grammarLessons } from '../data/grammarData';
+import { grammarLessonsFR } from '../data/grammarDataFR';
+import { grammarLessonsES } from '../data/grammarDataES';
 
 export default function GrammarScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, selectedLanguage } = useContext(Settings);
 
   const fontSizeMapping = {
     Small: 12,
@@ -27,14 +27,22 @@ export default function GrammarScreen({ navigation }) {
     if (isAutoRead) speak(message);
   }, []);
 
-  const toggleCategory = (index) => {
-    setExpandedCategory(expandedCategory === index ? null : index);
+  const toggleCategory = (index, title) => {
+    const newIndex = expandedCategory === index ? null : index;
+    setExpandedCategory(newIndex);
     setExpandedLesson(null);
+    if (isAutoRead && newIndex !== null) speak(`Now viewing ${title}`);
   };
 
-  const toggleLesson = (index) => {
-    setExpandedLesson(expandedLesson === index ? null : index);
+  const toggleLesson = (index, title) => {
+    const newIndex = expandedLesson === index ? null : index;
+    setExpandedLesson(newIndex);
+    if (isAutoRead && newIndex !== null) speak(`Now viewing ${title}`);
   };
+
+  const grammarLessons = selectedLanguage === 'French' ? grammarLessonsFR
+                        : selectedLanguage === 'Spanish' ? grammarLessonsES
+                        : [];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -60,32 +68,47 @@ export default function GrammarScreen({ navigation }) {
       {/* Grammar Content */}
       <ScrollView contentContainerStyle={styles.learnScreen_scrollContent}>
         <View style={styles.learnScreen_listContainer}>
-          {grammarLessons.map((category, catIndex) => (
-            <View key={catIndex} style={{ marginBottom: 16 }}>
-              <TouchableOpacity onPress={() => toggleCategory(catIndex)}>
-                <Text style={[styles.buttonText, { fontSize: numericFontSize + 2, color: '#000' }]}>📂 {category.topic}</Text>
-              </TouchableOpacity>
+          {Array.isArray(grammarLessons) && grammarLessons.length > 0 ? (
+            grammarLessons.map((category, catIndex) => (
+              <View key={catIndex} style={{ marginBottom: 16 }}>
+                <TouchableOpacity
+                  onPress={() => toggleCategory(catIndex, category.topic)}
+                  style={{
+                    backgroundColor: '#FFD700',
+                    borderRadius: 12,
+                    padding: 16,
+                    marginVertical: 6,
+                  }}
+                >
+                  <Text style={[styles.buttonText, { fontSize: numericFontSize + 4, color: 'black', textAlign: 'center' }]}>📂 {category.topic}</Text>
+                </TouchableOpacity>
 
-              {expandedCategory === catIndex && (
-                <View style={{ marginLeft: 12, marginTop: 6 }}>
-                  {category.lessons.map((lesson, lessonIndex) => (
-                    <View key={lessonIndex} style={{ marginBottom: 10 }}>
-                      <TouchableOpacity onPress={() => toggleLesson(lessonIndex)}>
-                        <Text style={[styles.buttonText, { fontSize: numericFontSize, fontWeight: 'bold', color: '#000' }]}>🔽 {lesson.title}</Text>
-                      </TouchableOpacity>
+                {expandedCategory === catIndex && (
+                  <View style={{ marginTop: 6 }}>
+                    {category.lessons.map((lesson, lessonIndex) => (
+                      <View key={lessonIndex} style={{ marginBottom: 10 }}>
+                        <TouchableOpacity
+                          onPress={() => toggleLesson(lessonIndex, lesson.title)}
+                          style={{ backgroundColor: '#FFF0C1', padding: 12, borderRadius: 10, marginHorizontal: 6 }}
+                        >
+                          <Text style={[styles.buttonText, { fontSize: numericFontSize + 2, fontWeight: 'bold', color: 'black' }]}>🔽 {lesson.title}</Text>
+                        </TouchableOpacity>
 
-                      {expandedLesson === lessonIndex && (
-                        <View style={{ marginLeft: 12, marginTop: 4 }}>
-                          <Text style={[styles.learnScreen_dropdownText, { color: '#000' }]}><Text style={{ fontWeight: 'bold' }}>Explanation:</Text> {lesson.explanation}</Text>
-                          <Text style={[styles.learnScreen_dropdownText, { color: '#000' }]}><Text style={{ fontWeight: 'bold' }}>Example:</Text> {lesson.example}</Text>
-                        </View>
-                      )}
-                    </View>
-                  ))}
-                </View>
-              )}
-            </View>
-          ))}
+                        {expandedLesson === lessonIndex && (
+                          <View style={{ marginTop: 4, paddingHorizontal: 12 }}>
+                            <Text style={[styles.learnScreen_dropdownText, { color: 'black' }]}><Text style={{ fontWeight: 'bold' }}>Explanation:</Text> {lesson.explanation}</Text>
+                            <Text style={[styles.learnScreen_dropdownText, { color: 'black' }]}><Text style={{ fontWeight: 'bold' }}>Example:</Text> {lesson.example}</Text>
+                          </View>
+                        )}
+                      </View>
+                    ))}
+                  </View>
+                )}
+              </View>
+            ))
+          ) : (
+            <Text style={[styles.learnScreen_dropdownText, { color: 'black', textAlign: 'center' }]}>Grammar lessons coming soon for {selectedLanguage}.</Text>
+          )}
         </View>
       </ScrollView>
 

@@ -28,12 +28,7 @@ export default function LearnScreen({ navigation }) {
   const numericFontSize = typeof fontSize === 'string' ? fontSizeMapping[fontSize] || 16 : fontSize;
   const styles = createStyles(numericFontSize, isGreyscale);
 
-  const message = 'Now viewing: Learn.';
-  useEffect(() => {
-    if (isAutoRead) {
-      speak(message);
-    }
-  }, []);
+  const message = 'Now viewing: Learn. Scroll to explore reading materials, videos, grammar lessons, vocabulary and pronunciation, and notes. Tap on each item to begin learning. Press top left to go back. Press bottom banner to return home. Press top right to repeat this message.';
 
   // Fetch learning materials when selectedLanguage changes
   useEffect(() => {
@@ -41,10 +36,11 @@ export default function LearnScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => setMaterials(data))
       .catch((error) => console.error("Error fetching materials:", error));
-
-      speak("Welcome to EchoLingo!", selectedLanguage);
-
-  }, [selectedLanguage]);  
+  
+    if (isAutoRead) {
+      speak(message);
+    }
+  }, [selectedLanguage, isAutoRead]);  
 
   const [dropdowns, setDropdowns] = useState({
     language: false,

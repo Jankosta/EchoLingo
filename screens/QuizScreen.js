@@ -1,132 +1,20 @@
-/*
-import { Text, View, Image, SafeAreaView, TouchableOpacity, TextInput, ScrollView} from 'react-native';
-import { useEffect, useContext, useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
-import { Settings } from '../settings.js';
-import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
-
-export default function QuizScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
-
-  createStyles(fontSize, isGreyscale);
-
-  let dropdownColor = 'red';
-  let generateColor = 'green';
-
-  if (isGreyscale === true) {
-    dropdownColor = 'darkgrey';
-    generateColor = 'grey';
-  }
-
-  const message = "Now viewing: Quiz page. Quiz buttons from top to bottom: AI Quiz Generator, number of questions, question format, quiz topics, generate quiz. Press bottom banner to return home. Press top right banner to repeat this message.";
-  useEffect(() => { if (isAutoRead) { speak(message); } }, []);
-
-  const [aiPrompt, setAiPrompt] = useState('');
-  const [numQuestions, setNumQuestions] = useState('10');
-  const [questionFormat, setQuestionFormat] = useState('Multiple Choice');
-  const [quizTopic, setQuizTopic] = useState('Food');
-
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* Title Banner /}
-      <View style={styles.topBanner}>
-        <Text style={styles.titleText}>Quiz</Text>
-
-        <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
-          <Image source={require('../assets/volume.png')} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Practice")}>
-          <Image source={require('../assets/back.png')} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Scrollable Content /}
-      <ScrollView contentContainerStyle={{ width: '100%', paddingBottom: 100, paddingTop: 10 }}>
-        {/* AI Prompt Input /}
-        <Text style={{ paddingHorizontal: 10 }}>AI Quiz Generator</Text>
-        <View style={styles.chatInputBox}>
-          <TextInput
-            style={[styles.Input, { width: '90%'}]}
-            placeholder="Ex: Generate a quiz with 10 multiple-choice questions about basic food items"
-            value={aiPrompt}
-            onChangeText={setAiPrompt}
-          />
-        </View>
-
-        {/* Dropdown for Number of Questions /}
-        <TouchableOpacity style={[styles.dropdownContainer, { paddingHorizontal: 16, paddingVertical: 10, margin: '1%', backgroundColor: dropdownColor, borderRadius: 10 }]}>
-          <Text style={[styles.labelText, { color: 'white', fontWeight: 'bold', fontSize: 18 }]}># of Questions</Text>
-          <Picker
-            selectedValue={numQuestions}
-            onValueChange={(itemValue) => setNumQuestions(itemValue)}
-            style={[styles.picker, { color: 'white' }]}
-          >
-            <Picker.Item label="10" value="10" />
-            <Picker.Item label="20" value="20" />
-            <Picker.Item label="30" value="30" />
-          </Picker>
-        </TouchableOpacity>
-
-        {/* Dropdown for Question Format /}
-        <TouchableOpacity style={[styles.dropdownContainer, { paddingHorizontal: 16, paddingVertical: 10, margin: '1%', backgroundColor: dropdownColor, borderRadius: 10 }]}>
-          <Text style={[styles.labelText, { color: 'white', fontWeight: 'bold', fontSize: 18 }]}>Question Format</Text>
-          <Picker
-            selectedValue={questionFormat}
-            onValueChange={(itemValue) => setQuestionFormat(itemValue)}
-            style={[styles.picker, { color: 'white' }]}
-          >
-            <Picker.Item label="Basic Vocabulary" value="Basic Vocabulary" />
-            <Picker.Item label="Grammar" value="Grammar" />
-            <Picker.Item label="Listening Comprehension" value="Listening Comprehension" />
-            <Picker.Item label="Translating" value="Translating" />
-          </Picker>
-        </TouchableOpacity>
-
-        {/* Dropdown for Quiz Topics /}
-        <TouchableOpacity style={[styles.dropdownContainer, { paddingHorizontal: 16, paddingVertical: 10, margin: '1%', backgroundColor: dropdownColor, borderRadius: 10 }]}>
-          <Text style={[styles.labelText, { color: 'white', fontWeight: 'bold', fontSize: 18 }]}>Quiz Topics</Text>
-          <Picker
-            selectedValue={quizTopic}
-            onValueChange={(itemValue) => setQuizTopic(itemValue)}
-            style={[styles.picker, { color: 'white' }]}
-          >
-            <Picker.Item label="Food" value="Food" />
-            <Picker.Item label="Animals" value="Animals" />
-            <Picker.Item label="Colors" value="Colors" />
-            <Picker.Item label="Numbers" value="Numbers" />
-          </Picker>
-        </TouchableOpacity>
-
-        {/* Generate Exam Button /}
-        <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 35, margin: '1%', backgroundColor: generateColor, borderRadius: 10 }}>
-          <Text style={[styles.labelText, { color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }]}>Generate Exam</Text>
-        </TouchableOpacity>
-      </ScrollView>
-
-      {/* Return Button /}
-      <View style={[styles.topBanner, { marginBottom: '0%', marginTop: '1%' }]}>
-        <TouchableOpacity style={[styles.bottomButton, { height: '95%' }]} onPress={() => navigate(navigation, 'Home')}>
-          <Text style={styles.buttonText}>Return to Home</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  );
-}
-*/
-
+// Import necessary modules and components
 import { Text, View, Image, SafeAreaView, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { useEffect, useContext, useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
+import { collection, getDocs, query, where, doc, getDoc } from "firebase/firestore";
+import { db } from "../backend/config/firebaseConfig";
+import { recordStart, recordStop, getTranscription } from '../voice.js';
 
 export default function QuizScreen({ navigation }) {
+  // Access user settings and apply styles
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
   createStyles(fontSize, isGreyscale);
 
+  // Define colors based on greyscale mode
   let dropdownColor = 'red';
   let generateColor = 'green';
   if (isGreyscale === true) {
@@ -134,18 +22,21 @@ export default function QuizScreen({ navigation }) {
     generateColor = 'grey';
   }
 
-  const message = "Now viewing: Quiz page. Use the mode selector to choose between AI Generated and Premade quizzes. Press bottom banner to return home. Press top right banner to repeat this message.";
+  // Message for screen reader
+  const message = "Now viewing: Quiz page. Use the mode selector to choose between AI Generated and Premade quizzes. Press bottom banner to return home. Press the top left banner to use voice commands. Press once to begin recording and once again to stop recording. Say 'help' if stuck. Press top right banner to repeat this message.";
   useEffect(() => { if (isAutoRead) { speak(message); } }, []);
 
+  // State variables for quiz settings and data
   const [quizMode, setQuizMode] = useState("AI");
-
   const [aiPrompt, setAiPrompt] = useState('');
   const [numQuestions, setNumQuestions] = useState('10');
-  const [questionFormat, setQuestionFormat] = useState('Multiple Choice');
+  const [questionFormat, setQuestionFormat] = useState('Basic Vocabulary');
   const [quizTopic, setQuizTopic] = useState('Numbers');
   const [quizResult, setQuizResult] = useState('');
   const [generatedQuiz, setGeneratedQuiz] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
+  // Premade quiz topics and data
   const premadeTopics = ["Numbers", "Colors", "Greeting/Introduction", "Days/Months/Seasons", "Family"];
   const [premadeTopic, setPremadeTopic] = useState("Numbers");
   const premadeQuizzes = {
@@ -163,13 +54,6 @@ export default function QuizScreen({ navigation }) {
       { question: "In the sentence 'El coche es negro.', what color is the car?", answer: ["black"] },
       { question: "Translate 'verde' to English.", answer: ["green"] }
     ],
-    /*"Greeting/Introduction": [
-      { question: "What does 'Hola' mean?", answer: "hello" },
-      { question: "Translate 'My name is Anna' into Spanish.", answer: "me llamo anna" },
-      { question: "Listening Comprehension: (For demo, type 'N/A')", answer: "n/a" },
-      { question: "In the sentence 'Hola, me llamo Ana. ¿Cómo estás?', what is Ana's name?", answer: "ana" },
-      { question: "Translate 'Buenos días' to English.", answer: "good morning" }
-    ],*/
     "Greeting/Introduction": [
       { question: "What does 'Hola' mean?", answer: ["hello"] },
       { question: "Translate 'My name is Anna' into Spanish.", answer: ["me llamo anna", "mi nombre es anna"] },
@@ -196,214 +80,102 @@ export default function QuizScreen({ navigation }) {
   const [userAnswers, setUserAnswers] = useState(Array(5).fill(""));
   const [premadeResult, setPremadeResult] = useState("");
 
-  /*const handleGenerateQuiz = () => {
+  // Function to generate AI-based quiz
+  const handleGenerateQuiz = async () => {
     if (quizMode === "AI") {
-      const total = parseInt(numQuestions);
-      const score = Math.floor(total / 2); // Simulate half correct
-      let resultMessage = `Quiz Generated. You answered ${score} out of ${total} questions correctly.`;
-      if (aiPrompt.trim() !== "") {
-        resultMessage += " (AI-generated)";
-      }
-      setQuizResult(resultMessage);
-      speak(resultMessage);
-    }
-  };*/
+      try {
+        const docRef = doc(db, "Quizzes", quizTopic);
+        const docSnap = await getDoc(docRef);
 
-  const handleGenerateQuiz = () => {
-    if (quizMode === "AI") {
-      const total = parseInt(numQuestions);
-      const topic = quizTopic.toLowerCase();
-      const format = questionFormat.toLowerCase();
-  
-      // Example question templates for AI generation
-      const questionTemplates = {
-        "basic vocabulary": {
-          "numbers": [
-            { question: "What is '{number}' in Spanish?", answer: (num) => [num.toString(), translateNumberToSpanish(num)] },
-            { question: "Translate '{number}' into Spanish.", answer: (num) => [num.toString(), translateNumberToSpanish(num)] },
-          ],
-          "colors": [
-            { question: "What is '{color}' in Spanish?", answer: (color) => [translateColorToSpanish(color)] },
-            { question: "Translate '{color}' into Spanish.", answer: (color) => [translateColorToSpanish(color)] },
-          ],
-        },
-        // Add more formats and topics as needed
-      };
-  
-      // Generate questions dynamically
-      const generatedQuestions = [];
-      const templates = questionTemplates[format]?.[topic];
-      const usedVariables = new Set(); // Initialize usedVariables as a Set
-      if (templates) {
-        for (let i = 0; i < total; i++) {
-          const template = templates[i % templates.length];
-          const variable = generateVariableForTopic(topic, usedVariables); // Pass usedVariables to ensure uniqueness
-          const questionText = template.question.replace("{number}", variable).replace("{color}", variable);
-          const answers = template.answer(variable);
-          generatedQuestions.push({ question: questionText, answer: answers });
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const questions = data[questionFormat] || [];
+          const answers = data[`${questionFormat} Answers`] || [];
+
+          if (questions.length === 0 || answers.length === 0) {
+            const errorMessage = "No questions available for the selected topic and format.";
+            setQuizResult(errorMessage);
+            speak(errorMessage);
+            return;
+          }
+
+          // Shuffle questions and answers together
+          const shuffledIndices = Array.from({ length: questions.length }, (_, i) => i).sort(() => Math.random() - 0.5);
+          const shuffledQuestions = shuffledIndices.map(index => questions[index]);
+          const shuffledAnswers = shuffledIndices.map(index => answers[index]);
+
+          const total = Math.min(parseInt(numQuestions), shuffledQuestions.length);
+          const selectedQuestions = shuffledQuestions.slice(0, total);
+          const selectedAnswers = shuffledAnswers.slice(0, total);
+
+          const generatedQuestions = selectedQuestions.map((question, index) => ({
+            question,
+            answer: selectedAnswers[index],
+          }));
+
+          setGeneratedQuiz(generatedQuestions);
+          setUserAnswers(Array(generatedQuestions.length).fill(""));
+          setQuizResult("");
+
+          let combinedText = "Here are your questions: ";
+          generatedQuestions.forEach((q, index) => {
+            combinedText += `Question ${index + 1}: ${q.question}. `;
+          });
+          speak(combinedText);
+        } else {
+          const errorMessage = "Failed to fetch quiz data. Please check your settings.";
+          setQuizResult(errorMessage);
+          speak(errorMessage);
         }
-      }
-  
-      // Display the generated quiz
-      if (generatedQuestions.length > 0) {
-        setGeneratedQuiz(generatedQuestions);
-        setUserAnswers(Array(generatedQuestions.length).fill(""));
-        setQuizResult("");
-
-        // Read the questions aloud
-        let combinedText = "Here are your questions: ";
-        generatedQuestions.forEach((q, index) => {
-          combinedText += `Question ${index + 1}: ${q.question}. `;
-        });
-        speak(combinedText); // Use the speak function to read the questions aloud
-      } else {
-        let errorMessage = "Failed to generate quiz. Please check your settings.";
+      } catch (error) {
+        const errorMessage = "An error occurred while fetching quiz data.";
         setQuizResult(errorMessage);
         speak(errorMessage);
+        console.error(error);
       }
     }
   };
 
-  /*const handleSubmitGeneratedQuiz = () => {
-    let correctCount = 0;
-    let resultsText = `You got `;
-    generatedQuiz.forEach((q, index) => {
-      const userAnswer = userAnswers[index].trim().toLowerCase();
-      const correctAnswers = q.answer.map(ans => ans.trim().toLowerCase());
-      if (correctAnswers.includes(userAnswer)) correctCount++;
-    });
-    resultsText += `${correctCount} out of ${generatedQuiz.length} correct.\n`;
-    generatedQuiz.forEach((q, index) => {
-      resultsText += `Question ${index + 1}: Your answer: ${userAnswers[index]} | Correct: ${q.answer.join(" or ")}\n`;
-    });
-    setQuizResult(resultsText);
-    speak(resultsText);
-  };*/
-
+  // Function to submit answers for AI-generated quiz
   const handleSubmitGeneratedQuiz = () => {
     let correctCount = 0;
     let incorrectQuestions = [];
-  
-    // Check each question and determine if the user's answer is correct
+
     generatedQuiz.forEach((q, index) => {
       const userAnswer = userAnswers[index].trim().toLowerCase();
-      const correctAnswers = q.answer.map(ans => ans.trim().toLowerCase());
+      const correctAnswers = Array.isArray(q.answer)
+        ? q.answer.map((ans) => ans.trim().toLowerCase())
+        : [q.answer.trim().toLowerCase()];
+
       if (correctAnswers.includes(userAnswer)) {
         correctCount++;
       } else {
         incorrectQuestions.push({
-          questionIndex: index + 1, // Store the original question number
+          questionIndex: index + 1,
           question: q.question,
           userAnswer: userAnswers[index],
           correctAnswers: q.answer,
         });
       }
     });
-  
-    // Build the results text
+
     let resultsText = `You got ${correctCount} out of ${generatedQuiz.length} correct.\n\n`;
     if (incorrectQuestions.length > 0) {
       resultsText += "Here are the questions you got wrong:\n";
       incorrectQuestions.forEach((q) => {
-        resultsText += `Q${q.questionIndex}: ${q.question}\n`; // Use the original question number
+        resultsText += `Q${q.questionIndex}: ${q.question}\n`;
         resultsText += `Your answer: ${q.userAnswer || "No answer"}\n`;
-        resultsText += `Correct answers: ${q.correctAnswers.join(" or ")}\n\n`;
+        resultsText += `Correct answers: ${Array.isArray(q.correctAnswers) ? q.correctAnswers.join(" or ") : q.correctAnswers}\n\n`;
       });
     } else {
       resultsText += "Great job! You answered all questions correctly!";
     }
-  
-    // Update the state with the results
+
     setQuizResult(resultsText);
     speak(resultsText);
   };
-  
-  // Helper function to translate numbers to Spanish
-  const translateNumberToSpanish = (number) => {
-    const numberMap = {
-      0: "cero",
-      1: "uno",
-      2: "dos",
-      3: "tres",
-      4: "cuatro",
-      5: "cinco",
-      6: "seis",
-      7: "siete",
-      8: "ocho",
-      9: "nueve",
-      10: "diez",
-      20: "veinte",
-      30: "treinta",
-      40: "cuarenta",
-      50: "cincuenta",
-      60: "sesenta",
-      70: "setenta",
-      80: "ochenta",
-      90: "noventa",
-      100: "cien",
-      // Add more numbers as needed
-    };
-    return numberMap[number] || number.toString();
-  };
-  
-  // Helper function to generate variables for topics
-  const generateVariableForTopic = (topic, usedVariables) => {
-    if (topic === "numbers") {
-      const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-      let newNumber;
-      do {
-        newNumber = numbers[Math.floor(Math.random() * numbers.length)]; // Randomly select a number from numberMap keys
-      } while (usedVariables.has(newNumber)); // Ensure the number is not already used
-      usedVariables.add(newNumber); // Add the new number to the set of used variables
-      return newNumber;
-    } else if (topic === "colors") {
-      const colors = ["red", "blue", "green", "yellow", "black", "white", "orange", "purple", "pink", "grey", "brown"];
-      let newColor;
-      do {
-        newColor = colors[Math.floor(Math.random() * colors.length)];
-      } while (usedVariables.has(newColor)); // Ensure the color is not already used
-      usedVariables.add(newColor); // Add the new color to the set of used variables
-      return newColor;
-    }
-    return "";
-  };
-  
-  // Helper function to translate colors to Spanish
-  const translateColorToSpanish = (color) => {
-    const colorMap = {
-      red: "rojo",
-      blue: "azul",
-      green: "verde",
-      yellow: "amarillo",
-      black: "negro",
-      white: "blanco",
-      orange: "naranja",
-      purple: "morado",
-      pink: "rosado",
-      grey: "gris",
-      brown: "marron",
-      // Add more colors as needed
-    };
-    return colorMap[color] || color;
-  };
 
-  /*const handlePremadeSubmit = () => {
-    const questions = premadeQuizzes[premadeTopic];
-    let correctCount = 0;
-    let resultsText = `You got `;
-    questions.forEach((q, index) => {
-      const userAnswer = userAnswers[index].trim().toLowerCase();
-      const correctAnswer = q.answer.trim().toLowerCase();
-      if (userAnswer === correctAnswer) correctCount++;
-    });
-    resultsText += `${correctCount} out of ${questions.length} correct.\n`;
-    questions.forEach((q, index) => {
-      resultsText += `Question ${index + 1}: Your answer: ${userAnswers[index]} | Correct: ${q.answer}\n`;
-    });
-    setPremadeResult(resultsText);
-    speak(resultsText);
-  };*/
-
+  // Function to submit answers for premade quiz
   const handlePremadeSubmit = () => {
     const questions = premadeQuizzes[premadeTopic];
     let correctCount = 0;
@@ -421,6 +193,7 @@ export default function QuizScreen({ navigation }) {
     speak(resultsText);
   };
 
+  // Function to read all questions aloud
   const readAllQuestions = () => {
     const questions = premadeQuizzes[premadeTopic];
     let combinedText = "";
@@ -430,45 +203,251 @@ export default function QuizScreen({ navigation }) {
     speak(combinedText);
   };
 
+  // Voice recording and transcription handling
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingLanguage, setRecordingLanguage] = useState("english");
+
+  const numberToSpanishString = {
+    0: "cero",
+    1: "uno",
+    2: "dos",
+    3: "tres",
+    4: "cuatro",
+    5: "cinco",
+    6: "seis",
+    7: "siete",
+    8: "ocho",
+    9: "nueve",
+    10: "diez",
+    20: "veinte",
+    30: "treinta",
+    40: "cuarenta",
+    50: "cincuenta",
+    60: "sesenta",
+    70: "setenta",
+    80: "ochenta",
+    90: "noventa",
+    100: "cien",
+    // Add more mappings as needed
+  };
+
+  const convertNumbersToStrings = (transcript) => {
+    return transcript
+      .split(" ")
+      .map((word) => {
+        const number = parseInt(word, 10);
+        return numberToSpanishString[number] || word;
+      })
+      .join(" ");
+  };
+
+  const handleMicPress = async () => {
+    if (isRecording) {
+      // Stop recording and process voice input
+      const uri = await recordStop();
+      setIsRecording(false);
+
+      if (uri) {
+        let transcript = (await getTranscription(uri, recordingLanguage)).toLowerCase(); // Pass recordingLanguage
+        if (transcript.includes("help")) {
+          speak(
+            "Here are the available voice commands: " +
+            "Say 'mode generated' to switch to AI-generated mode. " +
+            "Say 'mode premade' to switch to premade mode. " +
+            "Say '10 questions', '20 questions', or '30 questions' to set the number of questions. " +
+            "Say 'question format' followed by a format to select a question format. " +
+            "Say 'question topic' followed by a topic to select a question topic. " +
+            "Say 'generate' to generate the exam. " +
+            "Say 'read questions' to read all questions aloud. " +
+            "Say 'next question' or 'previous question' to navigate between questions. " +
+            "Say 'answer' to switch to Spanish and provide an answer starting with 'inicio'."
+          );
+        } else {
+          processVoiceCommand(transcript);
+        }
+      }
+    } else {
+      // Start recording
+      const recordingStarted = await recordStart();
+      if (recordingStarted) {
+        speak("Recording started.");
+        setIsRecording(true);
+      }
+    }
+  };
+
+  const processVoiceCommand = (transcript) => {
+    console.log(`User recorded: ${transcript}`); // Log the user's recorded transcript
+
+    // Handle mode switching
+    if (transcript.includes("mode")) {
+      if (transcript.includes("generated")) {
+        setQuizMode("AI");
+        speak("Switched to generated mode.");
+      } else if (transcript.includes("premade")) {
+        setQuizMode("Premade");
+        speak("Switched to premade mode.");
+      }
+    }
+
+    // Handle number of questions
+    if (transcript.includes("questions")) {
+      if (transcript.includes("10")) {
+        setNumQuestions("10");
+        speak("Number of questions set to 10.");
+      } else if (transcript.includes("20")) {
+        setNumQuestions("20");
+        speak("Number of questions set to 20.");
+      } else if (transcript.includes("30")) {
+        setNumQuestions("30");
+        speak("Number of questions set to 30.");
+      }
+    }
+
+    // Handle question format selection
+    if (transcript.includes("question format")) {
+      ["Basic Vocabulary", "Grammar", "Listening Comprehension", "Translating"].forEach((format) => {
+        if (transcript.includes(format.toLowerCase())) {
+          setQuestionFormat(format);
+          speak(`Question format ${format} selected.`);
+        }
+      });
+    }
+
+    // Handle quiz topic selection
+    if (transcript.includes("quiz topic")) {
+      premadeTopics.forEach((topic) => {
+        if (transcript.includes(topic.toLowerCase())) {
+          setQuizTopic(topic);
+          speak(`Quiz topic ${topic} selected.`);
+        }
+      });
+    }
+
+    // Handle generating the quiz
+    if (transcript.includes("generate")) {
+      handleGenerateQuiz();
+      speak("Generating the quiz.");
+    }
+
+    // Handle reading questions aloud
+    if (transcript.includes("read questions")) {
+      if (quizMode === "AI" && generatedQuiz.length > 0) {
+        let combinedText = "Here are your questions: ";
+        generatedQuiz.forEach((q, index) => {
+          combinedText += `Question ${index + 1}: ${q.question}. `;
+        });
+        speak(combinedText);
+      } else if (quizMode === "Premade") {
+        const questions = premadeQuizzes[premadeTopic];
+        let combinedText = "Here are your questions: ";
+        questions.forEach((q, index) => {
+          combinedText += `Question ${index + 1}: ${q.question}. `;
+        });
+        speak(combinedText);
+      } else {
+        speak("No questions available to read.");
+      }
+    }
+
+    // Handle navigating between questions
+    if (transcript.includes("next question")) {
+      if (quizMode === "AI" && generatedQuiz.length > 0) {
+        if (currentQuestionIndex < generatedQuiz.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          speak(`Next question: ${generatedQuiz[currentQuestionIndex + 1].question}`);
+        } else {
+          speak("You are already on the last question.");
+        }
+      } else if (quizMode === "Premade") {
+        if (currentQuestionIndex < premadeQuizzes[premadeTopic].length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          speak(`Next question: ${premadeQuizzes[premadeTopic][currentQuestionIndex + 1].question}`);
+        } else {
+          speak("You are already on the last question.");
+        }
+      } else {
+        speak("No questions available to navigate.");
+      }
+    }
+
+    if (transcript.includes("previous question")) {
+      if (quizMode === "AI" && generatedQuiz.length > 0) {
+        if (currentQuestionIndex > 0) {
+          setCurrentQuestionIndex(currentQuestionIndex - 1);
+          speak(`Previous question: ${generatedQuiz[currentQuestionIndex - 1].question}`);
+        } else {
+          speak("You are already on the first question.");
+        }
+      } else if (quizMode === "Premade") {
+        if (currentQuestionIndex > 0) {
+          setCurrentQuestionIndex(currentQuestionIndex - 1);
+          speak(`Previous question: ${premadeQuizzes[premadeTopic][currentQuestionIndex - 1].question}`);
+        } else {
+          speak("You are already on the first question.");
+        }
+      } else {
+        speak("No questions available to navigate.");
+      }
+    }
+
+    // Handle inputting answers
+    if (transcript.includes("answer")) {
+      const answerMatch = transcript.match(/answer/);
+      if (answerMatch) {
+        speak("Recording language switched to Spanish. Please say 'inicio' followed by your answer.");
+        setRecordingLanguage("spanish"); // Switch recording language to Spanish
+      }
+    }
+
+    if (transcript.includes("inicio")) {
+      transcript = convertNumbersToStrings(transcript); // Convert numbers to strings
+      const inicioMatch = transcript.match(/inicio (.+)/);
+      if (inicioMatch && inicioMatch[1]) {
+        const answer = inicioMatch[1].trim();
+        const newAnswers = [...userAnswers];
+        newAnswers[currentQuestionIndex] = answer; // Update the answer for the current question
+        setUserAnswers(newAnswers);
+        speak(`Answer recorded for question ${currentQuestionIndex + 1}.`);
+        setRecordingLanguage("english"); // Switch recording language back to English
+      } else {
+        speak("Please specify your answer after saying 'inicio'.");
+      }
+    }
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { alignItems: 'stretch' }]}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
         <Text style={styles.titleText}>Quiz</Text>
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
           <Image source={require('../assets/volume.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, "Practice")}>
-          <Image source={require('../assets/back.png')} />
+        <TouchableOpacity style={styles.topLeftBannerButton} onPress={handleMicPress}>
+          <Image style={{ width: 65, height: 65 }} source={require('../assets/mic.png')} />
         </TouchableOpacity>
       </View>
-      <ScrollView contentContainerStyle={{ width: '100%', paddingBottom: 100, paddingTop: 10 }}>
+      <ScrollView contentContainerStyle={{ width: '100%', paddingBottom: 100, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
         {/* Mode Selector */}
-        <Text style={{ paddingHorizontal: 10, fontSize: 18 }}>Select Mode</Text>
-        <Picker
-          selectedValue={quizMode}
-          onValueChange={(itemValue) => { 
-            setQuizMode(itemValue); 
-            setQuizResult("");
-            setPremadeResult("");
-          }}
-          style={[styles.picker, { color: 'black' }]}
-        >
-          <Picker.Item label="AI Generated" value="AI" />
-          <Picker.Item label="Premade" value="Premade" />
-        </Picker>
+        <TouchableOpacity style={[styles.dropdownContainer, { paddingHorizontal: 16, paddingVertical: 10, margin: '1%', backgroundColor: dropdownColor, borderRadius: 10 }]}>
+          <Text style={[styles.labelText, { color: 'white', fontWeight: 'bold', fontSize: 18 }]}>Select Mode</Text>
+          <Picker
+            selectedValue={quizMode}
+            onValueChange={(itemValue) => { 
+              setQuizMode(itemValue); 
+              setQuizResult("");
+              setPremadeResult("");
+            }}
+            style={[styles.picker, { color: 'white' }]}
+          >
+            <Picker.Item label="Generated" value="AI" />
+            <Picker.Item label="Premade" value="Premade" />
+          </Picker>
+        </TouchableOpacity>
         {quizMode === "AI" ? (
           <>
-            {/* AI Generated Quiz */}
-            <Text style={{ paddingHorizontal: 10 }}>AI Quiz Generator</Text>
-            <View style={[styles.chatInputBox, { height: 150 }]}>
-              <TextInput
-                style={[styles.Input, { width: '90%'}]}
-                placeholder="Ex: Generate a quiz with 10 multiple-choice questions about basic food items"
-                value={aiPrompt}
-                onChangeText={setAiPrompt}
-              />
-            </View>
+            {/* Generated Quiz */}
             <TouchableOpacity style={[styles.dropdownContainer, { paddingHorizontal: 16, paddingVertical: 10, margin: '1%', backgroundColor: dropdownColor, borderRadius: 10 }]}>
               <Text style={[styles.labelText, { color: 'white', fontWeight: 'bold', fontSize: 18 }]}># of Questions</Text>
               <Picker

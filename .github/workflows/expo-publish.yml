@@ -1,1 +1,70 @@
+name: Expo Publish
 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Build Message'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install Dependencies
+        run: npm install
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+
+      - name: Create Update
+        id: update
+        run: |
+          OUTPUT=$(eas update --auto --non-interactive --json)
+      
+          MESSAGE=$(echo "$OUTPUT" | jq -r '.[0].message' | tr -d '\n' | jq -sRr @uri)
+          VERSION=$(echo "$OUTPUT" | jq -r '.[0].runtimeVersion')
+          CREATED_AT=$(echo "$OUTPUT" | jq -r '.[0].createdAt' | tr -d '\n' | jq -sRr @uri)
+          GROUP=$(echo "$OUTPUT" | jq -r '.[0].group')
+          PROJECT_ID="f32926b8-6f96-407f-974c-0ad674700b07"
+          SLUG="exp"
+      
+          PREVIEW_URL="https://expo.dev/preview/update?message=$MESSAGE&updateRuntimeVersion=$VERSION&createdAt=$CREATED_AT&slug=$SLUG&projectId=$PROJECT_ID&group=$GROUP"
+      
+          echo "LATEST_UPDATE_URL=$PREVIEW_URL" >> $GITHUB_ENV
+        env:
+           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+           CLOUD_API_KEY: ${{ secrets.CLOUD_API_KEY }}
+           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+
+
+      - name: Update README with latest URL
+        run: |
+          sed -i "/^- Latest Update: /c\- Latest Update: [$LATEST_UPDATE_URL]($LATEST_UPDATE_URL)" README.md
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "Update README with latest update link" || echo "No changes to commit"
+          git push origin main

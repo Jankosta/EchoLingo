@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore'; 
-import { FIREBASE_API_KEY } from '@env'; // make sure this is set in .env file
+import { FIREBASE_API_KEY } from '@env';
 
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -14,10 +14,7 @@ const firebaseConfig = {
   measurementId: "G-6JDMQJQB7H"
 };
 
-
 const app = initializeApp(firebaseConfig);
-
-
 const analytics = getAnalytics(app);   
 const auth = getAuth(app);             
 const db = getFirestore(app);          

@@ -18,7 +18,6 @@ export default function LearnScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead, selectedLanguage } = useContext(Settings);
   const [materials, setMaterials] = useState([]); 
 
-  // Mapping font size strings to numeric values
   const fontSizeMapping = {
     Small: 12,
     Medium: 14,
@@ -30,22 +29,29 @@ export default function LearnScreen({ navigation }) {
 
   const message = 'Now viewing: Learn. Scroll to explore reading materials, videos, grammar lessons, vocabulary and pronunciation, and notes. Tap on each item to begin learning. Press top left to go back. Press bottom banner to return home. Press top right to repeat this message.';
 
-  // Fetch learning materials when selectedLanguage changes
   useEffect(() => {
-    fetch(`http://localhost:5000/api/materials?type=text&language=${selectedLanguage}`)
-      .then((response) => response.json())
-      .then((data) => setMaterials(data))
-      .catch((error) => console.error("Error fetching materials:", error));
-  
-    if (isAutoRead) {
-      speak(message);
+    async function fetchMaterials() {
+      try {
+        const response = await fetch(`http://localhost:5000/api/materials?type=text&language=${selectedLanguage}`);
+        const data = await response.json();
+        setMaterials(data);
+      } catch (error) {
+        console.log("Fetch failed silently:", error);
+        setMaterials([]);
+      }
     }
-  }, [selectedLanguage, isAutoRead]);  
+
+    fetchMaterials();
+    if (isAutoRead) speak(message);
+  }, [selectedLanguage]);
+
+  useEffect(() => {
+    if (materials.length === 0 && isAutoRead) {
+      speak(`No learning materials available for ${selectedLanguage}`);
+    }
+  }, [materials]);
 
   const [dropdowns, setDropdowns] = useState({
-    language: false,
-    text: false,
-    videos: false,
     notes: false,
   });
 
@@ -58,22 +64,16 @@ export default function LearnScreen({ navigation }) {
   const [noteCategory, setNoteCategory] = useState('');
   const [noteTranscript, setNoteTranscript] = useState('');
   const [savedNotes, setSavedNotes] = useState([]);
-
   const [isRecording, setIsRecording] = useState(false);
-  let recordingRef = null; // Variable for the recording object
 
   async function startRecording() {
     try {
       const { granted } = await Audio.requestPermissionsAsync();
-      if (!granted) {
-        alert('Microphone permission not granted!');
-        return;
-      }
+      if (!granted) return alert('Microphone permission not granted!');
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
       });
-
       setIsRecording(true);
       speak('Recording started. Please speak your note.');
     } catch (err) {
@@ -85,7 +85,6 @@ export default function LearnScreen({ navigation }) {
     try {
       setIsRecording(false);
       speak('Recording stopped.');
-
       const simulatedTranscript = 'Simulated note transcript captured from your speech.';
       setNoteTranscript(simulatedTranscript);
     } catch (err) {
@@ -99,11 +98,8 @@ export default function LearnScreen({ navigation }) {
   }
 
   const handleRecord = async () => {
-    if (!isRecording) {
-      await startRecording();
-    } else {
-      await stopRecording();
-    }
+    if (!isRecording) await startRecording();
+    else await stopRecording();
   };
 
   const handleSaveNote = () => {
@@ -124,9 +120,7 @@ export default function LearnScreen({ navigation }) {
   };
 
   const handleCancel = async () => {
-    if (isRecording) {
-      await stopRecording();
-    }
+    if (isRecording) await stopRecording();
     setNoteTitle('');
     setNoteCategory('');
     setNoteTranscript('');
@@ -208,6 +202,13 @@ export default function LearnScreen({ navigation }) {
     },
   };
 
+  const buttonCommon = {
+    alignSelf: 'center',
+    width: '90%',
+    marginVertical: 10,
+    paddingVertical: 16,
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBanner}>
@@ -230,62 +231,30 @@ export default function LearnScreen({ navigation }) {
 
       <ScrollView contentContainerStyle={styles.learnScreen_scrollContent}>
         <View style={styles.learnScreen_listContainer}>
-          {/* Text Materials */}
-          <TouchableOpacity
-            style={styles.learnScreen_listItem}
-            onPress={() => navigate(navigation, 'Text Materials')}
-          >
-            <Text style={styles.buttonText}>Read & Learn</Text>
-          </TouchableOpacity>
+          {/* Buttons */}
+          {[
+            { label: 'Read & Learn', screen: 'Text Materials' },
+            { label: 'Watch & Learn', screen: 'VideoMaterials' },
+            { label: 'Grammar', screen: 'Grammar' },
+            { label: 'Vocabulary & Pronunciation', screen: 'VocabPronunciation' },
+          ].map(({ label, screen }) => (
+            <TouchableOpacity
+              key={label}
+              style={[styles.learnScreen_listItem, buttonCommon]}
+              onPress={() => navigate(navigation, screen)}
+            >
+              <Text style={[styles.buttonText, { fontSize: 20, textAlign: 'center' }]}>{label}</Text>
+            </TouchableOpacity>
+          ))}
 
-          {/* Display fetched learning materials */}
-          {materials.length > 0 ? (
-            materials.map((material, index) => (
-              <View key={index} style={styles.learnScreen_listItem}>
-                <Text style={styles.buttonText}>{material.title}</Text>
-                <Text style={{ fontSize: numericFontSize - 2 }}>{material.type}</Text>
-              </View>
-            ))
-          ) : (
-            <Text style={styles.learnScreen_dropdownText}>
-              No learning materials available for {selectedLanguage}.
-            </Text>
-          )}
-
-          {/* Videos */}
+          {/* Notes */}
           <TouchableOpacity
-            style={styles.learnScreen_listItem}
-            onPress={() => {
-              speak('Explore learning videos');
-              navigate(navigation, 'VideoMaterials');
-            }}
-          >
-            <Text style={styles.buttonText}>Watch & Learn</Text>
-          </TouchableOpacity>
-
-          {/* Grammar */}
-          <TouchableOpacity
-            style={styles.learnScreen_listItem}
-            onPress={() => navigate(navigation, 'Grammar')}
-          >
-            <Text style={styles.buttonText}>Grammar</Text>
-          </TouchableOpacity>
-
-          {/* Vocab & Pronunciation */}
-          <TouchableOpacity
-            style={styles.learnScreen_listItem}
-            onPress={() => navigate(navigation, 'VocabPronunciation')}
-          >
-            <Text style={styles.buttonText}>Vocabulary & Pronunciation</Text>
-          </TouchableOpacity>
-
-          {/* My Notes */}
-          <TouchableOpacity
-            style={styles.learnScreen_listItem}
+            style={[styles.learnScreen_listItem, buttonCommon]}
             onPress={() => toggleDropdown('notes')}
           >
-            <Text style={styles.buttonText}>My Notes</Text>
+            <Text style={[styles.buttonText, { fontSize: 20, textAlign: 'center' }]}>My Notes</Text>
           </TouchableOpacity>
+
           {dropdowns.notes && (
             <>
               <TouchableOpacity
@@ -294,38 +263,25 @@ export default function LearnScreen({ navigation }) {
                   speak('Create a note');
                   setNoteModalVisible(true);
                 }}
-                accessibilityLabel="Create a new note"
               >
                 <Text style={styles.learnScreen_dropdownText}>+ Create a Note</Text>
               </TouchableOpacity>
-              
-              {/* Display saved notes */}
-              {savedNotes.length > 0 ? (
+
+              {savedNotes.length > 0 &&
                 savedNotes.map((note, index) => (
                   <View key={index} style={modalStyles.noteItem}>
-                    <Text style={modalStyles.noteTitle}>
-                      {note.title} ({note.category})
-                    </Text>
+                    <Text style={modalStyles.noteTitle}>{note.title} ({note.category})</Text>
                     <Text style={modalStyles.noteTranscript}>{note.transcript}</Text>
-                    <TouchableOpacity
-                      onPress={() => speak(note.transcript)}
-                      accessibilityLabel="Replay note"
-                    >
+                    <TouchableOpacity onPress={() => speak(note.transcript)}>
                       <Text style={modalStyles.playButtonText}>Play Note</Text>
                     </TouchableOpacity>
                   </View>
-                ))
-              ) : (
-                <Text style={styles.learnScreen_dropdownText}>
-                  No notes saved yet.
-                </Text>
-              )}
+                ))}
             </>
           )}
         </View>
       </ScrollView>
 
-      {/* Return Button */}
       <TouchableOpacity
         style={styles.bottomButton}
         onPress={() => navigate(navigation, 'Home')}
@@ -333,7 +289,7 @@ export default function LearnScreen({ navigation }) {
         <Text style={styles.buttonText}>Return to Home</Text>
       </TouchableOpacity>
 
-      {/* Note Creation Modal */}
+      {/* Note Modal */}
       <Modal
         visible={noteModalVisible}
         animationType="slide"
@@ -348,27 +304,23 @@ export default function LearnScreen({ navigation }) {
               placeholder="Note Title"
               value={noteTitle}
               onChangeText={setNoteTitle}
-              accessibilityLabel="Note title input"
             />
             <TextInput
               style={modalStyles.input}
               placeholder="Note Category"
               value={noteCategory}
               onChangeText={setNoteCategory}
-              accessibilityLabel="Note category input"
             />
             <TextInput
               style={[modalStyles.input, { height: 100 }]}
               placeholder="Your note will appear here..."
               value={noteTranscript}
-              multiline={true}
+              multiline
               editable={false}
-              accessibilityLabel="Note transcript"
             />
             <TouchableOpacity
               style={modalStyles.recordButton}
               onPress={handleRecord}
-              accessibilityLabel={isRecording ? 'Stop recording' : 'Start recording'}
             >
               <Text style={styles.buttonText}>
                 {isRecording ? 'Stop Recording' : 'Start Recording'}
@@ -379,14 +331,12 @@ export default function LearnScreen({ navigation }) {
                 style={modalStyles.saveButton}
                 onPress={handleSaveNote}
                 disabled={isRecording || !noteTranscript}
-                accessibilityLabel="Save note"
               >
                 <Text style={styles.buttonText}>Save Note</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={modalStyles.cancelButton}
                 onPress={handleCancel}
-                accessibilityLabel="Cancel note creation"
               >
                 <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>

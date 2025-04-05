@@ -76,7 +76,7 @@ export default function VocabPronunciationScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.learnScreen_scrollContent}>
         <View style={styles.learnScreen_listContainer}>
           <TextInput
-            style={[styles.input, { height: 50, fontSize: numericFontSize, marginBottom: 8 }]}
+            style={[styles.input, { height: 50, fontSize: numericFontSize, marginBottom: 8, color: 'black' }]}
             placeholder="Search a word..."
             placeholderTextColor="#888"
             value={word}
@@ -92,14 +92,14 @@ export default function VocabPronunciationScreen({ navigation }) {
 
           {result && (
             <View style={{ alignItems: 'center' }}>
-              <Text style={[styles.buttonText, { fontSize: numericFontSize + 2, marginBottom: 6 }]}>{result.word}</Text>
-              <Text style={{ fontSize: numericFontSize, marginBottom: 4 }}>
+              <Text style={[styles.buttonText, { fontSize: numericFontSize + 2, marginBottom: 6, color: 'black' }]}>{result.word}</Text>
+              <Text style={{ fontSize: numericFontSize, marginBottom: 4, color: 'black' }}>
                 <Text style={{ fontWeight: 'bold' }}>Translation:</Text> {result.translation}
               </Text>
-              <Text style={{ fontSize: numericFontSize, marginBottom: 4 }}>
+              <Text style={{ fontSize: numericFontSize, marginBottom: 4, color: 'black' }}>
                 <Text style={{ fontWeight: 'bold' }}>Example:</Text> {result.example}
               </Text>
-              <Text style={{ fontSize: numericFontSize }}>
+              <Text style={{ fontSize: numericFontSize, color: 'black' }}>
                 <Text style={{ fontWeight: 'bold' }}>Pronunciation:</Text> {result.phonetic}
               </Text>
             </View>
@@ -107,7 +107,7 @@ export default function VocabPronunciationScreen({ navigation }) {
 
           {/* Sample Word Table */}
           <View style={{ marginTop: 24 }}>
-            <Text style={[styles.buttonText, { fontSize: numericFontSize + 2, marginBottom: 8 }]}>Sample Words</Text>
+            <Text style={[styles.buttonText, { fontSize: numericFontSize + 2, marginBottom: 8, color: 'black' }]}>Sample Words</Text>
             {sampleWords.map((item, index) => (
               <View key={index} style={{ marginBottom: 12, borderBottomWidth: 1, paddingBottom: 6 }}>
                 <Text style={{ fontSize: numericFontSize + 1, fontWeight: 'bold' }}>{item.word} 🔊</Text>

@@ -10,8 +10,9 @@ import HomeScreen from './screens/HomeScreen';
 import LearnScreen from './screens/LearnScreen';
 import PracticeScreen from './screens/PracticeScreen';
 import QuizScreen from './screens/QuizScreen';
-import ExamScreen from './screens/ExamScreen'
+import ExamScreen from './screens/ExamScreen';
 import CommunityScreen from './screens/CommunityScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
 import VisualSettingsScreen from './screens/VisualSettingsScreen';
 import AudioSettingsScreen from './screens/AudioSettingsScreen';
@@ -25,7 +26,7 @@ import VocabPronunciationScreen from './screens/VocabPronunciationScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
-  return ( 
+  return (
     <SettingsProvider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
@@ -39,6 +40,7 @@ export default function App() {
           <Stack.Screen name="TextMaterials" component={TextMaterialsScreen} />
           <Stack.Screen name="AI Chat" component={AIChatScreen} />
           <Stack.Screen name="Community" component={CommunityScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
           <Stack.Screen name="Preferences" component={PreferencesScreen} />
           <Stack.Screen name="Visual Settings" component={VisualSettingsScreen} />
           <Stack.Screen name="Audio Settings" component={AudioSettingsScreen} />
@@ -52,5 +54,4 @@ export default function App() {
     </SettingsProvider>
   );
 }
-
 

@@ -3,6 +3,7 @@ import { useEffect, useContext } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
+import * as TTS from "expo-speech"; // TTS needs to be manually imported here so that TTS.stop() can be used
 
 export default function HomeScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
@@ -10,7 +11,7 @@ export default function HomeScreen({ navigation }) {
   createStyles(fontSize, isGreyscale);
 
   message = "Now viewing: Home. Press top left to visit learn. Press top right to visit practice. Press bottom left to visit community. Press bottom right to visit preferences. Press bottom banner to visit navigate. Press top right banner to repeat this message.";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+  useEffect(() => { TTS.stop(); if (isAutoRead) {speak(message);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>

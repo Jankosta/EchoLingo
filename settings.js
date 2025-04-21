@@ -9,7 +9,7 @@ export const SettingsProvider = ({ children }) => {
   const [fontSize, setFontSize] = useState("Large");
   const [isGreyscale, setGreyscale] = useState(false);
   const [isAutoRead, setAutoRead] = useState(true);
-  const [selectedLanguage, setSelectedLanguage] = useState("English");
+  const [selectedLanguage, setSelectedLanguage] = useState("Spanish");
 
   // Load stored language from AsyncStorage when app starts
   useEffect(() => {

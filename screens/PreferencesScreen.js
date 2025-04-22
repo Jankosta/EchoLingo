@@ -10,13 +10,16 @@ export default function PreferencesScreen({ navigation }) {
   createStyles(fontSize, isGreyscale);
   
   message = "Now viewing: Preferences. Press top left to edit visual settings. Press top right to edit audio settings. Press bottom to toggle your selected language. Press bottom banner to return home. Press top right banner to repeat this message.";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+  const shortMessage = "Preferences";
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
-        <Text style={styles.titleText}>Preferences</Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>Preferences</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
           <Image source={require('../assets/volume.png')} />

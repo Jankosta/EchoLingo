@@ -19,13 +19,12 @@ export default function GrammarScreen({ navigation }) {
   const styles = createStyles(numericFontSize, isGreyscale);
 
   const message = 'Now viewing: Grammar. Explore grammar explanations with examples. Press the bottom button to return home.';
+  const shortMessage = "Grammar";
 
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [expandedLesson, setExpandedLesson] = useState(null);
 
-  useEffect(() => {
-    if (isAutoRead) speak(message);
-  }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const toggleCategory = (index, title) => {
     const newIndex = expandedCategory === index ? null : index;
@@ -55,7 +54,9 @@ export default function GrammarScreen({ navigation }) {
           <Image source={require('../assets/back.png')} style={styles.icon} />
         </TouchableOpacity>
 
-        <Text style={styles.titleText}>Grammar</Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>Grammar</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.topRightBannerButton}

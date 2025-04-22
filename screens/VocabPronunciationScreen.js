@@ -18,13 +18,12 @@ export default function VocabPronunciationScreen({ navigation }) {
   const styles = createStyles(numericFontSize, isGreyscale);
 
   const message = 'Now viewing: Vocabulary and Pronunciation. Search for a word to learn its translation, example sentence, and hear its pronunciation.';
+  const shortMessage = "Vocabulary and Pronunciation";
 
   const [word, setWord] = useState('');
   const [result, setResult] = useState(null);
 
-  useEffect(() => {
-    if (isAutoRead) speak(message);
-  }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const handleSearch = async () => {
     if (!word.trim()) return;
@@ -62,7 +61,9 @@ export default function VocabPronunciationScreen({ navigation }) {
           <Image source={require('../assets/back.png')} style={styles.icon} />
         </TouchableOpacity>
 
-        <Text style={styles.titleText}>Vocabulary & Pronunciation</Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>Vocabulary & Pronunciation</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.topRightBannerButton}

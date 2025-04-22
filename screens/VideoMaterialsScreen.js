@@ -32,6 +32,7 @@ export default function VideoMaterialsScreen({ navigation }) {
   const styles = createStyles(numericFontSize, isGreyscale);
 
   const message = 'Now viewing: Video Materials.';
+  const shortMessage = "Video Materials";
 
   const [uploadModalVisible, setUploadModalVisible] = useState(false);
   const [videoTitle, setVideoTitle] = useState('');
@@ -43,7 +44,7 @@ export default function VideoMaterialsScreen({ navigation }) {
 
 
   useEffect(() => {
-    if (isAutoRead) speak(message);
+    if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);}
     fetchExploreVideos();
   }, [selectedLanguage]);
 
@@ -111,9 +112,9 @@ export default function VideoMaterialsScreen({ navigation }) {
           <Image source={require('../assets/back.png')} style={styles.icon} />
         </TouchableOpacity>
 
-        <Text style={[styles.titleText, { fontSize: numericFontSize + 10, color: '#B22222' }]}>
-          Video Materials
-        </Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>Video Materials</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.topRightBannerButton}

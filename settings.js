@@ -1,6 +1,7 @@
 import React from 'react';
 import { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { speak } from './functions.js';
 
 // Create settings context object
 export const Settings = createContext();
@@ -8,7 +9,7 @@ export const Settings = createContext();
 export const SettingsProvider = ({ children }) => {
   const [fontSize, setFontSize] = useState("Large");
   const [isGreyscale, setGreyscale] = useState(false);
-  const [isAutoRead, setAutoRead] = useState(true);
+  const [isAutoRead, setAutoRead] = useState("Long");
   const [selectedLanguage, setSelectedLanguage] = useState("Spanish");
 
   // Load stored settings from AsyncStorage when app starts
@@ -22,7 +23,7 @@ export const SettingsProvider = ({ children }) => {
 
         if (savedFontSize) setFontSize(savedFontSize);
         if (savedGreyscale !== null) setGreyscale(savedGreyscale === 'true');
-        if (savedAutoRead !== null) setAutoRead(savedAutoRead === 'true');
+        if (savedAutoRead) setAutoRead(savedAutoRead);
         if (savedLanguage) setSelectedLanguage(savedLanguage);
       } catch (error) {
         console.error("Error loading settings from AsyncStorage:", error);
@@ -51,6 +52,7 @@ export const SettingsProvider = ({ children }) => {
 
       // Set new fontSize
       setFontSize(newSize);
+      speak(newSize);
 
       // Store to Async
       await AsyncStorage.setItem('fontSize', newSize);
@@ -67,6 +69,11 @@ export const SettingsProvider = ({ children }) => {
 
       // Set new isGreyscale
       setGreyscale(newValue);
+      if (newValue) {
+        speak("On");
+      } else {
+        speak("Off");
+      }
 
       // Store to Async
       await AsyncStorage.setItem('isGreyscale', newValue.toString());
@@ -79,10 +86,14 @@ export const SettingsProvider = ({ children }) => {
   const toggleAutoRead = async () => {
     try {
       // Toggle isAutoRead
-      const newValue = !isAutoRead;
+      let newValue;
+      if (isAutoRead === "Long") newValue = "Short";
+      else if (isAutoRead === "Short") newValue = "Off";
+      else newValue = "Long";
 
       // Set new isAutoRead
       setAutoRead(newValue);
+      speak(newValue);
 
       // Store to Async
       await AsyncStorage.setItem('isAutoRead', newValue.toString());

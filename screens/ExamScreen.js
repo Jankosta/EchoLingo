@@ -44,7 +44,8 @@ export default function ExamScreen({ navigation }) {
 
   // Message for screen reader
   const message = "Now viewing: Exam page. Use the mode selector to choose between AI Generated and Premade exams. Press bottom banner to return home. Press the top left banner to use voice commands. Press once to begin recording and once again to stop recording. Say 'help' if stuck. Press top right banner to repeat this message.";
-  useEffect(() => { if (isAutoRead) { speak(message); } }, []);
+  const shortMessage = "Exam";
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   // State variables for exam settings and data
   const [examMode, setExamMode] = useState("AI");
@@ -597,7 +598,7 @@ export default function ExamScreen({ navigation }) {
     <SafeAreaView style={[styles.container, { alignItems: 'stretch' }]}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
-        <TouchableOpacity onPress={() => speak("Exam")}>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
           <Text style={styles.titleText}>Exam</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>

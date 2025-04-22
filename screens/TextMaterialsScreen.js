@@ -32,6 +32,7 @@ export default function TextMaterialsScreen({ navigation }) {
   const styles = createStyles(numericFontSize, isGreyscale);
 
   const message = 'Now viewing: Text Materials.';
+  const shortMessage = "Text Materials";
 
   const [uploadModalVisible, setUploadModalVisible] = useState(false);
   const [materialTitle, setMaterialTitle] = useState('');
@@ -42,7 +43,7 @@ export default function TextMaterialsScreen({ navigation }) {
   const [pdfToView, setPdfToView] = useState(null);
 
   useEffect(() => {
-    if (isAutoRead) speak(message);
+    if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);}
     fetchExploreMaterials();
   }, []);
 
@@ -155,9 +156,9 @@ export default function TextMaterialsScreen({ navigation }) {
         <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => navigate(navigation, 'Learn')}>
           <Image source={require('../assets/back.png')} style={styles.icon} />
         </TouchableOpacity>
-        <Text style={[styles.titleText, { fontSize: numericFontSize + 10, color: '#B22222' }]}>
-          Text Materials
-        </Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>Text Materials</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
           <Image source={require('../assets/volume.png')} style={styles.icon} />
         </TouchableOpacity>

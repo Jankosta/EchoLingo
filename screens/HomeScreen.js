@@ -11,13 +11,16 @@ export default function HomeScreen({ navigation }) {
   createStyles(fontSize, isGreyscale);
 
   message = "Now viewing: Home. Press top left to visit learn. Press top right to visit practice. Press bottom left to visit community. Press bottom right to visit preferences. Press bottom banner to visit navigate. Press top right banner to repeat this message.";
-  useEffect(() => { TTS.stop(); if (isAutoRead) {speak(message);} }, []);
+  const shortMessage = "Home";
+  useEffect(() => { TTS.stop(); if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
-        <Text style={styles.titleText}>EchoLingo</Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>EchoLingo</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
           <Image source={require('../assets/volume.png')} />

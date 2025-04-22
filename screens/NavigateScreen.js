@@ -12,7 +12,8 @@ export default function NavigateScreen({ navigation }) {
   createStyles(fontSize, isGreyscale);
 
   const message = "Now viewing: Navigate. Press bottom button to start and stop voice recording. Say... Help... For assistance. Press bottom banner to return home. Press top right banner to repeat this message.";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered
+  const shortMessage = "Navigate";
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered
 
   const [recording, setRecording] = useState(false); // Recording state hook
 
@@ -114,7 +115,9 @@ export default function NavigateScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
-        <Text style={styles.titleText}>Navigate</Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>Navigate</Text>
+        </TouchableOpacity>
 
         {recording ? ( // If the user presses the TTS button during recording it will act as if they stopped the recording
           <TouchableOpacity style={styles.topRightBannerButton} onPress={navigateTranscribe}>

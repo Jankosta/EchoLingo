@@ -20,8 +20,9 @@ export default function AIChatScreen({ navigation }) {
   const [messageHistory, setMessageHistory] = useState([]);
   const [messageLog, setMessageLog] = useState([]);
 
-  message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Use the buttons to the right of text entry for voice input. To save a log of your chat, please press the middle of the top banner.";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+  message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Use the buttons to the right of text entry for voice input. To save a log of your chat, please press the left side of the top banner.";
+  const shortMessage = "A.I Chat";
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const [recording, setRecording] = useState(false); // Recording state hook
   const [language, setLanguage] = useState("english");
@@ -165,7 +166,7 @@ export default function AIChatScreen({ navigation }) {
       <SafeAreaView style={styles.container}>
         {/* Title Banner */}
         <View style={styles.topBanner}>
-          <TouchableOpacity onPress={() => exportMessageLog(messageLog)}>
+          <TouchableOpacity onPress={() => speak(shortMessage)}>
             <Text style={styles.titleText}>AI Chat</Text>
           </TouchableOpacity>
 
@@ -179,8 +180,8 @@ export default function AIChatScreen({ navigation }) {
             </TouchableOpacity>
           )}
 
-          <TouchableOpacity style={styles.topLeftBannerButton} onPress={handleNavigation}>
-            <Image source={require('../assets/back.png')} />
+          <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => exportMessageLog(messageLog)}>
+            <Image source={require('../assets/save.png')} />
           </TouchableOpacity>
         </View>
 
@@ -241,7 +242,7 @@ export default function AIChatScreen({ navigation }) {
         </View>
 
         {/* Return Button */}
-        <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>
+        <TouchableOpacity style={styles.bottomButton} onPress={handleNavigation}>
           <Text style={styles.buttonText}>Return to Home</Text>
         </TouchableOpacity>
       </SafeAreaView>

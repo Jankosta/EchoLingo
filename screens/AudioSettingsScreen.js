@@ -10,13 +10,16 @@ export default function AudioSettingsScreen({ navigation }) {
   createStyles(fontSize, isGreyscale);
   
   message = "Now viewing: Audio Settings. Press top left to toggle automatic audio guide. Press bottom banner to return home. Press top right banner to repeat this message.";
+  const shortMessage = "Audio Settings";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
-        <Text style={styles.titleText}>Audio Settings</Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>Audio Settings</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
           <Image source={require('../assets/volume.png')} />

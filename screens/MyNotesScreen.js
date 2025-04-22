@@ -42,6 +42,7 @@ export default function MyNotesScreen({ navigation }) {
   const styles = createStyles(numericFontSize, isGreyscale);
 
   const message = 'Now viewing: My Notes.';
+  const shortMessage = "My Notes";
   useEffect(() => {
     if (isAutoRead) speak(message);
   }, []);
@@ -211,7 +212,9 @@ export default function MyNotesScreen({ navigation }) {
         >
           <Image source={require('../assets/back.png')} style={styles.icon} />
         </TouchableOpacity>
-        <Text style={styles.titleText}>My Notes</Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>My Notes</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.topRightBannerButton}
           onPress={() => speak(message)}

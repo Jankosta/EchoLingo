@@ -21,6 +21,7 @@ export default function AIChatScreen({ navigation }) {
   const [messageLog, setMessageLog] = useState([]);
 
   message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Use the buttons to the right of text entry for voice input. To save a log of your chat, please press the left side of the top banner.";
+  const shortMessage = "A.I Chat";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   const [recording, setRecording] = useState(false); // Recording state hook
@@ -165,7 +166,7 @@ export default function AIChatScreen({ navigation }) {
       <SafeAreaView style={styles.container}>
         {/* Title Banner */}
         <View style={styles.topBanner}>
-          <TouchableOpacity onPress={() => exportMessageLog(messageLog)}>
+          <TouchableOpacity onPress={() => speak(shortMessage)}>
             <Text style={styles.titleText}>AI Chat</Text>
           </TouchableOpacity>
 

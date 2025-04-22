@@ -10,13 +10,16 @@ export default function VisualSettingsScreen({ navigation }) {
   createStyles(fontSize, isGreyscale);
   
   message = "Now viewing: Visual Settings. Press top left to toggle font size. Press top right to toggle greyscale mode. Press bottom banner to return home. Press top right banner to repeat this message.";
+  const shortMessage = "Visual Settings";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Title Banner */}
       <View style={styles.topBanner}>
-        <Text style={styles.titleText}>Visual Settings</Text>
+        <TouchableOpacity onPress={() => speak(shortMessage)}>
+          <Text style={styles.titleText}>Visual Settings</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.topRightBannerButton} onPress={() => speak(message)}>
           <Image source={require('../assets/volume.png')} />

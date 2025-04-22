@@ -1,5 +1,6 @@
 <img src="https://github.com/user-attachments/assets/12901eb5-d636-4f27-9766-ebc98e4ddfa3" alt="splash-icon" style="width: 20%;" />
 
+📌 **"Language Learning For All!"**
 📌 **For Vision-Impaired and Blind Students**  
 📌 **An interactive and accessible language-learning application**  
 
@@ -20,12 +21,11 @@ Unlike traditional learning apps that rely heavily on **visual content**, EchoLi
 
 ## 🔹 Key Features
 
-✅ **Adaptive Accessibility Settings** – Customizable vision settings (No Limitations, Low Vision, Blind).  
+✅ **Adaptive Accessibility Settings** – Customizable vision settings.  
 ✅ **Learning Hub** – Save text and video resources, take notes in an accessible format.  
 ✅ **Practice Tools** – AI-generated/custom quizzes for **low-vision learners**.  
-✅ **Chat Feature** – Connect with **native speakers or AI** for real-time conversations.  
-✅ **Community Learning** – Students can **join online classrooms** to learn together.  
-✅ **Interactive Conversation Mode** – Practice **real-world dialogues** in different languages.  
+✅ **Community Learning** – Students can **add friends** to learn together.  
+✅ **Interactive AI Conversation Mode** – Practice **real-world dialogues** in different languages.  
 ✅ **Grammar & Vocabulary Breakdown** – Receive **spoken definitions, grammar explanations, and sentence examples**.  
 
 ---
@@ -59,4 +59,7 @@ Unlike traditional learning apps that rely heavily on **visual content**, EchoLi
 
 To access the latest test version of the project please:
 - Install Expo Go on an Android or IOS device.
+<img src="https://github.com/user-attachments/assets/25caca9d-e1e6-45f4-bd00-dd74f0d4cc83" alt="store-demo" style="width: 20%;" />
+- Access the link, and scan the QR code to download the latest version.
+<img src="https://github.com/user-attachments/assets/11525783-bb4c-4137-b44e-b643c554508d" alt="qr-demo" style="width: 20%;" />
 - Latest Update: [https://expo.dev/preview/update?message=Added%20text%20materialsadded%20default%20text%20files&updateRuntimeVersion=1.0.0&createdAt=2025-04-21T21%3A03%3A11.467Z&slug=exp&projectId=f32926b8-6f96-407f-974c-0ad674700b07&group=af3690ab-0d17-4a2f-865a-84561482d470](https://expo.dev/preview/update?message=Added%20text%20materialsadded%20default%20text%20files&updateRuntimeVersion=1.0.0&createdAt=2025-04-21T21%3A03%3A11.467Z&slug=exp&projectId=f32926b8-6f96-407f-974c-0ad674700b07&group=af3690ab-0d17-4a2f-865a-84561482d470)

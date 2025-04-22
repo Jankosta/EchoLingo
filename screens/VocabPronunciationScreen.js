@@ -23,9 +23,7 @@ export default function VocabPronunciationScreen({ navigation }) {
   const [word, setWord] = useState('');
   const [result, setResult] = useState(null);
 
-  useEffect(() => {
-    if (isAutoRead) speak(message);
-  }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const handleSearch = async () => {
     if (!word.trim()) return;

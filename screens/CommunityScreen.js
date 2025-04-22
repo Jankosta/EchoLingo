@@ -11,7 +11,7 @@ export default function CommunityScreen({ navigation }) {
   
   message = "Now viewing: Community. Press bottom banner to return home. Press top right banner to repeat this message.";
   const shortMessage = "Community";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>

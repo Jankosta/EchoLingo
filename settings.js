@@ -79,7 +79,10 @@ export const SettingsProvider = ({ children }) => {
   const toggleAutoRead = async () => {
     try {
       // Toggle isAutoRead
-      const newValue = !isAutoRead;
+      let newValue;
+      if (isAutoRead === "Long") newValue = "Short";
+      else if (isAutoRead === "Short") newValue = "Off";
+      else newValue = "Long";
 
       // Set new isAutoRead
       setAutoRead(newValue);

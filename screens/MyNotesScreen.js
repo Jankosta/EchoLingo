@@ -43,9 +43,7 @@ export default function MyNotesScreen({ navigation }) {
 
   const message = 'Now viewing: My Notes.';
   const shortMessage = "My Notes";
-  useEffect(() => {
-    if (isAutoRead) speak(message);
-  }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const [noteModalVisible, setNoteModalVisible] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');

@@ -24,9 +24,7 @@ export default function GrammarScreen({ navigation }) {
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [expandedLesson, setExpandedLesson] = useState(null);
 
-  useEffect(() => {
-    if (isAutoRead) speak(message);
-  }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const toggleCategory = (index, title) => {
     const newIndex = expandedCategory === index ? null : index;

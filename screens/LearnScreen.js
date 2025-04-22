@@ -43,7 +43,7 @@ export default function LearnScreen({ navigation }) {
     }
 
     fetchMaterials();
-    if (isAutoRead) speak(message);
+    if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);}
   }, [selectedLanguage]);
 
   const buttonWidth = width * 0.44;

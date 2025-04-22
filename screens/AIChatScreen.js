@@ -22,7 +22,7 @@ export default function AIChatScreen({ navigation }) {
 
   message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Use the buttons to the right of text entry for voice input. To save a log of your chat, please press the left side of the top banner.";
   const shortMessage = "A.I Chat";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const [recording, setRecording] = useState(false); // Recording state hook
   const [language, setLanguage] = useState("english");

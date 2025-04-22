@@ -43,7 +43,7 @@ export default function TextMaterialsScreen({ navigation }) {
   const [pdfToView, setPdfToView] = useState(null);
 
   useEffect(() => {
-    if (isAutoRead) speak(message);
+    if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);}
     fetchExploreMaterials();
   }, []);
 

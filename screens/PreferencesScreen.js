@@ -11,7 +11,7 @@ export default function PreferencesScreen({ navigation }) {
   
   message = "Now viewing: Preferences. Press top left to edit visual settings. Press top right to edit audio settings. Press bottom to toggle your selected language. Press bottom banner to return home. Press top right banner to repeat this message.";
   const shortMessage = "Preferences";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>

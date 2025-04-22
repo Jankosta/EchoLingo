@@ -11,7 +11,7 @@ export default function AudioSettingsScreen({ navigation }) {
   
   message = "Now viewing: Audio Settings. Press top left to toggle automatic audio guide. Press bottom banner to return home. Press top right banner to repeat this message.";
   const shortMessage = "Audio Settings";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,7 +34,7 @@ export default function AudioSettingsScreen({ navigation }) {
       <View style={styles.buttonGrid}>
         <TouchableOpacity style={styles.gridButton4} onPress={toggleAutoRead}>
           <Text style={styles.buttonText}>Automatic Audio Guide{'\n'}</Text>
-          <Text style={styles.buttonText}>{isAutoRead ? "On" : "Off"}</Text>
+          <Text style={styles.buttonText}>{isAutoRead}</Text>
         </TouchableOpacity>
       </View>
 

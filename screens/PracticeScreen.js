@@ -11,7 +11,7 @@ export default function PracticeScreen({ navigation }) {
   
   message = "Now viewing: Practice. Press top left to view quizzes. Press top right to view exams. Press bottom left to chat with AI. Press bottom banner to return home. Press top right banner to repeat this message.";
   const shortMessage = "Practice";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []);
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   return (
     <SafeAreaView style={styles.container}>

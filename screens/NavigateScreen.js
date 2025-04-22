@@ -13,7 +13,7 @@ export default function NavigateScreen({ navigation }) {
 
   const message = "Now viewing: Navigate. Press bottom button to start and stop voice recording. Say... Help... For assistance. Press bottom banner to return home. Press top right banner to repeat this message.";
   const shortMessage = "Navigate";
-  useEffect(() => { if (isAutoRead) {speak(message);} }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []); // useEffect ensures it doesn't play each time the buttons are re-rendered
 
   const [recording, setRecording] = useState(false); // Recording state hook
 

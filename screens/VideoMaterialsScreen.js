@@ -44,7 +44,7 @@ export default function VideoMaterialsScreen({ navigation }) {
 
 
   useEffect(() => {
-    if (isAutoRead) speak(message);
+    if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);}
     fetchExploreVideos();
   }, [selectedLanguage]);
 

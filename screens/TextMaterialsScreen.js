@@ -53,7 +53,7 @@ export default function TextMaterialsScreen({ navigation }) {
   
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        if (data.language === selectedLanguage) { // 👈 filter here
+        if (data.language === selectedLanguage) { 
           materials.push({ id: doc.id, ...data });
         }
       });
@@ -118,6 +118,12 @@ export default function TextMaterialsScreen({ navigation }) {
       speak('Please provide a title and select a file.');
     }
   };
+  
+  useEffect(() => {
+    if (pdfToView) {
+      speak("Tap the top of the screen to exit the file.");
+    }
+  }, [pdfToView]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: '#fff8f0' }]}>
@@ -131,10 +137,7 @@ export default function TextMaterialsScreen({ navigation }) {
             >
               <Text style={{ color: '#fff', fontSize: 16 }}>Close PDF</Text>
             </TouchableOpacity>
-            <Text style={{ textAlign: 'center', marginVertical: 6, fontSize: 14, color: '#555' }}>
-              Tap the top of the screen to exit the file.
-            </Text>
-
+      
             <WebView
               source={{
                 uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfToView)}`

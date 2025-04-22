@@ -20,7 +20,7 @@ export default function AIChatScreen({ navigation }) {
   const [messageHistory, setMessageHistory] = useState([]);
   const [messageLog, setMessageLog] = useState([]);
 
-  message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Use the buttons to the right of text entry for voice input. To save a log of your chat, please press the middle of the top banner.";
+  message = "Now viewing: AI Chat. Press bottom text field and type to enter your message. When you are finished, press the done button on your device's keyboard. Use the buttons to the right of text entry for voice input. To save a log of your chat, please press the left side of the top banner.";
   useEffect(() => { if (isAutoRead) {speak(message);} }, []);
 
   const [recording, setRecording] = useState(false); // Recording state hook
@@ -179,8 +179,8 @@ export default function AIChatScreen({ navigation }) {
             </TouchableOpacity>
           )}
 
-          <TouchableOpacity style={styles.topLeftBannerButton} onPress={handleNavigation}>
-            <Image source={require('../assets/back.png')} />
+          <TouchableOpacity style={styles.topLeftBannerButton} onPress={() => exportMessageLog(messageLog)}>
+            <Image source={require('../assets/save.png')} />
           </TouchableOpacity>
         </View>
 

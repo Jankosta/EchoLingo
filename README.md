@@ -1,4 +1,4 @@
-[splash-icon](https://github.com/user-attachments/assets/12901eb5-d636-4f27-9766-ebc98e4ddfa3)
+![splash-icon](https://github.com/user-attachments/assets/12901eb5-d636-4f27-9766-ebc98e4ddfa3)
 
 ## Project Title: EchoLingo  
 📌 **For Vision-Impaired and Blind Students**  

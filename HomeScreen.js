@@ -28,13 +28,13 @@ export default function HomeScreen({ navigation }) {
             position: 'absolute',
             left: 16,
             top: '50%',
-            transform: [{ translateY: -12 }], // half of icon height to center vertically
+            transform: [{ translateY: -12 }], 
             zIndex: 1,
           }}
         >
           <Image
             source={require('../assets/profile.png')}
-            style={{ width: 24, height: 24 }}
+            style={{ width: 80, height: 80 }}
           />
         </TouchableOpacity>
 

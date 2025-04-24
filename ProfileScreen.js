@@ -17,6 +17,8 @@ export default function ProfileScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
   const styles = createStyles(fontSize, isGreyscale);
 
+
+  const [isEditingMode, setIsEditingMode] = useState(true);
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [languageInput, setLanguageInput] = useState('');
@@ -26,9 +28,11 @@ export default function ProfileScreen({ navigation }) {
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
-    const message = 'Now viewing: Profile. Edit your name, bio, and languages, search for friends, and manage your connections.';
+    const message = isEditingMode
+      ? 'Now editing profile. Fill in your name, bio, languages, search learners, and save.'
+      : 'Profile saved. Viewing your profile details.';
     if (isAutoRead) speak(message);
-  }, []);
+  }, [isEditingMode]);
 
   const handleAddLanguage = () => {
     const lang = languageInput.trim();
@@ -40,11 +44,11 @@ export default function ProfileScreen({ navigation }) {
 
   const handleSaveProfile = () => {
     speak('Profile saved.');
-    // TODO: persist profile to backend
+    //TODO: save to backend
+    setIsEditingMode(false);
   };
 
   const handleSearch = () => {
-    // TODO: replace with actual search logic
     const dummyUsers = [
       { id: '1', name: 'Alice Johnson' },
       { id: '2', name: 'Bob Smith' },
@@ -70,6 +74,74 @@ export default function ProfileScreen({ navigation }) {
     speak('Friend removed.');
   };
 
+ 
+  if (!isEditingMode) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.topBanner}>
+          <TouchableOpacity
+            style={styles.topLeftBannerButton}
+            onPress={() => setIsEditingMode(true)}
+          >
+            <Image
+              source={require('../assets/gear.png')}
+              style={{ width: 40, height: 40 }}
+            />
+          </TouchableOpacity>
+
+          <Text style={styles.titleText}>Profile</Text>
+
+          <TouchableOpacity
+            style={styles.topRightBannerButton}
+            onPress={() => speak('Viewing profile')}
+          >
+            <Image source={require('../assets/volume.png')} style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView contentContainerStyle={{ padding: 16 }}>
+          <View style={profileStyles.section}>
+            <Text style={styles.titleText}>Name</Text>
+            <Text style={[styles.buttonText, { color: '#000' }]}>{name}</Text>
+          </View>
+
+          <View style={profileStyles.section}>
+            <Text style={styles.titleText}>Bio</Text>
+            <Text style={[styles.buttonText, { color: '#000' }]}>{bio}</Text>
+          </View>
+
+          <View style={profileStyles.section}>
+            <Text style={styles.titleText}>Languages</Text>
+            {languagesLearned.length > 0 ? (
+              languagesLearned.map((lang, idx) => (
+                <Text key={idx} style={[styles.buttonText, { color: '#000' }]}>
+                  {lang}
+                </Text>
+              ))
+            ) : (
+              <Text style={[styles.buttonText, { color: '#000' }]}>None added</Text>
+            )}
+          </View>
+
+          <View style={profileStyles.section}>
+            <Text style={styles.titleText}>Friends</Text>
+            <Text style={[styles.buttonText, { color: '#000' }]}>
+              {friends.length}
+            </Text>
+          </View>
+        </ScrollView>
+
+        <TouchableOpacity
+          style={styles.bottomButton}
+          onPress={() => navigate(navigation, 'Community')}
+        >
+          <Text style={styles.buttonText}>Return to Community</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBanner}>
@@ -89,7 +161,6 @@ export default function ProfileScreen({ navigation }) {
       </View>
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}>
-        {/* Profile Section */}
         <View style={profileStyles.section}>
           <Text style={styles.titleText}>Your Profile</Text>
           <TextInput
@@ -136,7 +207,6 @@ export default function ProfileScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Search Friends Section */}
         <View style={profileStyles.section}>
           <Text style={styles.titleText}>Search Learners</Text>
           <View style={profileStyles.languageRow}>
@@ -166,7 +236,6 @@ export default function ProfileScreen({ navigation }) {
           ))}
         </View>
 
-        {/* Friends List Section */}
         <View style={profileStyles.section}>
           <Text style={styles.titleText}>Your Friends</Text>
           {friends.length > 0 ? (
@@ -174,7 +243,7 @@ export default function ProfileScreen({ navigation }) {
               <View key={friend.id} style={profileStyles.card}>
                 <Text style={styles.titleText}>{friend.name}</Text>
                 <TouchableOpacity
-                  style={[profileStyles.actionButton, { backgroundColor: '#ffe6e6' }]}
+                  style={[profileStyles.actionButton, { backgroundColor: '#ffe6e6' }]} 
                   onPress={() => handleRemoveFriend(friend.id)}
                 >
                   <Text style={{ color: '#FF3B30', fontWeight: '600' }}>Remove</Text>

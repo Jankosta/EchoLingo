@@ -5,7 +5,7 @@ import createStyles from '../styles.js';
 import { navigate, speak } from '../functions.js';
 
 export default function AudioSettingsScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead, toggleAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, toggleAutoRead, isSound, toggleSound } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
@@ -35,6 +35,10 @@ export default function AudioSettingsScreen({ navigation }) {
         <TouchableOpacity style={styles.gridButton4} onPress={toggleAutoRead}>
           <Text style={styles.buttonText}>Automatic Audio Guide{'\n'}</Text>
           <Text style={styles.buttonText}>{isAutoRead}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.gridButton4} onPress={toggleSound}>
+          <Text style={styles.buttonText}>Sound Effects{'\n'}</Text>
+          <Text style={styles.buttonText}>{isSound ? "On" : "Off"}</Text>
         </TouchableOpacity>
       </View>
 

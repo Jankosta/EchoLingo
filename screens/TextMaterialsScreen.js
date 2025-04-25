@@ -227,6 +227,8 @@ export default function TextMaterialsScreen({ navigation }) {
             )}
           </ScrollView>
 
+           <View style={{ height: 1, backgroundColor: '#ccc', marginVertical: 16 }} />
+
           {/* Saved Materials */}
           <Text style={[styles.sectionTitle, { color: '#8B0000', fontSize: numericFontSize + 6, marginBottom: 10 }]}>
             <FontAwesome5 name="bookmark" size={20} color="#8B0000" /> Saved Materials

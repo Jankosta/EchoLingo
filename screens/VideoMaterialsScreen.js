@@ -152,6 +152,7 @@ export default function VideoMaterialsScreen({ navigation }) {
                   key={idx}
                   style={{
                     width: 200,
+                    height: 190,
                     marginRight: 12,
                     backgroundColor: '#FFEFD5',
                     padding: 10,

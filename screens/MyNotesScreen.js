@@ -127,9 +127,8 @@ export default function MyNotesScreen({ navigation }){
   const styles = createStyles(numericFontSize, isGreyscale);
 
   const message = 'Now viewing: My Notes.';
-  useEffect(() => {
-    if (isAutoRead) speak(message);
-  }, []);
+  const shortMessage = "My Notes";
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const [noteModalVisible, setNoteModalVisible] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');
@@ -317,7 +316,9 @@ return(
       >
         <Image source={require('../assets/back.png')} style={styles.icon} />
       </TouchableOpacity>
-      <Text style={styles.titleText}>My Notes</Text>
+      <TouchableOpacity onPress={() => speak(shortMessage)}>
+        <Text style={styles.titleText}>My Notes</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.topRightBannerButton}
         onPress={() => speak(message)}

@@ -20,7 +20,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 import * as FileSystem from 'expo-file-system';
 import { recordStart, recordStop, getTranscription } from '../voice.js';
 import { db } from '../backend/config/firebaseConfig'
@@ -112,7 +112,7 @@ const noteStyles = StyleSheet.create({
 );
 
 export default function MyNotesScreen({ navigation }){ 
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, isSound } = useContext(Settings);
   const auth = getAuth();
   const uid = auth.currentUser.uid;
 
@@ -127,9 +127,8 @@ export default function MyNotesScreen({ navigation }){
   const styles = createStyles(numericFontSize, isGreyscale);
 
   const message = 'Now viewing: My Notes.';
-  useEffect(() => {
-    if (isAutoRead) speak(message);
-  }, []);
+  const shortMessage = "My Notes";
+  useEffect(() => { if (isAutoRead === "Long") {speak(message);} else if (isAutoRead === "Short") {speak(shortMessage);} }, []);
 
   const [noteModalVisible, setNoteModalVisible] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');
@@ -317,7 +316,9 @@ return(
       >
         <Image source={require('../assets/back.png')} style={styles.icon} />
       </TouchableOpacity>
-      <Text style={styles.titleText}>My Notes</Text>
+      <TouchableOpacity onPress={() => speak(shortMessage)}>
+        <Text style={styles.titleText}>My Notes</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.topRightBannerButton}
         onPress={() => speak(message)}
@@ -368,11 +369,8 @@ return(
       )}
     </ScrollView>
 
-    <TouchableOpacity
-      style={styles.bottomButton}
-      onPress={() => navigate(navigation, 'Learn')}
-    >
-      <Text style={styles.buttonText}>Return to Learn</Text>
+    <TouchableOpacity style={styles.bottomButton} onPress={() => {sound(require("../assets/return.wav"), isSound); navigate(navigation, "Home")}}>
+      <Text style={styles.buttonText}>Return to Home</Text>
     </TouchableOpacity>
 
     {/* Updated Modal */}

@@ -2,10 +2,10 @@ import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native'
 import { useEffect, useContext } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 
 export default function VisualSettingsScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead, toggleFontSize, toggleGreyscale } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, toggleFontSize, toggleGreyscale, isSound } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
@@ -32,18 +32,18 @@ export default function VisualSettingsScreen({ navigation }) {
 
       {/* Main Buttons */}
       <View style={styles.buttonGrid}>
-        <TouchableOpacity style={styles.gridButton4} onPress={toggleFontSize}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => {sound(require("../assets/toggle.wav"), isSound); toggleFontSize();}}>
           <Text style={styles.buttonText}>Interface Font Size{'\n'}</Text>
           <Text style={styles.buttonText}>{fontSize}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton4} onPress={toggleGreyscale}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => {sound(require("../assets/toggle.wav"), isSound); toggleGreyscale();}}>
           <Text style={styles.buttonText}>Greyscale Mode{'\n'}</Text>
           <Text style={styles.buttonText}>{isGreyscale ? "On" : "Off"}</Text>
         </TouchableOpacity>
       </View>
 
       {/* Return Button */}
-      <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>
+      <TouchableOpacity style={styles.bottomButton} onPress={() => {sound(require("../assets/return.wav"), isSound); navigate(navigation, "Home")}}>
         <Text style={styles.buttonText}>Return to Home</Text>
       </TouchableOpacity>
     </SafeAreaView>

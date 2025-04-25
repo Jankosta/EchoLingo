@@ -2,7 +2,7 @@ import { Text, View, Image, SafeAreaView, TouchableOpacity, TextInput, Keyboard,
 import { useEffect, useContext, useState } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 import axios from 'axios';
 import { OPENAI_API_KEY } from '@env';
 import * as TTS from "expo-speech"; // TTS needs to be manually imported here so that TTS.stop() can be used
@@ -11,7 +11,7 @@ import * as Sharing from 'expo-sharing';
 import { recordStart, recordStop, getTranscription } from "../voice.js";
 
 export default function AIChatScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead, selectedLanguage } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, selectedLanguage, isSound } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
@@ -242,7 +242,7 @@ export default function AIChatScreen({ navigation }) {
         </View>
 
         {/* Return Button */}
-        <TouchableOpacity style={styles.bottomButton} onPress={handleNavigation}>
+        <TouchableOpacity style={styles.bottomButton} onPress={() => {sound(require("../assets/return.wav"), isSound); handleNavigation()}}>
           <Text style={styles.buttonText}>Return to Home</Text>
         </TouchableOpacity>
       </SafeAreaView>

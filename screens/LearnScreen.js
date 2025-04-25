@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { Settings } from '../settings';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 import { FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
 
 export default function LearnScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead, selectedLanguage } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, selectedLanguage, isSound } = useContext(Settings);
   const [materials, setMaterials] = useState([]);
   const { width } = useWindowDimensions();
 
@@ -122,7 +122,7 @@ export default function LearnScreen({ navigation }) {
       </ScrollView>
 
       {/* Bottom Button */}
-      <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, 'Home')}>
+      <TouchableOpacity style={styles.bottomButton} onPress={() => {sound(require("../assets/return.wav"), isSound); navigate(navigation, "Home")}}>
         <Text style={styles.buttonText}>Return to Home</Text>
       </TouchableOpacity>
     </SafeAreaView>

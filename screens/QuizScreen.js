@@ -5,14 +5,14 @@ import { Picker } from '@react-native-picker/picker';
 import { Settings } from '../settings.js';
 import { Preferences } from '../screens/PreferencesScreen.js';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 import { collection, getDocs, query, where, doc, getDoc } from "firebase/firestore";
 import { db } from "../backend/config/firebaseConfig";
 import { recordStart, recordStop, getTranscription } from '../voice.js';
 
 export default function QuizScreen({ navigation }) {
   // Access user settings and apply styles
-  const { fontSize, isGreyscale, isAutoRead, selectedLanguage } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, selectedLanguage, isSound } = useContext(Settings);
   createStyles(fontSize, isGreyscale);
 
   // Define colors based on greyscale mode
@@ -692,7 +692,7 @@ export default function QuizScreen({ navigation }) {
         )}
       </ScrollView>
       <View style={[styles.topBanner, { marginBottom: '0%', marginTop: '1%' }]}>
-        <TouchableOpacity style={[styles.bottomButton, { height: '95%' }]} onPress={() => navigate(navigation, 'Home')}>
+        <TouchableOpacity style={[styles.bottomButton, { height: '95%' }]} onPress={() => {sound(require("../assets/return.wav"), isSound); navigate(navigation, "Home")}}>
           <Text style={styles.buttonText}>Return to Home</Text>
         </TouchableOpacity>
       </View>

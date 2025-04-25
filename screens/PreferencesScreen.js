@@ -2,10 +2,10 @@ import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native'
 import { useEffect, useContext } from 'react';
 import { Settings } from '../settings';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 
 export default function PreferencesScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead, selectedLanguage, changeLanguage } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, selectedLanguage, changeLanguage, isSound } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
@@ -38,7 +38,7 @@ export default function PreferencesScreen({ navigation }) {
         <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "Audio Settings")}>
           <Text style={styles.buttonText}>Audio Settings</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButtonBig} onPress={() => {if (selectedLanguage === "Spanish") {changeLanguage("French"); speak("French");} else {changeLanguage("Spanish"); speak("Spanish");}}}>
+        <TouchableOpacity style={styles.gridButtonBig} onPress={() => {sound(require("../assets/toggle.wav"), isSound); if (selectedLanguage === "Spanish") {changeLanguage("French"); speak("French");} else {changeLanguage("Spanish"); speak("Spanish");}}}>
           <Text style={styles.buttonText}>Language{'\n'}</Text>
           <Text style={styles.buttonText}>{selectedLanguage}</Text>
         </TouchableOpacity>

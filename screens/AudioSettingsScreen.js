@@ -2,7 +2,7 @@ import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native'
 import { useEffect, useContext } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 
 export default function AudioSettingsScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead, toggleAutoRead, isSound, toggleSound } = useContext(Settings);
@@ -32,11 +32,11 @@ export default function AudioSettingsScreen({ navigation }) {
 
       {/* Main Buttons */}
       <View style={styles.buttonGrid}>
-        <TouchableOpacity style={styles.gridButton4} onPress={toggleAutoRead}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => {sound(require("../assets/toggle.wav"), isSound); toggleAutoRead();}}>
           <Text style={styles.buttonText}>Automatic Audio Guide{'\n'}</Text>
           <Text style={styles.buttonText}>{isAutoRead}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.gridButton4} onPress={toggleSound}>
+        <TouchableOpacity style={styles.gridButton4} onPress={() => {sound(require("../assets/toggle.wav"), !isSound); toggleSound();}}>
           <Text style={styles.buttonText}>Sound Effects{'\n'}</Text>
           <Text style={styles.buttonText}>{isSound ? "On" : "Off"}</Text>
         </TouchableOpacity>

@@ -43,6 +43,11 @@ export default function PracticeScreen({ navigation }) {
         <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "AI Chat")}>
           <Text style={styles.buttonText}>AI Chat</Text>
         </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.gridButton4} onPress={() => navigate(navigation, "Flashcards")}>
+          <Text style={styles.buttonText}>Flashcards</Text>
+        </TouchableOpacity>
+
       </View>
 
       {/* Return Button */}

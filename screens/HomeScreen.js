@@ -2,11 +2,11 @@ import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native'
 import { useEffect, useContext } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 import * as TTS from "expo-speech"; // TTS needs to be manually imported here so that TTS.stop() can be used
 
 export default function HomeScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, isSound } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
 

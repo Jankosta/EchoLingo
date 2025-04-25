@@ -12,7 +12,7 @@ import {
 import * as DocumentPicker from 'expo-document-picker';
 import { Settings } from '../settings';
 import createStyles from '../styles';
-import { navigate, speak } from '../functions';
+import { navigate, speak, sound } from '../functions';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import { storage, db } from "../backend/config/firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
@@ -20,7 +20,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { WebView } from 'react-native-webview';
 
 export default function TextMaterialsScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead, selectedLanguage } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, selectedLanguage, isSound } = useContext(Settings);
 
   const fontSizeMapping = {
     Small: 14,
@@ -299,12 +299,9 @@ export default function TextMaterialsScreen({ navigation }) {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[styles.bottomButton, { backgroundColor: '#B22222' }]}
-        onPress={() => navigate(navigation, 'Learn')}
-      >
+      <TouchableOpacity style={styles.bottomButton} onPress={() => {sound(require("../assets/return.wav"), isSound); navigate(navigation, "Home")}}>
         <Text style={[styles.buttonText, { fontSize: numericFontSize + 14, color: '#fff' }]}>
-          Return to Learn
+          Return to Home
         </Text>
       </TouchableOpacity>
 

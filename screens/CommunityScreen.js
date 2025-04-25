@@ -2,10 +2,10 @@ import { Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native'
 import { useEffect, useContext } from 'react';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 
 export default function CommunityScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, isSound } = useContext(Settings);
 
   createStyles(fontSize, isGreyscale);
   
@@ -31,7 +31,7 @@ export default function CommunityScreen({ navigation }) {
       </View>
 
       {/* Return Button */}
-      <TouchableOpacity style={styles.bottomButton} onPress={() => navigate(navigation, "Home")}>
+      <TouchableOpacity style={styles.bottomButton} onPress={() => {sound(require("../assets/return.wav"), isSound); navigate(navigation, "Home")}}>
         <Text style={styles.buttonText}>Return to Home</Text>
       </TouchableOpacity>
     </SafeAreaView>

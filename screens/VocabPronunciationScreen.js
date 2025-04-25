@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, Image, ScrollView, TextInput } from 'react-native';
 import { Settings } from '../settings';
 import createStyles from '../styles';
-import { navigate, speak } from '../functions';
+import { navigate, speak, sound } from '../functions';
 
 export default function VocabPronunciationScreen({ navigation }) {
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, isSound } = useContext(Settings);
 
   const fontSizeMapping = {
     Small: 12,
@@ -121,10 +121,7 @@ export default function VocabPronunciationScreen({ navigation }) {
       </ScrollView>
 
       {/* Return Button */}
-      <TouchableOpacity
-        style={styles.bottomButton}
-        onPress={() => navigate(navigation, 'Home')}
-      >
+      <TouchableOpacity style={styles.bottomButton} onPress={() => {sound(require("../assets/return.wav"), isSound); navigate(navigation, "Home")}}>
         <Text style={styles.buttonText}>Return to Home</Text>
       </TouchableOpacity>
     </SafeAreaView>

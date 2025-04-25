@@ -20,7 +20,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import { Settings } from '../settings.js';
 import createStyles from '../styles.js';
-import { navigate, speak } from '../functions.js';
+import { navigate, speak, sound } from '../functions.js';
 import * as FileSystem from 'expo-file-system';
 import { recordStart, recordStop, getTranscription } from '../voice.js';
 import { db } from '../backend/config/firebaseConfig'
@@ -112,7 +112,7 @@ const noteStyles = StyleSheet.create({
 );
 
 export default function MyNotesScreen({ navigation }){ 
-  const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
+  const { fontSize, isGreyscale, isAutoRead, isSound } = useContext(Settings);
   const auth = getAuth();
   const uid = auth.currentUser.uid;
 
@@ -369,11 +369,8 @@ return(
       )}
     </ScrollView>
 
-    <TouchableOpacity
-      style={styles.bottomButton}
-      onPress={() => navigate(navigation, 'Learn')}
-    >
-      <Text style={styles.buttonText}>Return to Learn</Text>
+    <TouchableOpacity style={styles.bottomButton} onPress={() => {sound(require("../assets/return.wav"), isSound); navigate(navigation, "Home")}}>
+      <Text style={styles.buttonText}>Return to Home</Text>
     </TouchableOpacity>
 
     {/* Updated Modal */}

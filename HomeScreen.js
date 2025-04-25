@@ -6,12 +6,10 @@ import { navigate, speak } from '../functions.js';
 
 export default function HomeScreen({ navigation }) {
   const { fontSize, isGreyscale, isAutoRead } = useContext(Settings);
-
-  // Apply global styles
   const styles = createStyles(fontSize, isGreyscale);
 
   const message =
-    'Now viewing: Home. Press profile icon to view your profile. Press top right to repeat this message. Press main buttons to navigate to Learn, Practice, Community, Preferences. Press bottom banner to visit Navigate.';
+    'Now viewing: Home. Press main buttons to navigate to Learn, Practice, Community, Preferences. Press bottom banner to visit Navigate. Press top right to repeat this message.';
 
   useEffect(() => {
     if (isAutoRead) speak(message);
@@ -19,27 +17,9 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Title Banner with Profile Icon */}
+      {/* Title Banner */}
       <View style={styles.topBanner}>
-        {/* Profile Icon positioned absolute on left */}
-        <TouchableOpacity
-          onPress={() => navigate(navigation, 'Profile')}
-          style={{
-            position: 'absolute',
-            left: 16,
-            top: '50%',
-            transform: [{ translateY: -12 }], 
-            zIndex: 1,
-          }}
-        >
-          <Image
-            source={require('../assets/profile.png')}
-            style={{ width: 80, height: 80 }}
-          />
-        </TouchableOpacity>
-
         <Text style={styles.titleText}>EchoLingo</Text>
-
         <TouchableOpacity
           style={styles.topRightBannerButton}
           onPress={() => speak(message)}
@@ -56,21 +36,18 @@ export default function HomeScreen({ navigation }) {
         >
           <Text style={styles.buttonText}>Learn</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.gridButton4}
           onPress={() => navigate(navigation, 'Practice')}
         >
           <Text style={styles.buttonText}>Practice</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.gridButton4}
           onPress={() => navigate(navigation, 'Community')}
         >
           <Text style={styles.buttonText}>Community</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.gridButton4}
           onPress={() => navigate(navigation, 'Preferences')}

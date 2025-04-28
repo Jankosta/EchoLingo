@@ -26,6 +26,7 @@ import ExamScreen from './screens/ExamScreen';
 import GrammarScreen from './screens/GrammarScreen';
 import VocabPronunciationScreen from './screens/VocabPronunciationScreen';
 import AIChatScreen from './screens/AIChatScreen';
+import FlashcardScreen from './screens/FlashcardScreen';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,7 @@ export default function App() {
           <Stack.Screen name="Grammar" component={GrammarScreen} options={{ headerShown: false }} />
           <Stack.Screen name="VocabPronunciation" component={VocabPronunciationScreen} options={{ headerShown: false }} />
           <Stack.Screen name="AI Chat" component={AIChatScreen} />
+          <Stack.Screen name="Flashcards" component={FlashcardScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SettingsProvider>

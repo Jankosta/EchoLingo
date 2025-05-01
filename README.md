@@ -65,3 +65,4 @@ To access the latest test version of the project please:
 <img src="https://github.com/user-attachments/assets/11525783-bb4c-4137-b44e-b643c554508d" alt="qr-demo" style="width: 50%;" />
 
 - Latest Update: [https://expo.dev/preview/update?message=add%20unit%20tests%20to%20pipeline&updateRuntimeVersion=1.0.0&createdAt=2025-05-01T01%3A00%3A56.933Z&slug=exp&projectId=f32926b8-6f96-407f-974c-0ad674700b07&group=68c2c517-1ff8-46b8-8aad-b108cf78fcfa](https://expo.dev/preview/update?message=add%20unit%20tests%20to%20pipeline&updateRuntimeVersion=1.0.0&createdAt=2025-05-01T01%3A00%3A56.933Z&slug=exp&projectId=f32926b8-6f96-407f-974c-0ad674700b07&group=68c2c517-1ff8-46b8-8aad-b108cf78fcfa)
+
